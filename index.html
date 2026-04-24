@@ -372,45 +372,85 @@
       position: relative;
       width: 280px;
       height: 592px;
-      border-radius: 52px;
+      border-radius: 54px;
       background: linear-gradient(
-        to right,
-        #3a3a3c 0%, #2c2c2e 6%, #242424 14%,
-        #1c1c1e 20%, #1c1c1e 80%,
-        #242424 86%, #2c2c2e 94%, #3a3a3c 100%
+        158deg,
+        #7a7a80 0%, #5c5c62 8%, #3e3e42 18%,
+        #28282c 28%, #1c1c20 40%, #1c1c20 60%,
+        #2a2a2e 72%, #404046 82%, #5e5e66 92%, #787880 100%
       );
       box-shadow:
-        0 0 0 1px rgba(0,0,0,0.85),
-        0 10px 24px rgba(0,0,0,0.55),
-        0 36px 52px rgba(0,0,0,0.38),
-        0 80px 66px rgba(0,0,0,0.20),
-        inset 0 1.5px 0 rgba(255,255,255,0.18),
-        inset 0 -1px 0 rgba(0,0,0,0.55);
+        0 0 0 0.5px rgba(255,255,255,0.14),
+        0 0 0 1.5px rgba(0,0,0,0.92),
+        0 2px 6px rgba(0,0,0,0.65),
+        0 12px 28px rgba(0,0,0,0.55),
+        0 36px 60px rgba(0,0,0,0.42),
+        0 72px 96px rgba(0,0,0,0.28),
+        inset 0 2.5px 0 rgba(255,255,255,0.28),
+        inset 0 -2px 0 rgba(0,0,0,0.70),
+        inset 3px 0 0 rgba(255,255,255,0.10),
+        inset -3px 0 0 rgba(0,0,0,0.35);
       transform: rotateX(20deg) scale(1.05);
       transform-origin: 50% 100%;
       will-change: transform;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
+    /* Titanium sheen on hero phone */
+    .iphone17::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        118deg,
+        rgba(255,255,255,0.22) 0%,
+        rgba(255,255,255,0.08) 18%,
+        transparent 38%,
+        transparent 62%,
+        rgba(255,255,255,0.05) 80%,
+        rgba(255,255,255,0.14) 100%
+      );
+      pointer-events: none;
+      z-index: 20;
+    }
     @media (max-width:768px) {
       .iphone17 { transform: none !important; transform-origin: 50% 50% !important; }
     }
 
-    /* Screen cutout — 8px inset = thin gold border */
     .iphone17-screen {
       position: absolute;
-      inset: 8px;
-      border-radius: 46px;
+      inset: 7px;
+      border-radius: 48px;
       background: #000;
       overflow: hidden;
+      box-shadow:
+        inset 0 0 0 1px rgba(0,0,0,0.9),
+        inset 0 0 14px rgba(0,0,0,0.6);
+    }
+    /* glass reflection sweep */
+    .iphone17-screen::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.07) 0%,
+        rgba(255,255,255,0.03) 30%,
+        transparent 55%
+      );
+      border-radius: 48px 48px 0 0;
+      z-index: 20;
+      pointer-events: none;
     }
     .iphone17-screen::after {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.45);
-      z-index: 5;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+      z-index: 6;
       pointer-events: none;
     }
     .iphone17-screen img {
@@ -424,21 +464,41 @@
     /* Dynamic Island */
     .iphone17-di {
       position: absolute;
-      top: 11px; left: 50%;
+      top: 14px; left: 50%;
       transform: translateX(-50%);
-      width: 118px; height: 34px;
+      width: 122px; height: 36px;
       background: #000;
-      border-radius: 17px;
+      border-radius: 18px;
       z-index: 10;
+      box-shadow:
+        0 0 0 1.5px rgba(0,0,0,1),
+        inset 0 1px 4px rgba(0,0,0,0.9),
+        0 2px 10px rgba(0,0,0,0.6);
+    }
+    /* front camera dot */
+    .iphone17-di::after {
+      content: '';
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1a1a2e 30%, #0a0a14 100%);
+      box-shadow:
+        0 0 0 1.5px rgba(255,255,255,0.07),
+        inset 0 0 5px rgba(80,120,255,0.18);
     }
 
     /* Home indicator */
     .iphone17-home {
       position: absolute;
-      bottom: 9px; left: 50%;
+      bottom: 10px; left: 50%;
       transform: translateX(-50%);
-      width: 110px; height: 5px;
-      background: rgba(255,255,255,0.30);
+      width: 112px; height: 5px;
+      background: linear-gradient(90deg,
+        transparent, rgba(255,255,255,0.16) 20%,
+        rgba(255,255,255,0.36) 50%,
+        rgba(255,255,255,0.16) 80%, transparent);
       border-radius: 3px;
       z-index: 10;
     }
@@ -446,51 +506,65 @@
     /* USB-C port */
     .iphone17-usbc {
       position: absolute;
-      bottom: 6px; left: 50%;
+      bottom: -1px; left: 50%;
       transform: translateX(-50%);
-      width: 36px; height: 7px;
-      background: #0a0a0a;
-      border-radius: 3px;
+      width: 42px; height: 9px;
+      background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+      border-radius: 0 0 5px 5px;
       z-index: 2;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.95);
+      box-shadow:
+        inset 0 2px 5px rgba(0,0,0,0.95),
+        inset 2px 0 3px rgba(0,0,0,0.6),
+        inset -2px 0 3px rgba(0,0,0,0.6);
+    }
+    .iphone17-usbc::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 50%;
+      transform: translateX(-50%);
+      width: 26px; height: 3px;
+      background: linear-gradient(90deg,
+        #2a2a2a, #3a3a3c 30%, #444 50%, #3a3a3c 70%, #2a2a2a);
+      border-radius: 1px;
+      box-shadow: 0 1px 2px rgba(255,255,255,0.06);
     }
 
     /* Hardware buttons */
-    .iphone17-btn { position: absolute; border-radius: 2px; }
+    .iphone17-btn { position: absolute; }
     .iphone17-action {
-      left: -3.5px; top: 112px;
-      width: 3.5px; height: 36px;
-      border-radius: 2px 0 0 2px;
-      background: linear-gradient(90deg, #3a3a3c, #242424);
-      box-shadow: -1px 0 3px rgba(0,0,0,0.7);
+      left: -5px; top: 114px;
+      width: 5px; height: 36px;
+      border-radius: 3px 0 0 3px;
+      background: linear-gradient(90deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: -1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
     }
     .iphone17-vol-up {
-      left: -3.5px; top: 162px;
-      width: 3.5px; height: 48px;
-      border-radius: 2px 0 0 2px;
-      background: linear-gradient(90deg, #3a3a3c, #242424);
-      box-shadow: -1px 0 3px rgba(0,0,0,0.7);
+      left: -5px; top: 164px;
+      width: 5px; height: 48px;
+      border-radius: 3px 0 0 3px;
+      background: linear-gradient(90deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: -1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
     }
     .iphone17-vol-down {
-      left: -3.5px; top: 222px;
-      width: 3.5px; height: 48px;
-      border-radius: 2px 0 0 2px;
-      background: linear-gradient(90deg, #3a3a3c, #242424);
-      box-shadow: -1px 0 3px rgba(0,0,0,0.7);
+      left: -5px; top: 224px;
+      width: 5px; height: 48px;
+      border-radius: 3px 0 0 3px;
+      background: linear-gradient(90deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: -1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
     }
     .iphone17-power {
-      right: -3.5px; top: 162px;
-      width: 3.5px; height: 76px;
-      border-radius: 0 2px 2px 0;
-      background: linear-gradient(90deg, #242424, #3a3a3c);
-      box-shadow: 1px 0 3px rgba(0,0,0,0.7);
+      right: -5px; top: 164px;
+      width: 5px; height: 78px;
+      border-radius: 0 3px 3px 0;
+      background: linear-gradient(270deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: 1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
     }
     .iphone17-camctrl {
-      right: -3.5px; top: 256px;
-      width: 3.5px; height: 56px;
-      border-radius: 0 2px 2px 0;
-      background: linear-gradient(90deg, #242424, #3a3a3c);
-      box-shadow: 1px 0 3px rgba(0,0,0,0.7);
+      right: -5px; top: 258px;
+      width: 5px; height: 58px;
+      border-radius: 0 3px 3px 0;
+      background: linear-gradient(270deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: 1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
     }
 
     /* ═══════════════════════════════════════
@@ -868,76 +942,200 @@
       position: relative;
       width: 264px;
       height: 568px;
-      border-radius: 50px;
-      background: linear-gradient(
-        to right,
-        #3a3a3c 0%, #2c2c2e 6%, #242424 14%,
-        #1c1c1e 20%, #1c1c1e 80%,
-        #242424 86%, #2c2c2e 94%, #3a3a3c 100%
-      );
+      border-radius: 52px;
+      /* Titanium Natural finish — angled multi-stop gradient */
+      background:
+        linear-gradient(
+          158deg,
+          #7a7a80 0%,
+          #5c5c62 8%,
+          #3e3e42 18%,
+          #28282c 28%,
+          #1c1c20 40%,
+          #1c1c20 60%,
+          #2a2a2e 72%,
+          #404046 82%,
+          #5e5e66 92%,
+          #787880 100%
+        );
       box-shadow:
-        0 0 0 1px rgba(0,0,0,0.85),
-        0 10px 22px rgba(0,0,0,0.55),
-        0 34px 48px rgba(0,0,0,0.38),
-        0 76px 62px rgba(0,0,0,0.20),
-        inset 0 1.5px 0 rgba(255,255,255,0.18),
-        inset 0 -1px 0 rgba(0,0,0,0.55);
+        /* outer edge micro-highlight */
+        0 0 0 0.5px rgba(255,255,255,0.14),
+        /* hard frame ring */
+        0 0 0 1.5px rgba(0,0,0,0.92),
+        /* contact shadow */
+        0 2px 6px rgba(0,0,0,0.65),
+        /* near shadow */
+        0 12px 28px rgba(0,0,0,0.55),
+        /* mid shadow */
+        0 32px 56px rgba(0,0,0,0.40),
+        /* far glow */
+        0 56px 88px rgba(0,0,0,0.28),
+        /* top edge shine */
+        inset 0 2.5px 0 rgba(255,255,255,0.28),
+        /* bottom edge depth */
+        inset 0 -2px 0 rgba(0,0,0,0.70),
+        /* left face highlight */
+        inset 3px 0 0 rgba(255,255,255,0.10),
+        /* right face depth */
+        inset -3px 0 0 rgba(0,0,0,0.35);
+    }
+    /* Titanium brushed-metal sheen */
+    .iphone17pro-hs::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        118deg,
+        rgba(255,255,255,0.22) 0%,
+        rgba(255,255,255,0.08) 18%,
+        transparent 38%,
+        transparent 62%,
+        rgba(255,255,255,0.05) 80%,
+        rgba(255,255,255,0.14) 100%
+      );
+      pointer-events: none;
+      z-index: 20;
     }
     .iphone17pro-hs-screen {
       position: absolute;
-      inset: 8px;
-      border-radius: 44px;
+      inset: 7px;
+      border-radius: 46px;
       background: #000;
       overflow: hidden;
+      /* screen-to-bezel micro gap */
+      box-shadow:
+        inset 0 0 0 1px rgba(0,0,0,0.9),
+        inset 0 0 12px rgba(0,0,0,0.6);
     }
+    /* glass surface reflection sweep */
+    .iphone17pro-hs-screen::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.07) 0%,
+        rgba(255,255,255,0.03) 30%,
+        transparent 55%
+      );
+      border-radius: 46px 46px 0 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+    /* screen inner edge */
     .iphone17pro-hs-screen::after {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.45);
-      z-index: 5;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+      z-index: 6;
       pointer-events: none;
     }
+    /* Dynamic Island */
     .iphone17pro-hs-di {
       position: absolute;
-      top: 11px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      width: 112px;
-      height: 32px;
+      width: 120px;
+      height: 34px;
       background: #000;
-      border-radius: 16px;
+      border-radius: 17px;
       z-index: 10;
+      box-shadow:
+        0 0 0 1.5px rgba(0,0,0,1),
+        inset 0 1px 4px rgba(0,0,0,0.9),
+        0 2px 10px rgba(0,0,0,0.6);
+    }
+    /* front camera dot inside Dynamic Island */
+    .iphone17pro-hs-di::after {
+      content: '';
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1a1a2e 30%, #0a0a14 100%);
+      box-shadow:
+        0 0 0 1.5px rgba(255,255,255,0.07),
+        inset 0 0 4px rgba(80,120,255,0.18);
     }
     .iphone17pro-hs-home {
       position: absolute;
-      bottom: 9px;
+      bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 104px;
+      width: 108px;
       height: 5px;
-      background: rgba(255,255,255,0.30);
+      background: linear-gradient(90deg,
+        transparent, rgba(255,255,255,0.16) 20%,
+        rgba(255,255,255,0.36) 50%,
+        rgba(255,255,255,0.16) 80%, transparent);
       border-radius: 3px;
       z-index: 10;
     }
     .iphone17pro-hs-usbc {
       position: absolute;
-      bottom: 6px;
+      bottom: -1px;
       left: 50%;
       transform: translateX(-50%);
-      width: 34px;
-      height: 6px;
-      background: #0a0a0a;
-      border-radius: 3px;
+      width: 40px;
+      height: 8px;
+      background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
+      border-radius: 0 0 4px 4px;
       z-index: 2;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.95);
+      box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.95),
+        inset 2px 0 3px rgba(0,0,0,0.6),
+        inset -2px 0 3px rgba(0,0,0,0.6);
+    }
+    /* USB-C inner connector pins */
+    .iphone17pro-hs-usbc::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 50%;
+      transform: translateX(-50%);
+      width: 24px; height: 3px;
+      background: linear-gradient(90deg,
+        #2a2a2a, #3a3a3c 30%, #444 50%, #3a3a3c 70%, #2a2a2a);
+      border-radius: 1px;
+      box-shadow: 0 1px 2px rgba(255,255,255,0.06);
     }
     .iphone17pro-hs-btn { position: absolute; }
-    .iphone17pro-hs-action   { left: -3.5px; top: 106px; width: 3.5px; height: 30px; border-radius: 2px 0 0 2px; background: linear-gradient(90deg,#3a3a3c,#242424); box-shadow: -1px 0 3px rgba(0,0,0,0.7); }
-    .iphone17pro-hs-vol-up   { left: -3.5px; top: 150px; width: 3.5px; height: 44px; border-radius: 2px 0 0 2px; background: linear-gradient(90deg,#3a3a3c,#242424); box-shadow: -1px 0 3px rgba(0,0,0,0.7); }
-    .iphone17pro-hs-vol-down { left: -3.5px; top: 206px; width: 3.5px; height: 44px; border-radius: 2px 0 0 2px; background: linear-gradient(90deg,#3a3a3c,#242424); box-shadow: -1px 0 3px rgba(0,0,0,0.7); }
-    .iphone17pro-hs-power    { right: -3.5px; top: 150px; width: 3.5px; height: 74px; border-radius: 0 2px 2px 0; background: linear-gradient(90deg,#242424,#3a3a3c); box-shadow: 1px 0 3px rgba(0,0,0,0.7); }
+    /* Action button */
+    .iphone17pro-hs-action {
+      left: -5px; top: 108px; width: 5px; height: 32px;
+      border-radius: 3px 0 0 3px;
+      background: linear-gradient(90deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: -1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
+    }
+    /* Volume up */
+    .iphone17pro-hs-vol-up {
+      left: -5px; top: 154px; width: 5px; height: 46px;
+      border-radius: 3px 0 0 3px;
+      background: linear-gradient(90deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: -1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
+    }
+    /* Volume down */
+    .iphone17pro-hs-vol-down {
+      left: -5px; top: 212px; width: 5px; height: 46px;
+      border-radius: 3px 0 0 3px;
+      background: linear-gradient(90deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: -1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
+    }
+    /* Power / side button */
+    .iphone17pro-hs-power {
+      right: -5px; top: 152px; width: 5px; height: 76px;
+      border-radius: 0 3px 3px 0;
+      background: linear-gradient(270deg, #606068 0%, #484850 40%, #303034 100%);
+      box-shadow: 1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
+    }
     /* Image stack inside phone screen */
     .hs-img {
       position: absolute;

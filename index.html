@@ -1199,20 +1199,46 @@
       .iphone17pro-hs{ width:230px; height:496px; border-radius:46px; }
     }
     @media (max-width:640px){
-      .hero-outer{ height:1300px; }
-      .iphone17{ width:245px; height:516px; border-radius:48px; }
+      /* ── Hero: stack vertically ── */
+      .hero-outer{ height:1440px; }
+      .hero-sticky{ overflow:visible; display:flex; align-items:flex-start; justify-content:center; }
+      .hero-inner{ flex-direction:column; align-items:center; text-align:center; padding:80px 24px 20px; gap:32px; }
+      .hero-title{ max-width:100%; }
+      .hero-h1{ font-size:clamp(38px,9.5vw,52px); }
+      .hero-sub{ font-size:15px; margin:10px auto 22px; }
+      .iphone17{ width:190px; height:402px; border-radius:42px; }
+
+      /* ── Stats bar ── */
+      .stats-wrap{ padding:0 24px; }
+      .stat{ padding:20px 10px; }
+      .stat-val{ font-size:26px; }
+      .stat-lbl{ font-size:11px; }
+
+      /* ── Layout ── */
       .container{ padding:0 24px; }
       .how-grid,.testi-grid{ grid-template-columns:1fr; }
+
+      /* ── CTA ── */
       .cta-wrap{ padding:0 24px 80px; }
       .cta-card{ padding:52px 24px; }
+
+      /* ── Footer ── */
       footer{ padding:48px 24px 32px; }
       .foot-top{ flex-direction:column; }
       .foot-cols{ gap:36px; flex-wrap:wrap; }
-      .stats-wrap{ padding:0 24px; }
+
+      /* ── Nav pill ── */
       #nav-pill.open{ width:280px; height:340px; }
-      .hs-inner{ padding:0 24px; gap:36px; }
+
+      /* ── App preview section ── */
+      .hs-inner{ flex-direction:column; align-items:center; padding:0 24px; gap:36px; }
+      .hs-phone-wrap{ width:100%; display:flex; justify-content:center; }
       .hs-item{ font-size:1.9rem; }
       .iphone17pro-hs{ width:200px; height:432px; border-radius:40px; }
+
+      /* ── Pricing ── */
+      .pricing-grid{ grid-template-columns:1fr; }
+      .pc-amount{ font-size:56px; }
     }
 
     /* ═══════════════════════════════════════
@@ -1454,10 +1480,6 @@
       margin-bottom: 28px;
     }
 
-    @media (max-width: 640px) {
-      .pricing-grid { grid-template-columns: 1fr; }
-      .pc-amount { font-size: 56px; }
-    }
   </style>
 </head>
 <body>

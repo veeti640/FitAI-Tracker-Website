@@ -1231,8 +1231,12 @@
       .iphone17pro-hs{ width:200px; height:432px; border-radius:40px; }
 
       /* ── Pricing ── */
-      .pricing-grid{ grid-template-columns:1fr; }
-      .pc-amount{ font-size:56px; }
+      .pricing-grid{ grid-template-columns:1fr; gap:16px; }
+      .pricing-card{ padding:26px 22px 22px; border-radius:20px; }
+      .pc-meta{ margin-bottom:24px; }
+      .pc-amount{ font-size:52px; }
+      .pc-title{ margin-bottom:18px; }
+      .pc-features{ margin-bottom:24px; }
     }
 
     /* ═══════════════════════════════════════
@@ -1976,13 +1980,11 @@
         var rect  = outer.getBoundingClientRect();
         var total = outer.offsetHeight - window.innerHeight;
         var progress = Math.max(0, Math.min(1, -rect.top / total));
-        if (isMobile) {
-          phone.style.transform = 'none';
-        } else {
-          var rotX  = 20 * (1 - progress);
-          var scale = 1.05 - 0.05 * progress;
-          phone.style.transform = 'rotateX(' + rotX + 'deg) scale(' + scale + ')';
-        }
+        var maxAngle = isMobile ? 10 : 20;
+        var maxScale = isMobile ? 1.02 : 1.05;
+        var rotX  = maxAngle * (1 - progress);
+        var scale = maxScale - (maxScale - 1) * progress;
+        phone.style.transform = 'rotateX(' + rotX + 'deg) scale(' + scale + ')';
         if (title) {
           var transY = (isMobile ? -60 : -90) * progress;
           var fade   = 1 - progress * 0.7;

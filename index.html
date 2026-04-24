@@ -144,9 +144,9 @@
       will-change: width, height, border-radius;
 
       transition:
-        width         .42s cubic-bezier(0.22, 1, 0.36, 1),
-        height        .42s cubic-bezier(0.22, 1, 0.36, 1),
-        border-radius .38s cubic-bezier(0.22, 1, 0.36, 1);
+        width         .26s cubic-bezier(0.22, 1, 0.36, 1),
+        height        .26s cubic-bezier(0.22, 1, 0.36, 1),
+        border-radius .22s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     #nav-pill-distort { display: none; }
@@ -389,6 +389,8 @@
       transform: rotateX(20deg) scale(1.05);
       transform-origin: 50% 100%;
       will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     /* Screen cutout — 8px inset = thin gold border */
@@ -1931,7 +1933,7 @@
       const startY = window.scrollY;
       const endY   = el.getBoundingClientRect().top + startY - 80;
       const diff   = endY - startY;
-      const dur    = 680;
+      const dur    = 500;
       let t0 = null;
       function ease(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
       function step(ts) {
@@ -1968,21 +1970,30 @@
       var phone = document.getElementById('heroPhone');
       var title = document.getElementById('heroTitle');
       if (!outer || !phone) return;
+      var ticking = false;
       function update() {
-        var rect = outer.getBoundingClientRect();
+        var isMobile = window.innerWidth <= 640;
+        var rect  = outer.getBoundingClientRect();
         var total = outer.offsetHeight - window.innerHeight;
         var progress = Math.max(0, Math.min(1, -rect.top / total));
-        var rotX   = 20 * (1 - progress);
-        var scale  = 1.05 - 0.05 * progress;
-        var transY = -90 * progress;
-        var fade   = 1 - progress * 0.7;
-        phone.style.transform = 'rotateX(' + rotX + 'deg) scale(' + scale + ')';
+        if (isMobile) {
+          phone.style.transform = 'none';
+        } else {
+          var rotX  = 20 * (1 - progress);
+          var scale = 1.05 - 0.05 * progress;
+          phone.style.transform = 'rotateX(' + rotX + 'deg) scale(' + scale + ')';
+        }
         if (title) {
+          var transY = (isMobile ? -60 : -90) * progress;
+          var fade   = 1 - progress * 0.7;
           title.style.transform = 'translateY(' + transY + 'px)';
           title.style.opacity   = fade;
         }
+        ticking = false;
       }
-      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('scroll', function() {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
       update();
     })();
 

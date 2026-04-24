@@ -392,6 +392,9 @@
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
+    @media (max-width:768px) {
+      .iphone17 { transform: none !important; transform-origin: 50% 50% !important; }
+    }
 
     /* Screen cutout — 8px inset = thin gold border */
     .iphone17-screen {
@@ -1193,14 +1196,19 @@
       .iphone17pro-hs{ width:230px; height:496px; border-radius:46px; }
     }
     @media (max-width:640px){
-      /* ── Hero: stack vertically, clipped clean ── */
-      .hero-outer{ height:1400px; }
-      .hero-sticky{ display:flex; align-items:flex-start; justify-content:center; }
-      .hero-inner{ flex-direction:column; align-items:center; text-align:center; padding:82px 24px 0; gap:22px; }
-      .hero-title{ max-width:100%; }
+      /* ── Hero: no sticky scroll, no phone ── */
+      .hero-outer{ height:auto; }
+      .hero-sticky{ position:relative; height:auto; overflow:visible; display:flex; align-items:flex-start; justify-content:center; }
+      .hero-phone-persp{ display:none; }
+      .hero-inner{ flex-direction:column; align-items:center; text-align:center; padding:100px 24px 60px; gap:22px; }
+      .hero-title{ max-width:100%; will-change:auto; }
       .hero-h1{ font-size:clamp(36px,9vw,50px); }
       .hero-sub{ font-size:14px; line-height:1.6; margin:4px auto 14px; }
-      .iphone17{ width:205px; height:434px; border-radius:44px; }
+
+      /* ── Kill continuous animations for perf ── */
+      .orbit-ping,.orbit-center-orb{ animation:none; }
+      .orbit-node-btn.pulsing{ animation:none; }
+      .orbit-node.pulsing .orbit-node-btn{ animation:none; }
 
       /* ── Stats bar ── */
       .stats-wrap{ padding:0 24px; }
@@ -1231,12 +1239,12 @@
       .iphone17pro-hs{ width:200px; height:432px; border-radius:40px; }
 
       /* ── Pricing ── */
-      .pricing-grid{ grid-template-columns:1fr; gap:16px; }
-      .pricing-card{ padding:26px 22px 22px; border-radius:20px; }
-      .pc-meta{ margin-bottom:24px; }
-      .pc-amount{ font-size:52px; }
-      .pc-title{ margin-bottom:18px; }
-      .pc-features{ margin-bottom:24px; }
+      .pricing-grid{ grid-template-columns:repeat(2,1fr); gap:12px; }
+      .pricing-card{ padding:22px 14px 18px; border-radius:20px; will-change:auto; transform:none !important; }
+      .pc-meta{ margin-bottom:16px; }
+      .pc-amount{ font-size:36px; }
+      .pc-title{ margin-bottom:12px; font-size:17px; }
+      .pc-features{ margin-bottom:16px; }
 
       /* ── Kill backdrop-filter on mobile (huge perf win) ── */
       .glass{
@@ -1996,22 +2004,18 @@
       var phone = document.getElementById('heroPhone');
       var title = document.getElementById('heroTitle');
       if (!outer || !phone) return;
+      if (window.matchMedia('(max-width:768px)').matches) return;
       var ticking = false;
       function update() {
-        var isMobile = window.innerWidth <= 640;
         var rect  = outer.getBoundingClientRect();
         var total = outer.offsetHeight - window.innerHeight;
         var progress = Math.max(0, Math.min(1, -rect.top / total));
-        var maxAngle = isMobile ? 10 : 20;
-        var maxScale = isMobile ? 1.02 : 1.05;
-        var rotX  = maxAngle * (1 - progress);
-        var scale = maxScale - (maxScale - 1) * progress;
+        var rotX  = 20 * (1 - progress);
+        var scale = 1.05 - 0.05 * progress;
         phone.style.transform = 'rotateX(' + rotX + 'deg) scale(' + scale + ')';
         if (title) {
-          var transY = (isMobile ? -60 : -90) * progress;
-          var fade   = 1 - progress * 0.7;
-          title.style.transform = 'translateY(' + transY + 'px)';
-          title.style.opacity   = fade;
+          title.style.transform = 'translateY(' + (-90 * progress) + 'px)';
+          title.style.opacity   = 1 - progress * 0.7;
         }
         ticking = false;
       }
@@ -2245,8 +2249,9 @@
       });
     })();
 
-    /* ── Pricing card 3D tilt ── */
+    /* ── Pricing card 3D tilt (desktop only) ── */
     (function() {
+      if (window.matchMedia('(max-width:768px)').matches) return;
       var cards = document.querySelectorAll('.pricing-card');
       cards.forEach(function(card) {
         var bounds;

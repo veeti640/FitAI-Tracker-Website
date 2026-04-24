@@ -1193,14 +1193,14 @@
       .iphone17pro-hs{ width:230px; height:496px; border-radius:46px; }
     }
     @media (max-width:640px){
-      /* ── Hero: stack vertically ── */
-      .hero-outer{ height:1440px; }
-      .hero-sticky{ overflow:visible; display:flex; align-items:flex-start; justify-content:center; }
-      .hero-inner{ flex-direction:column; align-items:center; text-align:center; padding:80px 24px 20px; gap:32px; }
+      /* ── Hero: stack vertically, clipped clean ── */
+      .hero-outer{ height:1400px; }
+      .hero-sticky{ display:flex; align-items:flex-start; justify-content:center; }
+      .hero-inner{ flex-direction:column; align-items:center; text-align:center; padding:82px 24px 0; gap:22px; }
       .hero-title{ max-width:100%; }
-      .hero-h1{ font-size:clamp(38px,9.5vw,52px); }
-      .hero-sub{ font-size:15px; margin:10px auto 22px; }
-      .iphone17{ width:190px; height:402px; border-radius:42px; }
+      .hero-h1{ font-size:clamp(36px,9vw,50px); }
+      .hero-sub{ font-size:14px; line-height:1.6; margin:4px auto 14px; }
+      .iphone17{ width:205px; height:434px; border-radius:44px; }
 
       /* ── Stats bar ── */
       .stats-wrap{ padding:0 24px; }

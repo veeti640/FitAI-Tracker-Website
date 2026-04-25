@@ -1415,7 +1415,7 @@
       .stat-lbl{ font-size:11px; }
 
       /* ── Layout ── */
-      .container{ padding:0 24px; }
+      .container{ padding:0 24px 0 40px; }
       .how-grid,.testi-grid{ grid-template-columns:1fr; }
 
       /* ── CTA ── */
@@ -2590,46 +2590,52 @@
         dots[id] = d;
       });
 
-      /* Position dots once after layout settles — uses top (one-time write, not per scroll) */
-      function positionDots() {
-        var totalScroll = document.body.scrollHeight - window.innerHeight;
-        if (totalScroll <= 0) return;
-        var lineH = lineWrap.offsetHeight;
+      /* Cached layout values — read once, never inside scroll handler */
+      var cache = { total: 1, lineH: 1, offsets: {} };
+
+      function buildCache() {
+        /* All reads happen together before any writes */
+        cache.total  = Math.max(1, document.body.scrollHeight - window.innerHeight);
+        cache.lineH  = lineWrap.offsetHeight;
         SECTS.forEach(function(id) {
-          var sect = document.getElementById(id);
-          if (!sect) return;
-          var pos = Math.max(6, Math.min(lineH - 6, (sect.offsetTop / totalScroll) * lineH));
+          var s = document.getElementById(id);
+          cache.offsets[id] = s ? s.offsetTop : 0;
+        });
+        /* Writes: position dots */
+        SECTS.forEach(function(id) {
+          var pos = Math.max(6, Math.min(cache.lineH - 6,
+            (cache.offsets[id] / cache.total) * cache.lineH));
           dots[id].style.top = pos + 'px';
         });
       }
 
+      /* updateLine — ZERO layout reads, only window.scrollY (cheap) */
       var lineRaf = null;
       function updateLine() {
-        var totalScroll = document.body.scrollHeight - window.innerHeight;
-        if (totalScroll <= 0) return;
-        var lineH = lineWrap.offsetHeight;
-        var progress = Math.min(window.scrollY / totalScroll, 1);
+        var sy  = window.scrollY;
+        var p   = Math.min(sy / cache.total, 1);
+        var lH  = cache.lineH;
+        var mid = sy + window.innerHeight * 0.45;
 
-        /* scaleY — GPU composited, zero layout cost */
-        fillEl.style.transform = 'scaleY(' + progress + ')';
-        tipEl.style.transform  = 'translate(-50%, ' + ((progress * lineH) - 5).toFixed(1) + 'px)';
+        fillEl.style.transform = 'scaleY(' + p + ')';
+        tipEl.style.transform  = 'translate(-50%,' + ((p * lH) - 5).toFixed(1) + 'px)';
 
-        /* Dot states — only classList, no geometry writes */
-        var scrollMid = window.scrollY + window.innerHeight * 0.45;
-        SECTS.forEach(function(id, idx) {
-          var sect = document.getElementById(id);
-          if (!sect) return;
-          var reached = sect.offsetTop <= scrollMid;
-          var nextSect = SECTS[idx + 1] ? document.getElementById(SECTS[idx + 1]) : null;
-          var active = reached && (!nextSect || nextSect.offsetTop > scrollMid);
+        for (var i = 0; i < SECTS.length; i++) {
+          var id      = SECTS[i];
+          var top     = cache.offsets[id];
+          var nextTop = cache.offsets[SECTS[i + 1]] || Infinity;
+          var reached = top <= mid;
+          var active  = reached && nextTop > mid;
           dots[id].classList.toggle('reached', reached && !active);
-          dots[id].classList.toggle('active', active);
-        });
+          dots[id].classList.toggle('active',  active);
+        }
       }
+
       window.addEventListener('scroll', function() {
         if (!lineRaf) lineRaf = requestAnimationFrame(function() { updateLine(); lineRaf = null; });
       }, { passive: true });
-      setTimeout(function() { positionDots(); updateLine(); }, 300);
+      window.addEventListener('resize', buildCache, { passive: true });
+      setTimeout(function() { buildCache(); updateLine(); }, 300);
 
       /* ── Spring physics engine ── */
       var P = {

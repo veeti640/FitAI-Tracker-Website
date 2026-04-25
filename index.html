@@ -2161,18 +2161,19 @@
       if (!pill.contains(e.target)) pill.classList.remove('open');
     });
 
-    /* ── Smooth scroll (fixed 680ms, easeOutExpo) ── */
+    /* ── Smooth scroll ── */
     function smoothScroll(targetSelector) {
       const el = document.querySelector(targetSelector);
       if (!el) return;
       const startY = window.scrollY;
       const endY   = el.getBoundingClientRect().top + startY - 80;
       const diff   = endY - startY;
-      const dur    = 500;
+      if (!diff) return;
+      const dur = Math.min(Math.max(Math.abs(diff) * 0.12, 180), 320);
       let t0 = null;
-      function ease(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+      function ease(t) { return 1 - Math.pow(1 - t, 3); }
       function step(ts) {
-        if (!t0) t0 = ts;
+        if (t0 === null) t0 = ts;
         const p = Math.min((ts - t0) / dur, 1);
         window.scrollTo(0, startY + diff * ease(p));
         if (p < 1) requestAnimationFrame(step);
@@ -2183,7 +2184,10 @@
     document.querySelectorAll('.pill-nav a[href^="#"]').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        closeNav();
+        const pill = document.getElementById('nav-pill');
+        pill.style.transition = 'none';
+        pill.classList.remove('open');
+        requestAnimationFrame(() => { pill.style.transition = ''; });
         smoothScroll(this.getAttribute('href'));
       });
     });

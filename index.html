@@ -1722,6 +1722,38 @@
       margin-bottom: 28px;
     }
 
+    /* ── Mobile spring scroll system ── */
+    @media (max-width:768px) {
+      .fade-up, .fade-up.in { transition: none !important; }
+
+      #m-dots {
+        position: fixed;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 9000;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        pointer-events: none;
+        opacity: 0;
+        animation: m-dots-show 0.4s ease 1.2s forwards;
+      }
+      @keyframes m-dots-show { to { opacity: 1; } }
+      #m-dots span {
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 99px;
+        background: rgba(255,255,255,0.20);
+        transition: background 0.28s ease, height 0.32s cubic-bezier(0.34,1.56,0.64,1);
+      }
+      #m-dots span.on {
+        background: linear-gradient(180deg, #5BC8F5, #BB86FC);
+        height: 20px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2496,6 +2528,137 @@
 
         card.addEventListener('mousemove', onMouseMove);
         card.addEventListener('mouseleave', onMouseLeave);
+      });
+    })();
+
+    /* ── Mobile Resonance Scroll System ── */
+    (function() {
+      if (!window.matchMedia('(max-width:768px)').matches) return;
+
+      /* Section progress dots */
+      var SECTS = ['features','app','how','pricing','download'];
+      var dotsWrap = document.createElement('div');
+      dotsWrap.id = 'm-dots';
+      SECTS.forEach(function(id) {
+        var s = document.createElement('span');
+        s.dataset.s = id;
+        dotsWrap.appendChild(s);
+      });
+      document.body.appendChild(dotsWrap);
+
+      function updateDots() {
+        var mid = window.innerHeight * 0.45;
+        var active = null;
+        SECTS.forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= mid) active = id;
+        });
+        dotsWrap.querySelectorAll('span').forEach(function(dot) {
+          dot.classList.toggle('on', dot.dataset.s === active);
+        });
+      }
+      window.addEventListener('scroll', updateDots, { passive: true });
+      updateDots();
+
+      /* Spring profiles — k=stiffness, d=damping */
+      var P = {
+        heading: { k: 0.13, d: 0.74, y0: 26, s0: 0.97 },
+        card:    { k: 0.08, d: 0.62, y0: 56, s0: 0.92 },
+        generic: { k: 0.10, d: 0.68, y0: 38, s0: 0.95 },
+      };
+
+      function getProfile(el) {
+        if (el.querySelector('h2') || el.querySelector('.sec-tag'))
+          return P.heading;
+        if (el.classList.contains('pricing-grid') || el.classList.contains('how-card') ||
+            el.classList.contains('testi-card') || el.classList.contains('cta-card') ||
+            el.classList.contains('orbital-wrap'))
+          return P.card;
+        return P.generic;
+      }
+
+      var scrollVel = 0, lastSY = window.scrollY;
+      window.addEventListener('scroll', function() {
+        scrollVel = window.scrollY - lastSY;
+        lastSY = window.scrollY;
+      }, { passive: true });
+
+      var springs = [];
+      var rafId = null;
+
+      function runRaf() {
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      }
+
+      function tick() {
+        var any = false;
+        for (var i = 0; i < springs.length; i++) {
+          var sp = springs[i];
+          if (!sp.live || sp.done) continue;
+          any = true;
+
+          sp.vy += -sp.y * sp.k;  sp.vy *= sp.d;  sp.y += sp.vy;
+          sp.vo += (1 - sp.o) * sp.k * 1.5;  sp.vo *= sp.d;  sp.o += sp.vo;
+          sp.vs += (1 - sp.s) * sp.k;  sp.vs *= sp.d;  sp.s += sp.vs;
+
+          if (Math.abs(sp.vy) < 0.05 && Math.abs(sp.y) < 0.35 && sp.o > 0.996) {
+            sp.done = true;
+            sp.el.style.opacity = '';
+            sp.el.style.transform = '';
+          } else {
+            sp.el.style.opacity = Math.min(sp.o, 1).toFixed(3);
+            sp.el.style.transform =
+              'translateY(' + sp.y.toFixed(2) + 'px) scale(' + sp.s.toFixed(4) + ')';
+          }
+        }
+        rafId = any ? requestAnimationFrame(tick) : null;
+      }
+
+      function siblingDelay(el) {
+        var p = el.parentElement;
+        if (!p) return 0;
+        var fu = Array.prototype.filter.call(p.children, function(c) {
+          return c.classList.contains('fade-up');
+        });
+        return fu.length > 1 ? fu.indexOf(el) * 75 : 0;
+      }
+
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          var sp = null;
+          for (var i = 0; i < springs.length; i++) {
+            if (springs[i].el === entry.target) { sp = springs[i]; break; }
+          }
+          if (!sp || sp.live) return;
+          var delay = siblingDelay(sp.el);
+          if (delay > 0) {
+            (function(s) {
+              setTimeout(function() { s.live = true; runRaf(); }, delay);
+            }(sp));
+          } else {
+            sp.live = true;
+            runRaf();
+          }
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.04, rootMargin: '0px 0px -20px 0px' });
+
+      document.querySelectorAll('.fade-up').forEach(function(el) {
+        el.classList.remove('in');
+        var p = getProfile(el);
+        var boost = Math.min(Math.abs(scrollVel) * 0.4, 16);
+        var sp = {
+          el: el, k: p.k, d: p.d,
+          y: p.y0 + boost, vy: 0,
+          o: 0, vo: 0,
+          s: p.s0, vs: 0,
+          live: false, done: false
+        };
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(' + sp.y + 'px) scale(' + sp.s + ')';
+        springs.push(sp);
+        io.observe(el);
       });
     })();
   </script>

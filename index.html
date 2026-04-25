@@ -1437,15 +1437,23 @@
       .iphone17pro-hs{ width:200px; height:432px; border-radius:40px; }
 
       /* ── Pricing ── */
-      .pricing-grid{ grid-template-columns:1fr; gap:14px; max-width:420px; margin:0 auto; }
-      .pricing-card{ padding:28px 24px 24px; border-radius:24px; will-change:auto; transform:none !important; }
-      .pc-meta{ margin-bottom:14px; display:flex; align-items:center; gap:8px; }
-      .pc-amount{ font-size:56px; }
-      .pc-title{ margin-bottom:14px; font-size:18px; }
-      .pc-features{ margin-bottom:20px; }
-      .pc-features li{ font-size:14px; }
-      .pc-price-row{ margin-bottom:6px; }
-      .pc-cta{ padding:14px 20px; font-size:15px; }
+      .pricing-grid{ grid-template-columns:1fr; gap:16px; max-width:440px; margin:0 auto; }
+      .pricing-card{ padding:26px 22px 24px; border-radius:22px; will-change:auto; transform:none !important; box-shadow:0 2px 12px rgba(0,0,0,0.13),0 8px 32px rgba(0,0,0,0.14); }
+      .pc-meta{ margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+      .pc-tag{ font-size:11px; }
+      .pc-period{ font-size:11px; }
+      .pc-badge{ font-size:10px; padding:3px 9px; }
+      .pc-price-row{ margin-bottom:4px; align-items:flex-end; gap:4px; }
+      .pc-currency{ font-size:22px; line-height:1.6; }
+      .pc-amount{ font-size:60px; }
+      .pc-per{ font-size:14px; padding-bottom:9px; }
+      .pc-title{ margin-bottom:14px; font-size:11px; letter-spacing:.06em; }
+      .pc-savings{ font-size:11px; padding:4px 10px; margin-bottom:14px; }
+      .pc-divider{ margin-bottom:16px; }
+      .pc-features{ margin-bottom:20px; gap:9px; }
+      .pc-features li{ font-size:13px; gap:9px; align-items:flex-start; line-height:1.45; }
+      .pc-check{ margin-top:2px; flex-shrink:0; width:16px; height:16px; }
+      .pc-cta{ padding:14px 18px; font-size:14.5px; border-radius:12px; font-weight:700; }
 
       /* ── Kill backdrop-filter on mobile (huge perf win) ── */
       .glass{
@@ -1468,6 +1476,11 @@
         -webkit-backdrop-filter: none;
         background: rgba(20,20,30,0.88);
       }
+    }
+
+    @media (max-width:768px){
+      .pricing-grid{ grid-template-columns:1fr; max-width:440px; margin:0 auto; }
+      .pricing-card{ transform:none !important; will-change:auto; }
     }
 
     /* ═══════════════════════════════════════

@@ -1844,32 +1844,28 @@
       }
     }
 
-    /* ── CSS scroll-driven animation (compositor thread, zero JS lag) ── */
-    @property --sp {
-      syntax: '<number>';
-      inherits: true;
-      initial-value: 0;
+    /* ── Scroll-driven animation keyframes (defined globally, used below) ── */
+    @keyframes fill-grow {
+      from { transform: scaleY(0); }
+      to   { transform: scaleY(1); }
     }
+    @keyframes tip-travel {
+      from { transform: translate(-50%, -5px); }
+      to   { transform: translate(-50%, calc(var(--lh, 400px) - 5px)); }
+    }
+
+    /* ── CSS scroll-driven animation (compositor thread, zero JS lag)      ── */
+    /* ── Supported: Safari 18+, Chrome 115+. JS handles older browsers.    ── */
     @supports (animation-timeline: scroll()) {
       @media (max-width:768px) {
-        @keyframes line-prog {
-          from { --sp: 0; }
-          to   { --sp: 1; }
+        #scroll-fill {
+          animation: fill-grow linear both;
+          animation-timeline: scroll(root block);
         }
-        /* Two animations: sl-show (time-based opacity) + line-prog (scroll-driven) */
-        #scroll-line {
-          animation-name: sl-show, line-prog;
-          animation-duration: 0.6s, auto;
-          animation-timing-function: ease, linear;
-          animation-delay: 0.9s, 0s;
-          animation-fill-mode: forwards, both;
-          animation-iteration-count: 1, 1;
-          animation-direction: normal, normal;
-          animation-play-state: running, running;
-          animation-timeline: auto, scroll(root block);
+        #scroll-tip {
+          animation: tip-travel linear both;
+          animation-timeline: scroll(root block);
         }
-        #scroll-fill { transform: scaleY(var(--sp)) !important; }
-        #scroll-tip  { transform: translate(-50%, calc(var(--sp) * var(--lh, 400px) - 5px)) !important; }
       }
     }
 
@@ -2709,20 +2705,17 @@
         });
       }
 
-      /* updateLine — zero layout reads; fill+tip skipped when CSS scroll active */
-      var lineRaf = null;
-      function updateLine() {
-        var sy  = window.scrollY;
+      /* updateLine — zero layout reads; fill+tip skipped when CSS handles them */
+      function updateLine(sy) {
         var mid = sy + cache.viewH * 0.45;
 
         if (!hasCSSScroll) {
           var p  = Math.min(sy / cache.total, 1);
-          var lH = cache.lineH;
           fillEl.style.transform = 'scaleY(' + p + ')';
-          tipEl.style.transform  = 'translate(-50%,' + (p * lH - 5) + 'px)';
+          tipEl.style.transform  = 'translate(-50%,' + (p * cache.lineH - 5) + 'px)';
         }
 
-        /* Dots: only toggle classList when state changes — avoids style recalc */
+        /* Dots: only touch classList when state actually changes */
         for (var i = 0; i < SECTS.length; i++) {
           var id      = SECTS[i];
           var top     = cache.offsets[id];
@@ -2739,11 +2732,29 @@
         }
       }
 
+      /* Multi-frame RAF poll: keep running for several frames after each scroll event.
+         iOS async-scrolling delivers visual frames between JS scroll events — polling
+         catches those intermediate positions instead of waiting for the next event.  */
+      var trackRaf = null;
+      var trackStall = 0;
+      var trackLastY = -1;
+      function trackFrame() {
+        var sy = window.scrollY;
+        if (sy !== trackLastY) {
+          trackLastY = sy;
+          trackStall = 0;
+          updateLine(sy);
+        } else {
+          trackStall++;
+        }
+        trackRaf = (trackStall < 6) ? requestAnimationFrame(trackFrame) : null;
+      }
       window.addEventListener('scroll', function() {
-        if (!lineRaf) lineRaf = requestAnimationFrame(function() { updateLine(); lineRaf = null; });
+        trackStall = 0;
+        if (!trackRaf) trackRaf = requestAnimationFrame(trackFrame);
       }, { passive: true });
       window.addEventListener('resize', buildCache, { passive: true });
-      setTimeout(function() { buildCache(); updateLine(); }, 300);
+      setTimeout(function() { buildCache(); updateLine(window.scrollY); }, 300);
 
       /* ── Spring physics engine ── */
       var P = {

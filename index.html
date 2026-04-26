@@ -1432,9 +1432,62 @@
 
       /* ── App preview section ── */
       .hs-inner{ flex-direction:column; align-items:center; padding:0 24px; gap:36px; }
-      .hs-phone-wrap{ width:100%; display:flex; justify-content:center; }
+      .hs-phone-wrap{ width:100%; display:flex; justify-content:center; padding-bottom:24px; }
       .hs-item{ font-size:1.9rem; }
-      .iphone17pro-hs{ width:200px; height:432px; border-radius:40px; }
+
+      /* Redesigned iPhone — blue-tinted titanium, floating */
+      .iphone17pro-hs{
+        width: 240px;
+        height: 520px;
+        border-radius: 50px;
+        background: linear-gradient(
+          158deg,
+          #50506a 0%,
+          #32324c 10%,
+          #1e1e30 24%,
+          #141420 42%,
+          #0c0c16 58%,
+          #121222 74%,
+          #1e1e2e 84%,
+          #2e2e42 92%,
+          #4e4e66 100%
+        );
+        box-shadow:
+          0 0 0 0.5px rgba(91,200,245,0.22),
+          0 0 0 1.5px rgba(0,0,0,0.96),
+          0 4px 12px rgba(0,0,0,0.72),
+          0 20px 50px rgba(0,0,0,0.65),
+          0 50px 100px rgba(0,0,0,0.5),
+          inset 0 2.5px 0 rgba(91,200,245,0.28),
+          inset 0 -2px 0 rgba(0,0,0,0.82),
+          inset 3px 0 0 rgba(91,200,245,0.07),
+          inset -3px 0 0 rgba(0,0,0,0.48);
+        will-change: transform;
+        animation: phone-float 3.8s cubic-bezier(0.37,0,0.63,1) infinite;
+      }
+      /* Blue-tinted titanium sheen */
+      .iphone17pro-hs::before{
+        background: linear-gradient(
+          118deg,
+          rgba(91,200,245,0.22) 0%,
+          rgba(255,255,255,0.08) 18%,
+          transparent 38%,
+          transparent 62%,
+          rgba(187,134,252,0.08) 82%,
+          rgba(91,200,245,0.15) 100%
+        );
+      }
+      /* Enhanced ambient glow beneath phone */
+      .hs-phone-wrap::after{
+        width: 80%;
+        height: 64px;
+        background: radial-gradient(ellipse at center,
+          rgba(91,200,245,0.28) 0%,
+          rgba(187,134,252,0.16) 45%,
+          transparent 70%);
+        filter: blur(22px);
+        bottom: -4px;
+      }
 
       /* ── Pricing ── */
       .pricing-card{ padding:26px 22px 24px; border-radius:22px; will-change:auto; transform:none !important; box-shadow:0 2px 12px rgba(0,0,0,0.13),0 8px 32px rgba(0,0,0,0.14); }
@@ -1754,7 +1807,7 @@
         transform-origin: top center;
         transform: scaleY(0);
         will-change: transform;
-        box-shadow: 0 0 8px rgba(91,200,245,0.5);
+        /* no box-shadow — shadows prevent clean compositor promotion */
       }
       #scroll-tip {
         position: absolute;
@@ -1769,27 +1822,61 @@
           0 0 10px #5BC8F5,
           0 0 22px rgba(91,200,245,0.4);
       }
+      /* Dots use opacity+transform only — both compositor-only, no repaints */
       .s-dot {
         position: absolute;
         left: 50%;
         width: 6px; height: 6px;
-        background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(91,200,245,0.5);
+        border: 1px solid rgba(91,200,245,0.75);
         transform: translateX(-50%) translateY(-50%) rotate(45deg);
-        transition: background 0.28s ease, border-color 0.28s ease,
+        opacity: 0.18;
+        will-change: opacity, transform;
+        transition: opacity 0.25s ease,
                     transform 0.34s cubic-bezier(0.34,1.56,0.64,1),
-                    box-shadow 0.28s ease;
+                    filter 0.25s ease;
       }
-      .s-dot.reached {
-        background: rgba(91,200,245,0.4);
-        border-color: rgba(91,200,245,0.7);
-      }
+      .s-dot.reached { opacity: 0.62; }
       .s-dot.active {
-        background: #fff;
-        border-color: #5BC8F5;
+        opacity: 1;
         transform: translateX(-50%) translateY(-50%) rotate(45deg) scale(1.7);
-        box-shadow: 0 0 8px rgba(91,200,245,0.9), 0 0 18px rgba(91,200,245,0.4);
+        filter: drop-shadow(0 0 4px rgba(91,200,245,0.95)) drop-shadow(0 0 10px rgba(91,200,245,0.45));
       }
+    }
+
+    /* ── CSS scroll-driven animation (compositor thread, zero JS lag) ── */
+    @property --sp {
+      syntax: '<number>';
+      inherits: true;
+      initial-value: 0;
+    }
+    @supports (animation-timeline: scroll()) {
+      @media (max-width:768px) {
+        @keyframes line-prog {
+          from { --sp: 0; }
+          to   { --sp: 1; }
+        }
+        /* Two animations: sl-show (time-based opacity) + line-prog (scroll-driven) */
+        #scroll-line {
+          animation-name: sl-show, line-prog;
+          animation-duration: 0.6s, auto;
+          animation-timing-function: ease, linear;
+          animation-delay: 0.9s, 0s;
+          animation-fill-mode: forwards, both;
+          animation-iteration-count: 1, 1;
+          animation-direction: normal, normal;
+          animation-play-state: running, running;
+          animation-timeline: auto, scroll(root block);
+        }
+        #scroll-fill { transform: scaleY(var(--sp)) !important; }
+        #scroll-tip  { transform: translate(-50%, calc(var(--sp) * var(--lh, 400px) - 5px)) !important; }
+      }
+    }
+
+    /* ── Phone float animation ── */
+    @keyframes phone-float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
     }
 
   </style>
@@ -2590,18 +2677,31 @@
         dots[id] = d;
       });
 
-      /* Cached layout values — read once, never inside scroll handler */
-      var cache = { total: 1, lineH: 1, offsets: {} };
+      /* CSS scroll-driven animations handle fill+tip on supporting browsers
+         (Safari 16+, Chrome 115+) — runs on compositor, zero JS lag.
+         JS only handles dot state + fallback fill/tip for older browsers. */
+      var hasCSSScroll = typeof CSS !== 'undefined' && CSS.supports &&
+                         CSS.supports('animation-timeline: scroll()');
+
+      /* All layout reads cached once — never read layout in scroll handler */
+      var cache = { total: 1, lineH: 1, viewH: 1, offsets: {} };
+
+      /* Per-dot state cache — only call classList when state actually changes */
+      var dotState = {};
+      SECTS.forEach(function(id) { dotState[id] = { reached: false, active: false }; });
 
       function buildCache() {
-        /* All reads happen together before any writes */
-        cache.total  = Math.max(1, document.body.scrollHeight - window.innerHeight);
-        cache.lineH  = lineWrap.offsetHeight;
+        cache.total = Math.max(1, document.body.scrollHeight - window.innerHeight);
+        cache.lineH = lineWrap.offsetHeight;
+        cache.viewH = window.innerHeight;
+        if (hasCSSScroll) {
+          /* Tell CSS tip animation the line height */
+          lineWrap.style.setProperty('--lh', cache.lineH + 'px');
+        }
         SECTS.forEach(function(id) {
           var s = document.getElementById(id);
           cache.offsets[id] = s ? s.offsetTop : 0;
         });
-        /* Writes: position dots */
         SECTS.forEach(function(id) {
           var pos = Math.max(6, Math.min(cache.lineH - 6,
             (cache.offsets[id] / cache.total) * cache.lineH));
@@ -2609,25 +2709,33 @@
         });
       }
 
-      /* updateLine — ZERO layout reads, only window.scrollY (cheap) */
+      /* updateLine — zero layout reads; fill+tip skipped when CSS scroll active */
       var lineRaf = null;
       function updateLine() {
         var sy  = window.scrollY;
-        var p   = Math.min(sy / cache.total, 1);
-        var lH  = cache.lineH;
-        var mid = sy + window.innerHeight * 0.45;
+        var mid = sy + cache.viewH * 0.45;
 
-        fillEl.style.transform = 'scaleY(' + p + ')';
-        tipEl.style.transform  = 'translate(-50%,' + ((p * lH) - 5).toFixed(1) + 'px)';
+        if (!hasCSSScroll) {
+          var p  = Math.min(sy / cache.total, 1);
+          var lH = cache.lineH;
+          fillEl.style.transform = 'scaleY(' + p + ')';
+          tipEl.style.transform  = 'translate(-50%,' + (p * lH - 5) + 'px)';
+        }
 
+        /* Dots: only toggle classList when state changes — avoids style recalc */
         for (var i = 0; i < SECTS.length; i++) {
           var id      = SECTS[i];
           var top     = cache.offsets[id];
           var nextTop = cache.offsets[SECTS[i + 1]] || Infinity;
           var reached = top <= mid;
           var active  = reached && nextTop > mid;
-          dots[id].classList.toggle('reached', reached && !active);
-          dots[id].classList.toggle('active',  active);
+          var prev    = dotState[id];
+          if (reached !== prev.reached || active !== prev.active) {
+            dots[id].classList.toggle('reached', reached && !active);
+            dots[id].classList.toggle('active',  active);
+            prev.reached = reached;
+            prev.active  = active;
+          }
         }
       }
 

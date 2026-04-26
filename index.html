@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitAI Tracker — Your AI Fitness Coach</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -706,9 +705,10 @@
     }
     .orbit-node {
       position: absolute;
+      left: 0; top: 0;
       width: 52px; height: 52px;
       cursor: pointer;
-      will-change: left, top, opacity;
+      will-change: transform, opacity;
     }
     .orbit-node-btn {
       width: 52px; height: 52px;
@@ -1402,6 +1402,19 @@
       .hero-title{ max-width:100%; will-change:auto; }
       .hero-h1{ font-size:clamp(36px,9vw,50px); }
       .hero-sub{ font-size:14px; line-height:1.6; margin:4px auto 14px; }
+
+      /* ── Kill heavy fixed layers — biggest mobile perf win ── */
+      /* 4 orbs with filter:blur(110px) = massive GPU layers on mobile */
+      .orbs { display: none; }
+      /* Grain overlay = full-screen fixed compositor layer, not needed on mobile */
+      body::after { display: none; }
+      /* Lightweight gradient replaces orbs (no blur, no compositor layer) */
+      body {
+        background:
+          radial-gradient(ellipse at 12% 18%, rgba(91,200,245,0.11) 0%, transparent 52%),
+          radial-gradient(ellipse at 88% 78%, rgba(187,134,252,0.09) 0%, transparent 52%),
+          #07070D;
+      }
 
       /* ── Kill continuous animations for perf ── */
       .orbit-ping,.orbit-center-orb{ animation:none; }
@@ -2425,6 +2438,13 @@
       var nodeEls = {};
       var cardEl = null;
       var spinAnim = null;
+      /* Pause the RAF loop when orbit is off-screen — saves CPU during scroll */
+      var orbitInView = true;
+      if (typeof IntersectionObserver !== 'undefined') {
+        new IntersectionObserver(function(entries) {
+          orbitInView = entries[0].isIntersecting;
+        }, { rootMargin: '150px 0px 150px 0px' }).observe(stage);
+      }
 
       FEATURES.forEach(function(f) {
         var el = document.createElement('div');
@@ -2516,9 +2536,15 @@
       });
 
       function tick(ts) {
-        if (!lastTs) lastTs = ts;
-        var dt = Math.min(ts - lastTs, 100);
+        /* Always update lastTs so dt is correct when coming back into view */
+        var dt = lastTs ? Math.min(ts - lastTs, 100) : 0;
         lastTs = ts;
+
+        /* Skip full update when off-screen — prevents layout work during scroll */
+        if (!orbitInView && !spinAnim) {
+          requestAnimationFrame(tick);
+          return;
+        }
 
         if (spinAnim) {
           if (!spinAnim.startTs) spinAnim.startTs = ts;
@@ -2542,10 +2568,10 @@
           var zi  = f.id === activeId ? 300 : Math.round(100 + 50 * Math.cos(rad));
           var op  = f.id === activeId ? 1 : Math.max(0.4, Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(rad)) / 2)));
           var el  = nodeEls[f.id];
-          el.style.left    = x + 'px';
-          el.style.top     = y + 'px';
-          el.style.zIndex  = zi;
-          el.style.opacity = op;
+          /* transform: translate instead of left/top — compositor-only, zero layout cost */
+          el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+          el.style.zIndex    = zi;
+          el.style.opacity   = op;
         });
 
         requestAnimationFrame(tick);
@@ -2565,12 +2591,13 @@
       var imgWrapEl = document.getElementById('hsImgWrap');
       if (!itemsEl || !imgWrapEl) return;
 
-      /* Build image stack */
+      /* Build image stack — lazy load all since section is below fold */
       var imgEls = SLIDES.map(function(slide, i) {
         var img = document.createElement('img');
         img.className = 'hs-img' + (i === 0 ? ' hs-img-active' : '');
         img.src = slide.src;
         img.alt = slide.title;
+        img.loading = 'lazy';
         imgWrapEl.appendChild(img);
         return img;
       });

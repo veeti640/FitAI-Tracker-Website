@@ -1865,7 +1865,7 @@
     }
     @keyframes tip-travel {
       from { transform: translate(-50%, -5px); }
-      to   { transform: translate(-50%, calc(var(--lh, 400px) - 5px)); }
+      to   { transform: translate(-50%, calc(100dvh - 165px)); }
     }
 
     /* ── CSS scroll-driven animation (compositor thread, zero JS lag)      ── */
@@ -1876,7 +1876,10 @@
           animation: fill-grow linear both;
           animation-timeline: scroll(root block);
         }
-        /* tip is always JS-driven to stay in sync with the fill */
+        #scroll-tip {
+          animation: tip-travel linear both;
+          animation-timeline: scroll(root block);
+        }
       }
     }
 
@@ -2726,10 +2729,6 @@
         cache.total = Math.max(1, document.body.scrollHeight - window.innerHeight);
         cache.lineH = lineWrap.offsetHeight;
         cache.viewH = window.innerHeight;
-        if (hasCSSScroll) {
-          /* Tell CSS tip animation the line height */
-          lineWrap.style.setProperty('--lh', cache.lineH + 'px');
-        }
         SECTS.forEach(function(id) {
           var s = document.getElementById(id);
           cache.offsets[id] = s ? s.offsetTop : 0;
@@ -2741,17 +2740,16 @@
         });
       }
 
-      /* updateLine — zero layout reads; fill skipped when CSS scroll-driven handles it */
+      /* updateLine — zero layout reads; fill+tip skipped when CSS compositor handles them */
       function updateLine(sy) {
-        var csy = Math.max(sy, 0);  /* clamp: iOS overscroll can make scrollY negative */
+        var csy = Math.max(sy, 0);  /* clamp: iOS overscroll can give negative scrollY */
         var p   = Math.min(csy / cache.total, 1);
         var mid = csy + cache.viewH * 0.45;
 
         if (!hasCSSScroll) {
           fillEl.style.transform = 'scaleY(' + p + ')';
+          tipEl.style.transform  = 'translate(-50%,' + (p * cache.lineH - 5) + 'px)';
         }
-        /* tip always driven by JS so it stays frame-locked with the dots */
-        tipEl.style.transform = 'translate(-50%,' + (p * cache.lineH - 5) + 'px)';
 
         /* Dots: only touch classList when state actually changes */
         for (var i = 0; i < SECTS.length; i++) {

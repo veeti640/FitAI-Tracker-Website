@@ -1858,30 +1858,7 @@
       }
     }
 
-    /* ── Scroll-driven animation keyframes (defined globally, used below) ── */
-    @keyframes fill-grow {
-      from { transform: scaleY(0); }
-      to   { transform: scaleY(1); }
-    }
-    @keyframes tip-travel {
-      from { transform: translate(-50%, -5px); }
-      to   { transform: translate(-50%, calc(100dvh - 165px)); }
-    }
-
-    /* ── CSS scroll-driven animation (compositor thread, zero JS lag)      ── */
-    /* ── Supported: Safari 18+, Chrome 115+. JS handles older browsers.    ── */
-    @supports (animation-timeline: scroll()) {
-      @media (max-width:768px) {
-        #scroll-fill {
-          animation: fill-grow linear both;
-          animation-timeline: scroll(root block);
-        }
-        #scroll-tip {
-          animation: tip-travel linear both;
-          animation-timeline: scroll(root block);
-        }
-      }
-    }
+    /* fill + tip driven entirely by JS — see scroll tracking below */
 
     /* ── Phone float animation ── */
     @keyframes phone-float {
@@ -2712,13 +2689,7 @@
         dots[id] = d;
       });
 
-      /* CSS scroll-driven animations handle fill+tip on supporting browsers
-         (Safari 16+, Chrome 115+) — runs on compositor, zero JS lag.
-         JS only handles dot state + fallback fill/tip for older browsers. */
-      var hasCSSScroll = typeof CSS !== 'undefined' && CSS.supports &&
-                         CSS.supports('animation-timeline: scroll()');
-
-      /* All layout reads cached once — never read layout in scroll handler */
+      /* All layout reads cached — never read layout in scroll handler */
       var cache = { total: 1, lineH: 1, viewH: 1, offsets: {} };
 
       /* Per-dot state cache — only call classList when state actually changes */
@@ -2740,16 +2711,14 @@
         });
       }
 
-      /* updateLine — zero layout reads; fill+tip skipped when CSS compositor handles them */
+      /* updateLine — zero layout reads, always JS-driven for guaranteed sync */
       function updateLine(sy) {
-        var csy = Math.max(sy, 0);  /* clamp: iOS overscroll can give negative scrollY */
+        var csy = Math.max(sy, 0);  /* clamp: iOS overscroll gives negative scrollY */
         var p   = Math.min(csy / cache.total, 1);
         var mid = csy + cache.viewH * 0.45;
 
-        if (!hasCSSScroll) {
-          fillEl.style.transform = 'scaleY(' + p + ')';
-          tipEl.style.transform  = 'translate(-50%,' + (p * cache.lineH - 5) + 'px)';
-        }
+        fillEl.style.transform = 'scaleY(' + p + ')';
+        tipEl.style.transform  = 'translate(-50%,' + (p * cache.lineH - 5) + 'px)';
 
         /* Dots: only touch classList when state actually changes */
         for (var i = 0; i < SECTS.length; i++) {
@@ -2768,27 +2737,42 @@
         }
       }
 
-      /* Multi-frame RAF poll: keep running for several frames after each scroll event.
-         iOS async-scrolling delivers visual frames between JS scroll events — polling
-         catches those intermediate positions instead of waiting for the next event.  */
-      var trackRaf = null;
-      var trackStall = 0;
-      var trackLastY = -1;
+      /* RAF poll: runs during scroll and for several frames after.
+         scrollend (iOS 17.5+, Chrome 114+) signals true momentum-scroll end.
+         Stall fallback keeps it compatible with older browsers. */
+      var trackRaf = null, trackStall = 0, trackLastY = -1, scrollActive = false;
+
       function trackFrame() {
         var sy = window.scrollY;
-        if (sy !== trackLastY) {
-          trackLastY = sy;
-          trackStall = 0;
-          updateLine(sy);
-        } else {
-          trackStall++;
-        }
-        trackRaf = (trackStall < 6) ? requestAnimationFrame(trackFrame) : null;
+        if (sy !== trackLastY) { trackLastY = sy; trackStall = 0; updateLine(sy); }
+        else { trackStall++; }
+        trackRaf = (scrollActive || trackStall < 12) ? requestAnimationFrame(trackFrame) : null;
       }
       window.addEventListener('scroll', function() {
-        trackStall = 0;
+        scrollActive = true; trackStall = 0;
         if (!trackRaf) trackRaf = requestAnimationFrame(trackFrame);
       }, { passive: true });
+      window.addEventListener('scrollend', function() { scrollActive = false; }, { passive: true });
+
+      /* Rebuild cache whenever the line element resizes (iOS address bar show/hide). */
+      if (window.ResizeObserver) {
+        new ResizeObserver(function(entries) {
+          var h = entries[0].contentRect.height;
+          if (h > 0 && h !== cache.lineH) {
+            cache.lineH = h;
+            cache.total = Math.max(1, document.body.scrollHeight - window.innerHeight);
+            cache.viewH = window.innerHeight;
+            SECTS.forEach(function(id) {
+              var pos = Math.max(6, Math.min(cache.lineH - 6, (cache.offsets[id] / cache.total) * cache.lineH));
+              dots[id].style.top = pos + 'px';
+            });
+            updateLine(window.scrollY);
+          }
+        }).observe(lineWrap);
+      }
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', buildCache, { passive: true });
+      }
       window.addEventListener('resize', buildCache, { passive: true });
       setTimeout(function() { buildCache(); updateLine(window.scrollY); }, 300);
 

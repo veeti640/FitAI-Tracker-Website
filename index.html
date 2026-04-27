@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FitAI Tracker — Your AI Fitness Coach</title>
+  <link rel="icon" type="image/png" href="App assets/IMG_9922.PNG">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
 
@@ -1875,10 +1876,7 @@
           animation: fill-grow linear both;
           animation-timeline: scroll(root block);
         }
-        #scroll-tip {
-          animation: tip-travel linear both;
-          animation-timeline: scroll(root block);
-        }
+        /* tip is always JS-driven to stay in sync with the fill */
       }
     }
 
@@ -2743,15 +2741,17 @@
         });
       }
 
-      /* updateLine — zero layout reads; fill+tip skipped when CSS handles them */
+      /* updateLine — zero layout reads; fill skipped when CSS scroll-driven handles it */
       function updateLine(sy) {
-        var mid = sy + cache.viewH * 0.45;
+        var csy = Math.max(sy, 0);  /* clamp: iOS overscroll can make scrollY negative */
+        var p   = Math.min(csy / cache.total, 1);
+        var mid = csy + cache.viewH * 0.45;
 
         if (!hasCSSScroll) {
-          var p  = Math.min(sy / cache.total, 1);
           fillEl.style.transform = 'scaleY(' + p + ')';
-          tipEl.style.transform  = 'translate(-50%,' + (p * cache.lineH - 5) + 'px)';
         }
+        /* tip always driven by JS so it stays frame-locked with the dots */
+        tipEl.style.transform = 'translate(-50%,' + (p * cache.lineH - 5) + 'px)';
 
         /* Dots: only touch classList when state actually changes */
         for (var i = 0; i < SECTS.length; i++) {

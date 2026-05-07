@@ -856,6 +856,103 @@
     }
 
     /* ═══════════════════════════════════════
+       LOGOS / FEATURED BY
+    ═══════════════════════════════════════ */
+    .logos-sec {
+      position: relative;
+      z-index: 1;
+      padding: 24px 24px 96px;
+    }
+    .logos-wrap {
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+    .logos-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .logos-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(40px, 8vw, 104px);
+      flex-wrap: wrap;
+    }
+    .logo-item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 60px;
+      padding: 0 6px;
+      opacity: .55;
+      filter: grayscale(1) brightness(1.55) contrast(.9);
+      transition:
+        opacity .5s cubic-bezier(.2,.8,.2,1),
+        filter .5s cubic-bezier(.2,.8,.2,1),
+        transform .5s cubic-bezier(.2,.8,.2,1);
+      will-change: transform, opacity, filter;
+    }
+    .logo-item img {
+      height: 100%;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+    }
+    .logo-item::before {
+      content: '';
+      position: absolute;
+      inset: -22px -28px;
+      border-radius: 28px;
+      background:
+        radial-gradient(closest-side,
+          rgba(91,200,245,.28) 0%,
+          rgba(105,240,174,.14) 45%,
+          transparent 75%);
+      opacity: 0;
+      transition: opacity .55s cubic-bezier(.2,.8,.2,1);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .logo-item:hover,
+    .logo-item:focus-visible {
+      opacity: 1;
+      filter: grayscale(0) brightness(1) contrast(1);
+      animation: logoPulse 2.6s cubic-bezier(.4,0,.6,1) infinite;
+      outline: none;
+    }
+    .logo-item:hover::before,
+    .logo-item:focus-visible::before {
+      opacity: 1;
+    }
+    @keyframes logoPulse {
+      0%, 100% { transform: translateY(-1px) scale(1); }
+      50%      { transform: translateY(-1px) scale(1.045); }
+    }
+    @media (max-width: 640px) {
+      .logos-row { gap: 36px; }
+      .logo-item { height: 46px; }
+      .logos-sec { padding: 12px 24px 72px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .logo-item,
+      .logo-item:hover,
+      .logo-item:focus-visible {
+        animation: none !important;
+        transition: opacity .2s linear, filter .2s linear !important;
+      }
+    }
+
+    /* ═══════════════════════════════════════
        HOVER SLIDESHOW (App Preview)
     ═══════════════════════════════════════ */
     .hs-section { padding: 110px 0; }
@@ -1991,6 +2088,23 @@
       </div>
     </div>
   </div>
+
+  <!-- ══════════════════════
+       LOGOS / FEATURED BY
+  ══════════════════════ -->
+  <section class="logos-sec" aria-label="Featured by">
+    <div class="logos-wrap fade-up">
+      <span class="logos-label">As featured by</span>
+      <div class="logos-row">
+        <a href="#" class="logo-item" aria-label="YFN">
+          <img src="App assets/yfn.png" alt="YFN" />
+        </a>
+        <a href="#" class="logo-item" aria-label="NRW Talente Academy">
+          <img src="App assets/nrw-talente.png" alt="NRW Talente Academy" />
+        </a>
+      </div>
+    </div>
+  </section>
 
   <div class="divider" style="margin-bottom:110px;"></div>
 

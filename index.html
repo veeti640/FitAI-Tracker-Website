@@ -923,15 +923,12 @@
       pointer-events: none;
       z-index: -1;
     }
-    .logo-item:hover,
-    .logo-item:focus-visible {
+    .logo-item:hover {
       opacity: 1;
       filter: grayscale(0) brightness(1) contrast(1);
       animation: logoPulse 2.6s cubic-bezier(.4,0,.6,1) infinite;
-      outline: none;
     }
-    .logo-item:hover::before,
-    .logo-item:focus-visible::before {
+    .logo-item:hover::before {
       opacity: 1;
     }
     @keyframes logoPulse {
@@ -945,8 +942,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .logo-item,
-      .logo-item:hover,
-      .logo-item:focus-visible {
+      .logo-item:hover {
         animation: none !important;
         transition: opacity .2s linear, filter .2s linear !important;
       }
@@ -2096,12 +2092,12 @@
     <div class="logos-wrap fade-up">
       <span class="logos-label">As featured by</span>
       <div class="logos-row">
-        <a href="#" class="logo-item" aria-label="YFN">
+        <div class="logo-item" role="img" aria-label="YFN">
           <img src="App assets/yfn.png" alt="YFN" />
-        </a>
-        <a href="#" class="logo-item" aria-label="NRW Talente Academy">
+        </div>
+        <div class="logo-item" role="img" aria-label="NRW Talente Academy">
           <img src="App assets/nrw-talente.png" alt="NRW Talente Academy" />
-        </a>
+        </div>
       </div>
     </div>
   </section>
@@ -2311,13 +2307,13 @@
           </div>
           <div class="pc-price-row">
             <span class="pc-currency">€</span>
-            <span class="pc-amount">20</span>
+            <span class="pc-amount">40</span>
             <span class="pc-per">/ year</span>
           </div>
           <div class="pc-title">Annual Plan</div>
           <div class="pc-savings">
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            Save 92% vs weekly
+            Save 85% vs weekly
           </div>
           <div class="pc-divider"></div>
           <ul class="pc-features">

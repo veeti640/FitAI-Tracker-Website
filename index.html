@@ -258,28 +258,69 @@
     .hero-outer {
       position: relative;
       z-index: 1;
-      height: 1800px;
+      height: auto;
     }
     .hero-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow: hidden;
+      position: relative;
+      top: auto;
+      height: auto;
+      overflow: visible;
     }
     .hero-inner {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
-      gap: 80px;
-      padding: 0 80px;
+      gap: 56px;
+      padding: 96px 32px 56px;
       width: 100%;
       max-width: 1240px;
       margin: 0 auto;
     }
     .hero-title {
-      flex: 1;
-      max-width: 560px;
-      will-change: transform;
+      max-width: 720px;
+      text-align: center;
+      will-change: auto;
+    }
+    .hero-title .cta-row { justify-content: center; }
+    .hero-title .badge { margin-left: auto; margin-right: auto; }
+
+    /* ── New: real-mockup hero showcase ── */
+    .hero-mockup {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      filter:
+        drop-shadow(0 26px 60px rgba(0,0,0,.55))
+        drop-shadow(0 0 36px rgba(91,200,245,.12));
+    }
+    .hero-mockup-top {
+      max-width: 280px;
+      rotate: -1.5deg;
+      animation: mockup-float 7s ease-in-out infinite;
+    }
+    .hero-mockup-bottom-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: clamp(20px, 4vw, 56px);
+      width: 100%;
+      max-width: 720px;
+    }
+    .hero-mockup-bot {
+      flex: 1 1 0;
+      max-width: 260px;
+      animation: mockup-float 8.5s ease-in-out infinite;
+    }
+    .hero-mockup-bot.left  { rotate: -4deg; animation-delay: -1.4s; }
+    .hero-mockup-bot.right { rotate:  4deg; animation-delay: -3.6s; }
+    @keyframes mockup-float {
+      0%, 100% { translate: 0 0; }
+      50%      { translate: 0 -10px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-mockup-top, .hero-mockup-bot { animation: none !important; }
     }
 
     .badge {
@@ -1491,14 +1532,13 @@
       .iphone17pro-hs{ width:230px; height:496px; border-radius:46px; }
     }
     @media (max-width:640px){
-      /* ── Hero: no sticky scroll, no phone ── */
-      .hero-outer{ height:auto; }
-      .hero-sticky{ position:relative; height:auto; overflow:visible; display:flex; align-items:flex-start; justify-content:center; }
-      .hero-phone-persp{ display:none; }
-      .hero-inner{ flex-direction:column; align-items:center; text-align:center; padding:100px 24px 60px; gap:22px; }
-      .hero-title{ max-width:100%; will-change:auto; }
+      /* ── Hero: stacked layout, smaller mockups ── */
+      .hero-inner{ padding:84px 20px 40px; gap:36px; }
       .hero-h1{ font-size:clamp(36px,9vw,50px); }
       .hero-sub{ font-size:14px; line-height:1.6; margin:4px auto 14px; }
+      .hero-mockup-top { max-width: 210px; }
+      .hero-mockup-bottom-row { gap: 14px; max-width: 100%; }
+      .hero-mockup-bot { max-width: 170px; }
 
       /* ── Kill heavy fixed layers — biggest mobile perf win ── */
       /* 4 orbs with filter:blur(110px) = massive GPU layers on mobile */
@@ -2024,9 +2064,19 @@
   <div class="hero-outer" id="heroOuter">
     <div class="hero-sticky">
       <div class="hero-inner">
-        <!-- Title (translates up on scroll) -->
+
+        <!-- Top mockup -->
+        <img
+          class="hero-mockup hero-mockup-top"
+          src="App assets/apple-iphone-15-blue-mockup/coach_screenshot-portrait.png"
+          alt="FitAI Tracker — AI Coach screen on iPhone"
+          width="280" height="571"
+          fetchpriority="high"
+          decoding="async">
+
+        <!-- Title -->
         <div class="hero-title" id="heroTitle">
-          <div class="badge glass" style="margin:0 auto 18px;">
+          <div class="badge glass">
             <span class="badge-dot"></span>
             AI Coach 2.0 — Now Available
           </div>
@@ -2048,22 +2098,24 @@
           </div>
         </div>
 
-        <!-- Phone (tilts from 20° to 0° on scroll) -->
-        <div class="hero-phone-persp">
-          <div class="iphone17" id="heroPhone">
-            <div class="iphone17-btn iphone17-action"></div>
-            <div class="iphone17-btn iphone17-vol-up"></div>
-            <div class="iphone17-btn iphone17-vol-down"></div>
-            <div class="iphone17-btn iphone17-power"></div>
-            <div class="iphone17-btn iphone17-camctrl"></div>
-            <div class="iphone17-usbc"></div>
-            <div class="iphone17-screen">
-              <div class="iphone17-di"></div>
-              <img src="App assets/coach_screenshot.PNG" alt="FitAI AI Coach" />
-              <div class="iphone17-home"></div>
-            </div>
-          </div>
+        <!-- Bottom mockup row -->
+        <div class="hero-mockup-bottom-row">
+          <img
+            class="hero-mockup hero-mockup-bot left"
+            src="App assets/apple-iphone-15-blue-mockup/stats-portrait.png"
+            alt="FitAI Tracker — Stats and consistency score screen on iPhone"
+            width="260" height="530"
+            loading="lazy"
+            decoding="async">
+          <img
+            class="hero-mockup hero-mockup-bot right"
+            src="App assets/apple-iphone-15-blue-mockup/trainingsplan_screenshot-portrait.png"
+            alt="FitAI Tracker — Workout plan / push day screen on iPhone"
+            width="260" height="530"
+            loading="lazy"
+            decoding="async">
         </div>
+
       </div>
     </div>
   </div>
@@ -2485,32 +2537,10 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -44px 0px' });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    /* ── Hero scroll phone tilt ── */
-    (function() {
-      var outer = document.getElementById('heroOuter');
-      var phone = document.getElementById('heroPhone');
-      var title = document.getElementById('heroTitle');
-      if (!outer || !phone) return;
-      if (window.matchMedia('(max-width:768px)').matches) return;
-      var ticking = false;
-      function update() {
-        var rect  = outer.getBoundingClientRect();
-        var total = outer.offsetHeight - window.innerHeight;
-        var progress = Math.max(0, Math.min(1, -rect.top / total));
-        var rotX  = 20 * (1 - progress);
-        var scale = 1.05 - 0.05 * progress;
-        phone.style.transform = 'rotateX(' + rotX + 'deg) scale(' + scale + ')';
-        if (title) {
-          title.style.transform = 'translateY(' + (-90 * progress) + 'px)';
-          title.style.opacity   = 1 - progress * 0.7;
-        }
-        ticking = false;
-      }
-      window.addEventListener('scroll', function() {
-        if (!ticking) { ticking = true; requestAnimationFrame(update); }
-      }, { passive: true });
-      update();
-    })();
+    /* ── Hero scroll phone tilt (legacy single-phone hero) ──
+       The hero now uses real iPhone mockup PNGs in a static column
+       layout; the scroll-driven tilt of the old CSS phone is no longer
+       needed. Kept as a no-op so the JS file stays a single drop. */
 
     /* ── Orbital Features ── */
     (function() {

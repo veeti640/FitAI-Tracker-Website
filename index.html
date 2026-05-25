@@ -368,6 +368,29 @@
     /* Hero scroll phone — iPhone 17 frame */
     .hero-phone-persp { perspective: 1000px; }
 
+    /* ── Hero phone (real iPhone-15 mockup PNG) ──
+       Same starting tilt + transform-origin as the old CSS phone so the
+       scroll-driven JS in #heroPhone keeps working unchanged. */
+    .hero-phone-img {
+      display: block;
+      width: 280px;
+      height: auto;
+      transform: rotateX(20deg) scale(1.05);
+      transform-origin: 50% 100%;
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      pointer-events: none;
+      user-select: none;
+      filter:
+        drop-shadow(0 12px 28px rgba(0,0,0,0.55))
+        drop-shadow(0 36px 60px rgba(0,0,0,0.40))
+        drop-shadow(0 0 36px rgba(91,200,245,0.10));
+    }
+    @media (max-width:768px) {
+      .hero-phone-img { transform: none !important; transform-origin: 50% 50% !important; }
+    }
+
     .iphone17 {
       position: relative;
       width: 280px;
@@ -2050,19 +2073,14 @@
 
         <!-- Phone (tilts from 20° to 0° on scroll) -->
         <div class="hero-phone-persp">
-          <div class="iphone17" id="heroPhone">
-            <div class="iphone17-btn iphone17-action"></div>
-            <div class="iphone17-btn iphone17-vol-up"></div>
-            <div class="iphone17-btn iphone17-vol-down"></div>
-            <div class="iphone17-btn iphone17-power"></div>
-            <div class="iphone17-btn iphone17-camctrl"></div>
-            <div class="iphone17-usbc"></div>
-            <div class="iphone17-screen">
-              <div class="iphone17-di"></div>
-              <img src="App assets/coach_screenshot.PNG" alt="FitAI AI Coach" />
-              <div class="iphone17-home"></div>
-            </div>
-          </div>
+          <img
+            id="heroPhone"
+            class="hero-phone-img"
+            src="App assets/apple-iphone-15-blue-mockup/coach_screenshot-portrait.png"
+            alt="FitAI Tracker — AI Coach screen on iPhone"
+            width="280" height="552"
+            fetchpriority="high"
+            decoding="async">
         </div>
       </div>
     </div>

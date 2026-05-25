@@ -1256,14 +1256,28 @@
       background: linear-gradient(270deg, #606068 0%, #484850 40%, #303034 100%);
       box-shadow: 1px 0 4px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5);
     }
-    /* Image stack inside phone screen */
+    /* Mockup stack wrapper (replaces the old CSS-built phone bezel).
+       Real iPhone-15 mockup PNGs include the frame, so we just stack
+       them and clip-wipe between them on hover. */
+    .hs-mockup-stack {
+      position: relative;
+      width: 280px;
+      aspect-ratio: 1419 / 2796;
+      will-change: transform;
+      filter:
+        drop-shadow(0 12px 28px rgba(0,0,0,0.55))
+        drop-shadow(0 32px 56px rgba(0,0,0,0.40))
+        drop-shadow(0 0 36px rgba(91,200,245,0.10));
+    }
+
+    /* Image stack inside mockup wrapper */
     .hs-img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: top center;
+      object-fit: contain;
+      object-position: center;
       clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
       transition: clip-path 0.78s cubic-bezier(0.33, 1, 0.68, 1);
       z-index: 1;
@@ -1512,6 +1526,7 @@
       .stats-wrap{ padding:0 40px; }
       .hs-inner{ flex-direction:column; align-items:flex-start; gap:48px; padding:0 40px; }
       .iphone17pro-hs{ width:230px; height:496px; border-radius:46px; }
+      .hs-mockup-stack{ width:230px; }
     }
     @media (max-width:640px){
       /* ── Hero: no sticky scroll, no phone ── */
@@ -1568,6 +1583,11 @@
       .hs-phone-wrap{ width:100%; display:flex; justify-content:center; padding-bottom:24px; }
       .hs-item{ font-size:1.9rem; }
 
+      /* Mockup keeps the floating animation the old CSS phone had on mobile */
+      .hs-mockup-stack{
+        width: 240px;
+        animation: phone-float 3.8s cubic-bezier(0.37,0,0.63,1) infinite;
+      }
       /* Redesigned iPhone — blue-tinted titanium, floating */
       .iphone17pro-hs{
         width: 240px;
@@ -2161,17 +2181,7 @@
         <div class="hs-items" id="hsItems"></div>
       </div>
       <div class="hs-phone-wrap">
-        <div class="iphone17pro-hs">
-          <div class="iphone17pro-hs-btn iphone17pro-hs-action"></div>
-          <div class="iphone17pro-hs-btn iphone17pro-hs-vol-up"></div>
-          <div class="iphone17pro-hs-btn iphone17pro-hs-vol-down"></div>
-          <div class="iphone17pro-hs-btn iphone17pro-hs-power"></div>
-          <div class="iphone17pro-hs-usbc"></div>
-          <div class="iphone17pro-hs-screen" id="hsImgWrap">
-            <div class="iphone17pro-hs-di"></div>
-            <div class="iphone17pro-hs-home"></div>
-          </div>
-        </div>
+        <div class="hs-mockup-stack" id="hsImgWrap"></div>
       </div>
     </div>
   </section>
@@ -2703,9 +2713,9 @@
     /* ── Hover Slideshow ── */
     (function() {
       var SLIDES = [
-        { title: 'AI Coach',      src: 'App assets/coach_screenshot.PNG' },
-        { title: 'Workout Plans', src: 'App assets/trainingsplan_screenshot.PNG' },
-        { title: 'Analytics',     src: 'App assets/stats.PNG' },
+        { title: 'AI Coach',      src: 'App assets/apple-iphone-15-blue-mockup/coach_screenshot-portrait.png' },
+        { title: 'Workout Plans', src: 'App assets/apple-iphone-15-blue-mockup/trainingsplan_screenshot-portrait.png' },
+        { title: 'Analytics',     src: 'App assets/apple-iphone-15-blue-mockup/stats-portrait.png' },
       ];
 
       var itemsEl  = document.getElementById('hsItems');

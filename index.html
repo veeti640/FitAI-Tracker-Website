@@ -1333,6 +1333,170 @@
     }
     .how-desc { font-size: 14px; color: var(--muted); line-height: 1.72; }
 
+    /* ── Process carousel (replaces .how-grid) ── */
+    .proc-carousel {
+      position: relative;
+      width: 100%;
+      margin-top: 48px;
+    }
+    .proc-stage {
+      position: relative;
+      width: 100%;
+      height: 620px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .proc-ghost {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(140px, 22vw, 280px);
+      font-weight: 800;
+      letter-spacing: -.05em;
+      line-height: 1;
+      color: rgba(238,242,255,0.045);
+      white-space: nowrap;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity .65s cubic-bezier(.4,0,.2,1);
+    }
+    .proc-phone {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 280px;
+      height: auto;
+      aspect-ratio: 1419 / 2796;
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      filter: drop-shadow(0 16px 36px rgba(0,0,0,.5));
+      pointer-events: none;
+      user-select: none;
+      will-change: transform, opacity, filter, left;
+      transition:
+        transform .65s cubic-bezier(.4,0,.2,1),
+        filter    .65s cubic-bezier(.4,0,.2,1),
+        opacity   .65s cubic-bezier(.4,0,.2,1),
+        left      .65s cubic-bezier(.4,0,.2,1);
+    }
+    .proc-phone.center {
+      left: 50%;
+      transform: translateX(-50%) scale(1.06);
+      opacity: 1;
+      z-index: 20;
+      filter:
+        drop-shadow(0 28px 60px rgba(0,0,0,.6))
+        drop-shadow(0 0 44px rgba(91,200,245,.18));
+    }
+    .proc-phone.left {
+      left: 28%;
+      transform: translateX(-50%) scale(.62);
+      opacity: .35;
+      filter: blur(2.5px) drop-shadow(0 12px 22px rgba(0,0,0,.45));
+      z-index: 10;
+    }
+    .proc-phone.right {
+      left: 72%;
+      transform: translateX(-50%) scale(.62);
+      opacity: .35;
+      filter: blur(2.5px) drop-shadow(0 12px 22px rgba(0,0,0,.45));
+      z-index: 10;
+    }
+
+    .proc-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      margin-top: 28px;
+    }
+    .proc-text { max-width: 480px; }
+    .proc-step {
+      display: inline-block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      transition: opacity .35s ease;
+    }
+    .proc-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(22px, 2.3vw, 30px);
+      font-weight: 800;
+      letter-spacing: -.022em;
+      margin-bottom: 12px;
+      color: var(--text);
+      transition: opacity .35s ease;
+    }
+    .proc-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.72;
+      transition: opacity .35s ease;
+    }
+    .proc-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .proc-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      border: 1.5px solid rgba(255,255,255,0.22);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition:
+        transform .18s cubic-bezier(.2,.8,.2,1),
+        background-color .18s cubic-bezier(.2,.8,.2,1),
+        border-color .18s cubic-bezier(.2,.8,.2,1);
+    }
+    .proc-btn:hover {
+      transform: scale(1.07);
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.4);
+    }
+    .proc-btn:active { transform: scale(.97); }
+    .proc-btn:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 3px;
+    }
+    .proc-btn svg { display: block; }
+
+    @media (max-width: 768px) {
+      .proc-stage { height: 520px; }
+      .proc-phone { width: 230px; }
+      .proc-phone.left  { left: 20%; }
+      .proc-phone.right { left: 80%; }
+    }
+    @media (max-width: 640px) {
+      .proc-stage { height: 420px; }
+      .proc-phone { width: 196px; }
+      .proc-phone.center { transform: translateX(-50%) scale(1); }
+      .proc-phone.left   { left: 12%; transform: translateX(-50%) scale(.5); opacity: .22; }
+      .proc-phone.right  { left: 88%; transform: translateX(-50%) scale(.5); opacity: .22; }
+      .proc-ghost { font-size: clamp(110px, 32vw, 200px); }
+      .proc-bottom { flex-direction: column; align-items: flex-start; gap: 22px; }
+      .proc-nav { align-self: flex-start; }
+      .proc-btn { width: 48px; height: 48px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .proc-phone, .proc-ghost, .proc-step, .proc-title, .proc-desc {
+        transition: opacity .25s linear !important;
+      }
+    }
+
     /* ═══════════════════════════════════════
        TESTIMONIALS
     ═══════════════════════════════════════ */
@@ -2198,21 +2362,36 @@
         <h2 class="sec-h2">Up and running<br>in 3 minutes.</h2>
         <p class="sec-sub">No complicated onboarding. Download, answer a few questions, and your AI builds your first week of training immediately.</p>
       </div>
-      <div class="how-grid">
-        <div class="how-card glass fade-up">
-          <div class="how-num">01</div>
-          <h3 class="how-title">Set Your Goals</h3>
-          <p class="how-desc">Tell FitAI what you're training for — strength, fat loss, endurance, or all three. Your goals shape every recommendation from day one.</p>
+      <div class="proc-carousel fade-up">
+        <div class="proc-stage" id="procStage">
+          <div class="proc-ghost" id="procGhost" aria-hidden="true">GOALS</div>
+          <img class="proc-phone center" data-i="0"
+               src="App assets/apple-iphone-15-blue-mockup/coach_screenshot-portrait.png"
+               alt="Set Your Goals — AI Coach screen"
+               decoding="async" loading="lazy">
+          <img class="proc-phone right" data-i="1"
+               src="App assets/apple-iphone-15-blue-mockup/trainingsplan_screenshot-portrait.png"
+               alt="Get Your Plan — Workout Plan screen"
+               decoding="async" loading="lazy">
+          <img class="proc-phone left" data-i="2"
+               src="App assets/apple-iphone-15-blue-mockup/stats-portrait.png"
+               alt="Track &amp; Evolve — Stats screen"
+               decoding="async" loading="lazy">
         </div>
-        <div class="how-card glass fade-up">
-          <div class="how-num">02</div>
-          <h3 class="how-title">Get Your Plan</h3>
-          <p class="how-desc">Receive a fully personalized training program in seconds — built around your schedule, available equipment, and current fitness level.</p>
-        </div>
-        <div class="how-card glass fade-up">
-          <div class="how-num">03</div>
-          <h3 class="how-title">Track &amp; Evolve</h3>
-          <p class="how-desc">Log workouts, track nutrition, and watch your AI coach learn and improve your program as you get stronger every single week.</p>
+        <div class="proc-bottom">
+          <div class="proc-text" id="procText">
+            <span class="proc-step grad-bg">Step 01</span>
+            <h3 class="proc-title">Set Your Goals</h3>
+            <p class="proc-desc">Tell FitAI what you're training for — strength, fat loss, endurance, or all three. Your goals shape every recommendation from day one.</p>
+          </div>
+          <div class="proc-nav">
+            <button class="proc-btn" id="procPrev" type="button" aria-label="Previous step">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="proc-btn" id="procNext" type="button" aria-label="Next step">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -2776,6 +2955,60 @@
         itemsEl.appendChild(span);
         return span;
       });
+    })();
+
+    /* ── Process carousel ── */
+    (function() {
+      var stage = document.getElementById('procStage');
+      if (!stage) return;
+      var phones = Array.prototype.slice.call(stage.querySelectorAll('.proc-phone'));
+      var ghost  = document.getElementById('procGhost');
+      var text   = document.getElementById('procText');
+      var prev   = document.getElementById('procPrev');
+      var next   = document.getElementById('procNext');
+      if (!phones.length || !ghost || !text || !prev || !next) return;
+
+      var STEPS = [
+        { num: '01', ghost: 'GOALS', title: 'Set Your Goals',
+          desc: "Tell FitAI what you're training for — strength, fat loss, endurance, or all three. Your goals shape every recommendation from day one." },
+        { num: '02', ghost: 'PLAN',  title: 'Get Your Plan',
+          desc: "Receive a fully personalized training program in seconds — built around your schedule, available equipment, and current fitness level." },
+        { num: '03', ghost: 'EVOLVE', title: 'Track & Evolve',
+          desc: "Log workouts, track nutrition, and watch your AI coach learn and improve your program as you get stronger every single week." }
+      ];
+
+      var N = phones.length;
+      var active = 0;
+      var animating = false;
+      var stepEl  = text.querySelector('.proc-step');
+      var titleEl = text.querySelector('.proc-title');
+      var descEl  = text.querySelector('.proc-desc');
+
+      function applyRoles() {
+        phones.forEach(function(p, i) {
+          p.classList.remove('center', 'left', 'right');
+          if (i === active)                  p.classList.add('center');
+          else if (i === (active + N - 1) % N) p.classList.add('left');
+          else                               p.classList.add('right');
+        });
+        var s = STEPS[active];
+        ghost.textContent  = s.ghost;
+        stepEl.textContent = 'Step ' + s.num;
+        titleEl.textContent = s.title;
+        descEl.textContent  = s.desc;
+      }
+
+      function navigate(dir) {
+        if (animating) return;
+        animating = true;
+        if (dir === 'next') active = (active + 1) % N;
+        else                active = (active + N - 1) % N;
+        applyRoles();
+        setTimeout(function() { animating = false; }, 650);
+      }
+
+      prev.addEventListener('click', function() { navigate('prev'); });
+      next.addEventListener('click', function() { navigate('next'); });
     })();
 
     /* ── Pricing card 3D tilt (desktop only) ── */

@@ -599,6 +599,26 @@
       padding: 0 80px;
       margin-bottom: 110px;
     }
+    /* Luminous colored glow sitting BEHIND the panel so the frosted
+       glass has real color to refract — without this, translucency
+       over the near-black page just reads as a flat dark rectangle. */
+    .stats-wrap::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(640px, 78%);
+      height: 230px;
+      background:
+        radial-gradient(58% 80% at 22% 38%, rgba(91,200,245,.50),  transparent 70%),
+        radial-gradient(55% 82% at 78% 62%, rgba(187,134,252,.42), transparent 70%),
+        radial-gradient(52% 72% at 52% 78%, rgba(105,240,174,.28), transparent 72%);
+      filter: blur(48px);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
     .stats-bar {
       max-width: 860px;
       margin: 0 auto;
@@ -606,41 +626,45 @@
       border-radius: 24px;
       overflow: hidden;
       position: relative;
+      z-index: 1;
       isolation: isolate;
     }
     /* ── Liquid glass override for stats bar ── */
     .stats-bar.glass-mid {
-      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
-      backdrop-filter: blur(28px) saturate(1.6);
-      -webkit-backdrop-filter: blur(28px) saturate(1.6);
+      background: linear-gradient(180deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.045) 100%);
+      backdrop-filter: blur(30px) saturate(1.8) brightness(1.06);
+      -webkit-backdrop-filter: blur(30px) saturate(1.8) brightness(1.06);
       border: none;
       box-shadow:
         0 8px 32px rgba(0,0,0,0.37),
-        0 1px 0 rgba(255,255,255,0.06),
-        inset 0 1px 0 rgba(255,255,255,0.25);
+        0 2px 16px rgba(91,200,245,0.10),
+        inset 0 1px 0 rgba(255,255,255,0.30),
+        inset 0 -1px 2px rgba(0,0,0,0.22);
     }
-    /* Light-catching gradient stroke */
+    /* Light-catching gradient stroke — bright at top-left, fading away */
     .stats-bar.glass-mid::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
       padding: 1px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.12) 35%, rgba(255,255,255,0.05) 65%, rgba(255,255,255,0.18) 100%);
+      background: linear-gradient(135deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.14) 30%, rgba(255,255,255,0.04) 60%, rgba(255,255,255,0.22) 100%);
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
               mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
               mask-composite: exclude;
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
     }
-    /* Inner specular highlight */
+    /* Inner specular glow — top sheen + soft corner catch for wet depth */
     .stats-bar.glass-mid::after {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 45%);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.02) 38%, transparent 55%),
+        radial-gradient(130% 90% at 12% -10%, rgba(255,255,255,0.12), transparent 50%);
       pointer-events: none;
       z-index: 1;
     }
@@ -651,15 +675,17 @@
       position: relative;
       z-index: 2;
     }
-    /* Etched glass hairline divider */
+    /* Etched glass hairline divider — light line + dark companion,
+       fading at both ends so it looks carved into the glass. */
     .stat + .stat::before {
       content: '';
       position: absolute;
       left: 0;
-      top: 18%;
-      bottom: 18%;
+      top: 16%;
+      bottom: 16%;
       width: 1px;
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.20) 50%, transparent);
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.24) 50%, transparent);
+      box-shadow: -1px 0 0 rgba(0,0,0,0.22);
       pointer-events: none;
     }
     .stat-val {

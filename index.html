@@ -603,15 +603,65 @@
       max-width: 860px;
       margin: 0 auto;
       display: flex;
-      border-radius: 20px;
+      border-radius: 24px;
       overflow: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+    /* ── Liquid glass override for stats bar ── */
+    .stats-bar.glass-mid {
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      backdrop-filter: blur(28px) saturate(1.6);
+      -webkit-backdrop-filter: blur(28px) saturate(1.6);
+      border: none;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.37),
+        0 1px 0 rgba(255,255,255,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+    /* Light-catching gradient stroke */
+    .stats-bar.glass-mid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.12) 35%, rgba(255,255,255,0.05) 65%, rgba(255,255,255,0.18) 100%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+              mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
+    }
+    /* Inner specular highlight */
+    .stats-bar.glass-mid::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 45%);
+      pointer-events: none;
+      z-index: 1;
     }
     .stat {
       flex: 1;
       padding: 28px 20px;
       text-align: center;
+      position: relative;
+      z-index: 2;
     }
-    .stat + .stat { border-left: 1px solid rgba(255,255,255,.07); }
+    /* Etched glass hairline divider */
+    .stat + .stat::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 18%;
+      bottom: 18%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.20) 50%, transparent);
+      pointer-events: none;
+    }
     .stat-val {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 34px;
@@ -1835,6 +1885,11 @@
         -webkit-backdrop-filter: none;
         background: rgba(255,255,255,0.13);
       }
+      .stats-bar.glass-mid{
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.08));
+      }
       .glass-strong{
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
@@ -2311,7 +2366,7 @@
   <section id="features" class="sec" style="padding-bottom:110px;">
     <div class="container">
       <div class="fade-up">
-        <div class="sec-tag">⚡ Features</div>
+        <div class="sec-tag">Features</div>
         <h2 class="sec-h2">Everything you need<br>to reach your peak.</h2>
         <p class="sec-sub">Six powerful modules working in perfect sync, driven by the most capable fitness AI available.</p>
       </div>
@@ -2354,7 +2409,7 @@
   <section id="how" class="sec" style="padding-bottom:110px;">
     <div class="container">
       <div class="fade-up">
-        <div class="sec-tag">🚀 Process</div>
+        <div class="sec-tag">Process</div>
         <h2 class="sec-h2">Up and running<br>in 3 minutes.</h2>
         <p class="sec-sub">No complicated onboarding. Download, answer a few questions, and your AI builds your first week of training immediately.</p>
       </div>
@@ -2401,7 +2456,7 @@
   <section class="sec" style="padding-bottom:110px;">
     <div class="container">
       <div class="fade-up">
-        <div class="sec-tag">💬 Testimonials</div>
+        <div class="sec-tag">Testimonials</div>
         <h2 class="sec-h2">Real people.<br>Real progress.</h2>
         <p class="sec-sub" style="margin-bottom:60px;">Over 10,000 athletes already training smarter with FitAI.</p>
       </div>
@@ -2419,7 +2474,7 @@
         </div>
         <div class="testi-card glass fade-up">
           <div class="stars">★★★★★</div>
-          <p class="testi-text">"I've been using this app for a few weeks now and it's pretty helpful for tracking workouts and staying consistent. Wow 😍😍"</p>
+          <p class="testi-text">"I've been using this app for a few weeks now and it's pretty helpful for tracking workouts and staying consistent. Wow"</p>
           <div class="testi-author">
             <div class="testi-av" style="background:linear-gradient(135deg,#BB86FC,#7C4DFF);">R</div>
             <div>
@@ -2430,7 +2485,7 @@
         </div>
         <div class="testi-card glass fade-up">
           <div class="stars">★★★★★</div>
-          <p class="testi-text">"Benutze die App jetzt schon länger und bin echt zufrieden. Alles ist super einfach aufgebaut, man checkt direkt wie alles funktioniert. Man kann seine Workouts easy eintragen und sieht direkt seine Fortschritte, das motiviert mega 💪 Man bleibt viel mehr dran, weil man seine Ziele sieht und merkt, dass man besser wird. Für mich auf jeden Fall ein Must-have! 🙌"</p>
+          <p class="testi-text">"Benutze die App jetzt schon länger und bin echt zufrieden. Alles ist super einfach aufgebaut, man checkt direkt wie alles funktioniert. Man kann seine Workouts easy eintragen und sieht direkt seine Fortschritte, das motiviert mega. Man bleibt viel mehr dran, weil man seine Ziele sieht und merkt, dass man besser wird. Für mich auf jeden Fall ein Must-have!"</p>
           <div class="testi-author">
             <div class="testi-av" style="background:linear-gradient(135deg,#FFB74D,#FF7043);">S</div>
             <div>
@@ -2462,7 +2517,7 @@
   <section id="pricing" class="sec" style="padding-bottom:110px;">
     <div class="container">
       <div class="fade-up">
-        <div class="sec-tag">💎 Pricing</div>
+        <div class="sec-tag">Pricing</div>
         <h2 class="sec-h2">Simple, honest<br>pricing.</h2>
         <p class="sec-sub">Start free. Upgrade when you're ready. Cancel anytime.</p>
       </div>
@@ -2560,7 +2615,7 @@
       <div class="cta-card glass-mid">
         <div class="cta-glow-bg"></div>
         <div class="sig-line"></div>
-        <div class="sec-tag" style="display:inline-flex;position:relative;margin-bottom:24px;">🎯 Get Started</div>
+        <div class="sec-tag" style="display:inline-flex;position:relative;margin-bottom:24px;">Get Started</div>
         <h2 class="cta-h2">
           Your strongest self<br>
           <span class="grad-bg">starts today.</span>
@@ -2817,7 +2872,7 @@
           '<div class="orbit-card-head">' + f.title + '</div>' +
           '<div class="orbit-card-body">' + f.desc + '</div>' +
           '<div class="orbit-card-bar-wrap">' +
-            '<div class="orbit-card-bar-row"><span>⚡ AI Utilization</span><span>' + f.energy + '%</span></div>' +
+            '<div class="orbit-card-bar-row"><span>AI Utilization</span><span>' + f.energy + '%</span></div>' +
             '<div class="orbit-card-bar-bg"><div class="orbit-card-bar-fill" style="width:' + f.energy + '%"></div></div>' +
           '</div>' + relHtml;
         nodeEls[id].appendChild(c);

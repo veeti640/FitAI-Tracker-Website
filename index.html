@@ -58,34 +58,43 @@
     .orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(110px);
+      filter: blur(90px);
     }
-    .orb-1 { width:700px;height:700px;top:-200px;left:-180px;  background:radial-gradient(circle,rgba(91,200,245,.22),transparent 65%); }
-    .orb-2 { width:550px;height:550px;top:35%;right:-160px;    background:radial-gradient(circle,rgba(187,134,252,.16),transparent 65%); }
-    .orb-3 { width:800px;height:450px;bottom:-80px;left:15%;   background:radial-gradient(circle,rgba(105,240,174,.13),transparent 65%); }
-    .orb-4 { width:400px;height:400px;top:55%;left:5%;         background:radial-gradient(circle,rgba(255,183,77,.09),transparent 65%); }
+    /* Bright brand-color orbs give the frosted glass something real to
+       refract — without this depth the cards look like flat dark boxes. */
+    .orb-1 { width:560px;height:560px;top:-120px;left:-110px;  background:#2dd4bf; opacity:.50; }
+    .orb-2 { width:520px;height:520px;top:22%;right:-130px;    background:#a78bfa; opacity:.46; }
+    .orb-3 { width:600px;height:600px;bottom:-170px;left:5%;   background:#5eead4; opacity:.42; }
+    .orb-4 { width:460px;height:460px;top:54%;left:-90px;      background:#60a5fa; opacity:.44; }
+    .orb-5 { width:440px;height:440px;bottom:4%;right:3%;      background:#a78bfa; opacity:.40; }
 
     /* ── Glass mixins ── */
     .glass {
-      backdrop-filter: blur(22px) saturate(1.7);
-      -webkit-backdrop-filter: blur(22px) saturate(1.7);
-      background: var(--glass);
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 32px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.07);
+      background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.035));
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 10px 34px rgba(0,0,0,.42),
+                  inset 0 1px 0 rgba(255,255,255,.24),
+                  inset 0 -1px 0 rgba(255,255,255,.05);
     }
     .glass-mid {
-      backdrop-filter: blur(28px) saturate(1.8);
-      -webkit-backdrop-filter: blur(28px) saturate(1.8);
-      background: var(--glass-mid);
-      border: 1px solid var(--border);
-      box-shadow: 0 12px 40px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.09);
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 12px 40px rgba(0,0,0,.45),
+                  inset 0 1px 0 rgba(255,255,255,.28),
+                  inset 0 -1px 0 rgba(255,255,255,.05);
     }
     .glass-strong {
-      backdrop-filter: blur(32px) saturate(2);
-      -webkit-backdrop-filter: blur(32px) saturate(2);
-      background: var(--glass-strong);
-      border: 1px solid var(--border-strong);
-      box-shadow: 0 16px 48px rgba(0,0,0,.36), inset 0 1.5px 0 rgba(255,255,255,.14), inset 0 -1px 0 rgba(0,0,0,.15);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      backdrop-filter: blur(30px) saturate(190%);
+      -webkit-backdrop-filter: blur(30px) saturate(190%);
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 14px 44px rgba(0,0,0,.46),
+                  inset 0 1.5px 0 rgba(255,255,255,.30),
+                  inset 0 -1px 0 rgba(255,255,255,.06);
     }
 
     /* ── Gradient text ── */
@@ -1580,11 +1589,43 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
+      position: relative;
+    }
+    /* Local colored glow so the frosted review cards always have
+       brand color to refract, independent of the ambient orbs. */
+    .testi-grid::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 82%;
+      height: 78%;
+      background:
+        radial-gradient(50% 62% at 24% 32%, rgba(45,212,191,.22),  transparent 70%),
+        radial-gradient(50% 62% at 80% 72%, rgba(167,139,250,.20), transparent 70%);
+      filter: blur(72px);
+      pointer-events: none;
+      z-index: -1;
     }
     .testi-card {
-      padding: 26px;
-      border-radius: 20px;
+      padding: 28px;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
     }
+    /* Specular sheen — top-down highlight for the wet-glass catch */
+    .testi-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.10), transparent 38%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .testi-card > * { position: relative; z-index: 2; }
     .stars { color: #FFB74D; font-size: 13px; letter-spacing: 2px; margin-bottom: 15px; }
     .testi-text {
       font-size: 14.5px;
@@ -1628,6 +1669,21 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      isolation: isolate;
+    }
+    /* Specular sheen — sits above the inner glow, below the content */
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.10), transparent 38%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cta-card > *:not(.cta-glow-bg):not(.sig-line) {
+      position: relative;
+      z-index: 2;
     }
     .cta-glow-bg {
       position: absolute;
@@ -1678,6 +1734,9 @@
       padding: 14px 22px;
       border-radius: 16px;
       text-decoration: none;
+      /* Mini glass panel — lighter blur than the big cards */
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
       transition: transform .2s ease, box-shadow .2s ease;
     }
     .store-btn:hover {
@@ -2065,7 +2124,7 @@
     /* Divider */
     .pc-divider {
       height: 1px;
-      background: rgba(10,10,15,0.09);
+      background: linear-gradient(to right, transparent, rgba(10,10,15,0.14), transparent);
       margin-bottom: 24px;
     }
 
@@ -2260,6 +2319,7 @@
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
     <div class="orb orb-4"></div>
+    <div class="orb orb-5"></div>
   </div>
 
   <!-- SVG liquid glass distortion filter -->

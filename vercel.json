@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/oauth/google-health",
+      "destination": "https://qzerihhaqvcurkeymwbd.supabase.co/functions/v1/google-health"
+    },
+    {
+      "source": "/oauth/wearable",
+      "destination": "https://qzerihhaqvcurkeymwbd.supabase.co/functions/v1/wearable-sync"
+    }
+  ]
+}

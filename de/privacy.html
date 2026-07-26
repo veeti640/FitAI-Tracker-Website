@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datenschutzerklärung — Lihas</title>
+  <link rel="alternate" hreflang="en" href="/privacy.html" />
+  <link rel="alternate" hreflang="de" href="/de/privacy.html" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07070D;
+      --text: #EEF2FF;
+      --muted: rgba(238,242,255,0.55);
+      --border: rgba(255,255,255,0.10);
+      --blue: #5BC8F5;
+      --green: #69F0AE;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.032;
+    }
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width:600px;height:600px;top:-150px;left:-150px; background:radial-gradient(circle,rgba(91,200,245,.14),transparent 65%); }
+    .orb-2 { width:500px;height:500px;bottom:0;right:-100px; background:radial-gradient(circle,rgba(105,240,174,.10),transparent 65%); }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 40px 100px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 48px;
+      transition: color .18s;
+      letter-spacing: .03em;
+    }
+    .back-link:hover { color: var(--text); }
+    .page-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -.032em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .effective {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 56px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .toc {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 56px;
+    }
+    .toc-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .toc ol {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .toc a {
+      font-size: 14px;
+      color: rgba(238,242,255,.65);
+      text-decoration: none;
+      transition: color .18s;
+    }
+    .toc a:hover { color: var(--blue); }
+
+    section.policy-sec {
+      margin-bottom: 52px;
+      padding-bottom: 52px;
+      border-bottom: 1px solid var(--border);
+    }
+    section.policy-sec:last-of-type { border-bottom: none; }
+    h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+    p { font-size: 15px; color: rgba(238,242,255,.78); margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+    ul {
+      padding-left: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    li { font-size: 15px; color: rgba(238,242,255,.78); }
+    a.inline { color: var(--blue); text-decoration: none; }
+    a.inline:hover { text-decoration: underline; }
+
+    .contact-card {
+      background: rgba(91,200,245,0.06);
+      border: 1px solid rgba(91,200,245,0.18);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-top: 24px;
+    }
+    .contact-card p { margin: 0; }
+
+    .grad-text { background: linear-gradient(135deg,#5BC8F5,#69F0AE); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+    nav.site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 40px;
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .nav-logo {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    @media (max-width: 640px) {
+      .page-wrap { padding: 48px 24px 80px; }
+      nav.site-nav { padding: 24px; }
+    }
+
+    /* ── DE/EN language switcher ── */
+    .lang-switch {
+      display: inline-flex; align-items: center; gap: 2px;
+      padding: 3px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+    }
+    .lang-switch a, .lang-switch span {
+      font-size: 11px; font-weight: 700; letter-spacing: .09em;
+      padding: 6px 11px; border-radius: 999px; text-decoration: none;
+      color: var(--muted); transition: color .18s ease, background .18s ease;
+    }
+    .lang-switch a:hover { color: var(--text); background: rgba(255,255,255,0.07); }
+    .lang-switch [aria-current] {
+      color: #07070D; background: linear-gradient(135deg, var(--blue), var(--green));
+    }
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">FIT<span class="grad-text">AI</span></a>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Language / Sprache">
+    <a href="../privacy.html" hreflang="en" lang="en">EN</a><span aria-current="true">DE</span>
+  </div>
+      <a href="index.html" class="back-link" style="margin-bottom:0;">← Zur Startseite</a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="page-tag">Rechtliches</div>
+    <h1>Datenschutzerklärung</h1>
+    <p class="effective">Gültig ab 10.07.2026 · Lihas von Veeti Hurskainen</p>
+
+    <div class="toc">
+      <div class="toc-title">Inhalt</div>
+      <ol>
+        <li><a href="#controller">Verantwortlicher</a></li>
+        <li><a href="#collection">Erhebung und Verwendung von Daten</a></li>
+        <li><a href="#legal-basis">Rechtsgrundlagen der Verarbeitung</a></li>
+        <li><a href="#third-party">Zugriff Dritter &amp; Auftragsverarbeiter</a></li>
+        <li><a href="#your-rights">Ihre Rechte nach der DSGVO</a></li>
+        <li><a href="#retention">Speicherdauer &amp; Löschung</a></li>
+        <li><a href="#security">Sicherheit</a></li>
+        <li><a href="#children">Kinder</a></li>
+        <li><a href="#changes">Änderungen</a></li>
+        <li><a href="#consent">Ihre Einwilligung</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ol>
+    </div>
+
+    <p>Diese Datenschutzerklärung gilt für die App Lihas („die App“) für mobile Endgeräte, entwickelt von Veeti Hurskainen als Freemium-Dienst. Sie erklärt, welche personenbezogenen Daten die App verarbeitet, zu welchem Zweck, auf welcher Rechtsgrundlage und welche Rechte Sie haben. Da die App gesundheitsbezogene Daten verarbeitet (besondere Kategorie nach Art. 9 DSGVO), gelten die unten beschriebenen erhöhten Schutzmaßnahmen.</p>
+
+    <section class="policy-sec" id="controller">
+      <h2>Verantwortlicher</h2>
+      <p>Verantwortlicher für die Verarbeitung Ihrer personenbezogenen Daten im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:</p>
+      <div class="contact-card">
+        <p><strong style="color:var(--text)">Veeti Hurskainen</strong><br>
+        Lambarenestraße 95, 47249 Duisburg, Deutschland<br>
+        Kontakt: <a href="mailto:veeti1.hurskainen@gmail.com" class="inline">veeti1.hurskainen@gmail.com</a></p>
+      </div>
+    </section>
+
+    <section class="policy-sec" id="collection">
+      <h2>Erhebung und Verwendung von Daten</h2>
+      <p>Die App erhebt Informationen, wenn Sie sie herunterladen und nutzen. Dazu können gehören:</p>
+      <ul>
+        <li>die IP-Adresse Ihres Geräts</li>
+        <li>die von Ihnen aufgerufenen Bereiche der App, Zeit und Datum des Aufrufs sowie die dort verbrachte Zeit</li>
+        <li>die insgesamt in der App verbrachte Zeit</li>
+        <li>das Betriebssystem Ihres Mobilgeräts</li>
+      </ul>
+      <p><strong style="color:var(--text)">Standort (nur Gym-Check-in):</strong> Wenn Sie den Standortzugriff erlauben, erkennt die App anhand Ihres Gerätestandorts, wann Sie ein von Ihnen gespeichertes Fitnessstudio betreten oder verlassen, um Ihre Besuche automatisch zu erfassen (Geofencing). Diese Verarbeitung findet auf Ihrem Gerät statt. Ihr genauer Standort wird <strong style="color:var(--text)">nicht</strong> an unsere Server übertragen, <strong style="color:var(--text)">nicht</strong> für Werbung genutzt und <strong style="color:var(--text)">nicht</strong> an Analyse- oder sonstige externe Dienste weitergegeben. Sie können den Standortzugriff jederzeit in den Geräteeinstellungen widerrufen; dann entfällt lediglich die Check-in-Funktion.</p>
+      <p><strong style="color:var(--text)">KI-Coaching-Funktionen und KI-Verarbeitung durch Dritte:</strong> Die App bietet KI-gestütztes Coaching, die Erstellung von Trainingsplänen und Fotoanalysen. Wenn Sie eine dieser Funktionen nutzen, werden die Daten, die Sie im In-App-Bildschirm „KI-Datenfreigabe“ ausdrücklich freigegeben haben, an unsere KI-Infrastruktur übermittelt, um Ihre Antwort zu erzeugen. Die Anfragen laufen über unsere sichere Serverinfrastruktur bei <strong style="color:var(--text)">Supabase, Inc.</strong> (EU-Region, Irland) an <strong style="color:var(--text)">Scaleway SAS</strong>, einen französischen EU-Cloud-Anbieter, der die von uns genutzten Mistral-KI-Modelle hostet. Die gesamte Verarbeitung findet innerhalb der Europäischen Union statt. Je nach den von Ihnen freigegebenen Kategorien können übermittelt werden: Profil- und Körperdaten (Name, Alter, Geschlecht, Größe, Gewicht, Ziele, Verletzungen, Lebensgewohnheiten), Trainings- und Studiobesuchshistorie, Kraftwerte und Rang, Ernährungstagebuch (Kalorien und Makronährstoffe), Gesundheits- und Schlafwerte (Schritte, Herzfrequenz, HRV, Schlaf) sowie Fortschritts- oder Mahlzeitenfotos, die Sie analysieren lassen. Diese Daten dienen ausschließlich dazu, Coaching-Antworten für Sie zu erzeugen. Vor Ihrer Freigabe in der App werden keinerlei Daten an den KI-Anbieter gesendet; Sie können Ihre Freigaben jederzeit unter Einstellungen → KI-Daten einsehen, ändern oder widerrufen. Scaleway und Supabase handeln als unsere Auftragsverarbeiter und sind vertraglich zum Schutz dieser Daten verpflichtet; Einzelheiten finden Sie in der Datenschutzerklärung von Scaleway (scaleway.com) und Supabase (supabase.com).</p>
+      <p>Der Anbieter kann die von Ihnen bereitgestellten Informationen nutzen, um Sie gelegentlich mit wichtigen Informationen, erforderlichen Mitteilungen und Marketingangeboten zu kontaktieren.</p>
+      <p>Für ein besseres Nutzungserlebnis kann der Anbieter Sie bitten, bestimmte personenbezogene Daten anzugeben, unter anderem eine Kontaktadresse (<a href="mailto:veeti1.hurskainen@gmail.com" class="inline">veeti1.hurskainen@gmail.com</a>). Diese Daten werden gespeichert und wie in dieser Datenschutzerklärung beschrieben verwendet.</p>
+    </section>
+
+    <section class="policy-sec" id="legal-basis">
+      <h2>Rechtsgrundlagen der Verarbeitung</h2>
+      <p>Wir verarbeiten Ihre personenbezogenen Daten auf folgenden Rechtsgrundlagen der DSGVO:</p>
+      <ul>
+        <li><strong style="color:var(--text)">Art. 9 Abs. 2 lit. a — ausdrückliche Einwilligung</strong> für die Verarbeitung Ihrer gesundheitsbezogenen Daten besonderer Kategorie (Körperwerte, Herzfrequenz, HRV, Schlaf, Ernährungstagebuch, Körperfotos) durch die KI-Coaching-Funktionen. Diese Einwilligung erteilen Sie über den granularen In-App-Bildschirm zur KI-Datenfreigabe und können sie jederzeit unter Einstellungen → KI-Daten widerrufen. Vor Ihrer Einwilligung wird nichts an den KI-Anbieter gesendet.</li>
+        <li><strong style="color:var(--text)">Art. 6 Abs. 1 lit. b — Vertragserfüllung</strong> für die von Ihnen angeforderten Kernfunktionen: Speicherung Ihrer Trainings, Pläne, Studiobesuche und Ihres Profils auf Ihrem Gerät sowie deren Sicherung, damit Sie den Dienst geräteübergreifend nutzen können.</li>
+        <li><strong style="color:var(--text)">Art. 6 Abs. 1 lit. f — berechtigte Interessen</strong> zur Absicherung des Dienstes und zur Missbrauchsprävention (z. B. Begrenzung der KI-Anfragen).</li>
+      </ul>
+      <p>Sie müssen den KI-Funktionen niemals zustimmen, um die Kern-Tracking-Funktionen der App zu nutzen.</p>
+    </section>
+
+    <section class="policy-sec" id="third-party">
+      <h2>Zugriff Dritter &amp; Auftragsverarbeiter</h2>
+      <p>Wenn Sie die KI-Coaching-Funktionen nutzen, werden die von Ihnen freigegebenen personenbezogenen Daten von unseren Auftragsverarbeitern verarbeitet, wie im Abschnitt „Erhebung und Verwendung von Daten“ beschrieben. Wir verkaufen Ihre Daten nicht und übermitteln sie nicht an Werbe- oder Analysedienste. Die App nutzt die folgenden Dienstleister (Auftragsverarbeiter), die jeweils ihrer eigenen Datenschutzerklärung und einem Auftragsverarbeitungsvertrag mit uns unterliegen:</p>
+      <ul>
+        <li>Supabase, Inc. — sichere Server- und Backend-Infrastruktur sowie verschlüsselte Datenspeicherung, EU-Region (supabase.com)</li>
+        <li>Scaleway SAS — französischer EU-Cloud-Anbieter, der die Mistral-KI-Modelle hostet, die aus den von Ihnen freigegebenen Daten Coaching-Antworten erzeugen (scaleway.com)</li>
+        <li>Expo (Expo Application Services) — Infrastruktur für App-Build und -Auslieferung (expo.dev)</li>
+        <li>RevenueCat, Inc. — Verwaltung von Abonnements und Prüfung von Kaufbelegen (revenuecat.com)</li>
+        <li>Apple / Google — die Plattformen App Store / Google Play sowie, sofern von Ihnen aktiviert, Apple Health / Health Connect zum Lesen Ihrer eigenen Fitnessdaten (diese verbleiben auf Ihrem Gerät, sofern Sie ihrer Weitergabe an den KI-Coach nicht zustimmen)</li>
+        <li>Optionale Uhren- und Ring-Cloud-Verbindungen — wenn Sie in der App ausdrücklich ein Wearable-Konto verbinden (Google Health / Fitbit, Polar oder Oura), rufen wir Ihre täglichen Aktivitäts-, Herzfrequenz-, Erholungs- und Schlafwerte aus der Cloud des jeweiligen Anbieters ab (Google LLC, Polar Electro Oy, Oura Health Oy — jeweils nach deren eigener Datenschutzerklärung). Je nach Gerät können diese Werte umfassen: Schritte, Aktivitätskalorien, Distanz, Herzfrequenz und Ruhepuls, Herzfrequenzvariabilität, Sauerstoffsättigung (SpO₂), Atemfrequenz, VO₂max, Körpertemperatur-Abweichung, Schlafdauer und -qualität, einen Erholungs- bzw. Readiness-Score sowie Ihr letztes Workout. Die Verbindungs-Tokens werden verschlüsselt auf unserem Supabase-EU-Backend gespeichert, zusammen mit den zuletzt abgerufenen Werten; auf nichts anderes aus Ihrem Konto wird zugegriffen. Das Verbinden stellt Ihre ausdrückliche Einwilligung nach Art. 9 Abs. 2 lit. a DSGVO dar. Trennen Sie das Wearable in der App oder löschen Sie Ihr Konto, werden die Tokens und die gespeicherten Werte dauerhaft von unseren Servern entfernt.</li>
+        <li>Open Food Facts — wenn Sie nach einem Markenprodukt suchen, wird Ihr Suchtext an die Open-Food-Facts-API gesendet (Open Food Facts, ein Projekt der gemeinnützigen Open Food Facts Association, openfoodfacts.org), um Nährwertdaten abzurufen. Der zugrunde liegende Datensatz wird unter der Open Database License (ODbL) genutzt; mit diesen Anfragen wird kein Konto oder personenbezogenes Kennzeichen übermittelt. Eine kuratierte Auswahl gängiger Lebensmittel stammt zusätzlich aus USDA FoodData Central (US-Landwirtschaftsministerium, gemeinfreie Daten, fdc.nal.usda.gov) und wird lokal bzw. in unserem eigenen Lebensmittel-Index gespeichert — dies ist eine reine Datenquelle, kein Verarbeiter Ihrer personenbezogenen Daten.</li>
+      </ul>
+      <p>Der Anbieter kann von Ihnen bereitgestellte und automatisch erhobene Informationen offenlegen:</p>
+      <ul>
+        <li>soweit gesetzlich vorgeschrieben, etwa zur Befolgung einer gerichtlichen Anordnung oder eines vergleichbaren Verfahrens;</li>
+        <li>wenn er nach Treu und Glauben davon ausgeht, dass die Offenlegung erforderlich ist, um seine Rechte zu wahren, Ihre Sicherheit oder die Sicherheit anderer zu schützen, Betrug zu untersuchen oder auf eine behördliche Anfrage zu reagieren;</li>
+        <li>gegenüber vertrauenswürdigen Dienstleistern, die in seinem Auftrag tätig sind, die offengelegten Informationen nicht eigenständig nutzen und sich zur Einhaltung der Regeln dieser Datenschutzerklärung verpflichtet haben.</li>
+      </ul>
+    </section>
+
+    <section class="policy-sec" id="your-rights">
+      <h2>Ihre Rechte nach der DSGVO</h2>
+      <p>Als betroffene Person haben Sie die folgenden Rechte bezüglich Ihrer personenbezogenen Daten. Die meisten können Sie direkt in der App ausüben; im Übrigen kontaktieren Sie uns per E-Mail — wir antworten innerhalb eines Monats.</p>
+      <ul>
+        <li><strong style="color:var(--text)">Auskunftsrecht (Art. 15):</strong> eine Kopie der über Sie gespeicherten Daten erhalten — über Einstellungen → Daten → Export in der App oder per E-Mail-Anfrage.</li>
+        <li><strong style="color:var(--text)">Recht auf Berichtigung (Art. 16):</strong> unrichtige Daten korrigieren — bearbeiten Sie Ihr Profil und Ihre Einträge direkt in der App.</li>
+        <li><strong style="color:var(--text)">Recht auf Löschung (Art. 17):</strong> Ihr Konto und alle zugehörigen Daten jederzeit löschen über <strong style="color:var(--text)">Einstellungen → Konto → Konto löschen</strong>. Damit werden Ihre Daten dauerhaft von Ihrem Gerät und unseren Servern entfernt.</li>
+        <li><strong style="color:var(--text)">Recht auf Einschränkung (Art. 18):</strong> widerrufen Sie die KI-Einwilligung unter Einstellungen → KI-Daten, um die KI-Verarbeitung zu stoppen und Ihre lokalen Daten dennoch zu behalten.</li>
+        <li><strong style="color:var(--text)">Recht auf Datenübertragbarkeit (Art. 20):</strong> Ihre Daten in einem strukturierten, maschinenlesbaren Format erhalten über Einstellungen → Daten → Export.</li>
+        <li><strong style="color:var(--text)">Widerspruchsrecht (Art. 21)</strong> sowie das Recht, eine Einwilligung jederzeit zu widerrufen (Art. 7 Abs. 3), ohne dass die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung berührt wird.</li>
+      </ul>
+      <p><strong style="color:var(--text)">Beschwerderecht:</strong> Sie können sich an eine Aufsichtsbehörde wenden, insbesondere in dem EU-Mitgliedstaat Ihres Wohnsitzes oder Arbeitsplatzes. Zuständig für den Verantwortlichen ist die <strong style="color:var(--text)">Landesbeauftragte für Datenschutz und Informationsfreiheit Nordrhein-Westfalen (LDI NRW)</strong>, Kavalleriestraße 2–4, 40213 Düsseldorf — <a class="inline" href="https://www.ldi.nrw.de">www.ldi.nrw.de</a>.</p>
+    </section>
+
+    <section class="policy-sec" id="retention">
+      <h2>Speicherdauer &amp; Löschung</h2>
+      <p>Wir speichern Ihre personenbezogenen Daten nur so lange, wie Sie die App nutzen. Die Löschung liegt in Ihrer Hand:</p>
+      <ul>
+        <li><strong style="color:var(--text)">Löschung per Selbstbedienung:</strong> Öffnen Sie <strong style="color:var(--text)">Einstellungen → Konto → Konto löschen</strong> in der App, um Ihr Konto und alle zugehörigen Daten — Profil, Trainings, Pläne, Kraftwerte, KI-Konversationen, Ernährungstagebuch und zwischengespeicherte Gesundheitswerte — dauerhaft und unwiderruflich von Ihrem Gerät und unseren Servern zu löschen.</li>
+        <li><strong style="color:var(--text)">Export vor der Löschung:</strong> Sie können Ihre Daten zuvor über Einstellungen → Daten → Export exportieren.</li>
+        <li><strong style="color:var(--text)">Alternativ per E-Mail:</strong> Schreiben Sie an <a href="mailto:veeti1.hurskainen@gmail.com" class="inline">veeti1.hurskainen@gmail.com</a> — wir löschen Ihre Daten innerhalb eines Monats.</li>
+      </ul>
+      <p>Nach der Löschung werden Restkopien in verschlüsselten Sicherungen innerhalb von 30 Tagen entfernt. Gesetzlich aufzubewahrende Daten (z. B. Abrechnungsunterlagen bei App Store / RevenueCat) werden nur für die gesetzlich vorgeschriebene Dauer aufbewahrt.</p>
+    </section>
+
+    <section class="policy-sec" id="children">
+      <h2>Kinder</h2>
+      <p>Der Anbieter nutzt die App nicht, um wissentlich Daten von Kindern unter 13 Jahren zu erheben oder an sie zu vermarkten.</p>
+      <p>Die App richtet sich nicht an Personen unter 13 Jahren. Der Anbieter erhebt nicht wissentlich personenbezogene Daten von Kindern unter 13 Jahren. Stellt der Anbieter fest, dass ein Kind unter 13 Jahren personenbezogene Daten übermittelt hat, löscht er diese unverzüglich von seinen Servern. Wenn Sie Elternteil oder Erziehungsberechtigter sind und wissen, dass Ihr Kind uns personenbezogene Daten übermittelt hat, kontaktieren Sie den Anbieter (<a href="mailto:veeti1.hurskainen@gmail.com" class="inline">veeti1.hurskainen@gmail.com</a>), damit die erforderlichen Schritte eingeleitet werden können.</p>
+    </section>
+
+    <section class="policy-sec" id="security">
+      <h2>Sicherheit</h2>
+      <p>Da Ihre Daten Gesundheitsinformationen umfassen (besondere Kategorie nach Art. 9 DSGVO), schützen wir sie mit technischen und organisatorischen Maßnahmen nach dem Stand der Technik — bei der Übertragung wie im Ruhezustand:</p>
+      <ul>
+        <li><strong style="color:var(--text)">Verschlüsselung bei der Übertragung:</strong> Der gesamte Datenverkehr zwischen App, unseren Servern und dem KI-Anbieter ist mit TLS (HTTPS) geschützt.</li>
+        <li><strong style="color:var(--text)">Verschlüsselung im Ruhezustand — Server:</strong> Daten auf unserem Backend (Supabase, EU-Region) werden verschlüsselt gespeichert; der Zugriff ist über Supabase Row Level Security auf die authentifizierte Eigentümerin bzw. den authentifizierten Eigentümer beschränkt. Anfragen an den KI-Anbieter werden serverseitig authentifiziert; der KI-API-Schlüssel ist nie Teil der App.</li>
+        <li><strong style="color:var(--text)">Verschlüsselung im Ruhezustand — Gerät:</strong> Sensible Daten, die auf Ihrem Gerät zwischengespeichert werden (Profil, Gesundheitswerte, Trainingsprotokoll, KI-Konversationen), liegen im hardwaregestützten sicheren Speicher der Plattform — Apple Keychain unter iOS bzw. der Android-Keystore-gestützte verschlüsselte Speicher — und nicht im gewöhnlichen App-Speicher.</li>
+        <li><strong style="color:var(--text)">Zugriffskontrolle &amp; Anmeldung:</strong> Der Kontozugang erfolgt über „Mit Apple anmelden“ (iOS) oder eine über Supabase authentifizierte Sitzung (Android); Cloud-Daten sind an Ihre verifizierte Identität gebunden.</li>
+      </ul>
+      <p>Keine Übertragungs- oder Speichermethode ist vollständig sicher, doch wir arbeiten fortlaufend daran, Ihre Daten auf dem für Gesundheitsdaten erforderlichen Stand der Technik zu schützen.</p>
+    </section>
+
+    <section class="policy-sec" id="changes">
+      <h2>Änderungen</h2>
+      <p>Diese Datenschutzerklärung kann von Zeit zu Zeit aktualisiert werden. Über wesentliche Änderungen informieren wir Sie durch Aktualisierung dieser Seite und, soweit erforderlich, über die App. Die weitere Nutzung stellt für sich genommen keine Einwilligung in eine neue Verarbeitung von Daten besonderer Kategorien dar — eine solche Verarbeitung erfordert stets Ihre gesonderte, ausdrückliche Einwilligung in der App.</p>
+      <p>Diese Datenschutzerklärung ist gültig ab dem 10.07.2026.</p>
+    </section>
+
+    <section class="policy-sec" id="consent">
+      <h2>Ihre Einwilligung</h2>
+      <p>Für die gesundheitsbezogenen Daten, die von den KI-Coaching-Funktionen verarbeitet werden, stützen wir uns auf Ihre <strong style="color:var(--text)">ausdrückliche Einwilligung nach Art. 9 Abs. 2 lit. a DSGVO</strong>, die Sie über den granularen In-App-Bildschirm zur KI-Datenfreigabe erteilen — nicht auf Ihre fortgesetzte Nutzung der App. Sie können diese Einwilligung jederzeit unter Einstellungen → KI-Daten widerrufen; damit endet jede weitere Verarbeitung dieser Daten durch den KI-Anbieter. Für die Kern-Tracking-Funktionen ist die Rechtsgrundlage die Erfüllung unseres Vertrags mit Ihnen (Art. 6 Abs. 1 lit. b DSGVO), wie im Abschnitt „Rechtsgrundlagen der Verarbeitung“ beschrieben.</p>
+    </section>
+
+    <section class="policy-sec" id="contact">
+      <h2>Kontakt</h2>
+      <p>Wenn Sie Fragen zum Datenschutz bei der Nutzung der App oder zu unseren Verfahren haben, wenden Sie sich bitte per E-Mail an den Anbieter.</p>
+      <div class="contact-card">
+        <p>Veeti Hurskainen · <a href="mailto:veeti1.hurskainen@gmail.com" class="inline">veeti1.hurskainen@gmail.com</a></p>
+      </div>
+    </section>
+  </div>
+
+
+</body>
+</html>

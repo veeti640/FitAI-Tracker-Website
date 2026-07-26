@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "framer-motion": "^12.38.0"
+    "framer-motion": "^12.38.0",
+    "puppeteer-core": "^25.3.0"
   }
 }

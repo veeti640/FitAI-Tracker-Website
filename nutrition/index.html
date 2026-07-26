@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070b">
+  <meta name="description" content="Photograph a meal and let Lihas estimate macros, explain the food and update your nutrition score for the whole day.">
+  <title>Nutrition intelligence · Lihas</title>
+  <link rel="icon" type="image/png" href="/assets/lihas-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://use.typekit.net">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/jja4tyv.css">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="/assets/site.js" defer></script>
+</head>
+<body data-page="nutrition">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="nav-rail" aria-hidden="true"></div>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a class="wordmark" href="/" aria-label="Lihas home"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a>
+    <div class="nav-links">
+      <a href="/health/" data-nav="health">Health</a>
+      <a href="/nutrition/" data-nav="nutrition">Nutrition</a>
+      <a href="/training/" data-nav="training">Training</a>
+      <a href="/coach/" data-nav="coach">Coach</a>
+    </div>
+    <a class="nav-cta" href="#download">Get the app</a>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-hero-inner">
+        <p class="page-number slow-reveal">Nutrition intelligence</p>
+        <h1 class="page-title" data-word-reveal>Point. Scan. Understand.</h1>
+        <p class="page-lede slow-reveal" style="--delay:380ms">
+          A photo becomes a useful estimate: foods, portions, macros and the effect on your full day, presented with room for correction.
+        </p>
+      </div>
+      <div class="page-jump">Build a day</div>
+    </header>
+
+    <section class="section section-night nutrition-playground">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-shell">
+        <header class="nutrition-game-intro">
+          <div>
+            <p class="eyebrow slow-reveal">Interactive daily nutrition</p>
+            <h2 class="section-title small" data-word-reveal>Build the plate. See the whole day move.</h2>
+          </div>
+          <p class="lede slow-reveal">
+            Start at zero. Add foods to today and watch energy, macros, fiber and the daily nutrition score react together.
+          </p>
+        </header>
+
+        <div class="nutrition-game slow-reveal" data-nutrition-game>
+          <section class="food-shelf" aria-labelledby="food-shelf-title">
+            <div class="game-panel-head">
+              <div>
+                <span class="game-kicker">Food shelf</span>
+                <h3 id="food-shelf-title">Tap to add</h3>
+              </div>
+              <span class="game-hint">Each tap adds one serving</span>
+            </div>
+
+            <div class="food-grid">
+              <button class="food-item" type="button" data-food-item="chicken">
+                <span class="food-visual food-chicken" aria-hidden="true"><i></i></span>
+                <span><strong>Chicken</strong><small>150 g serving</small></span>
+                <span class="food-add" aria-hidden="true">＋</span>
+              </button>
+              <button class="food-item" type="button" data-food-item="rice">
+                <span class="food-visual food-rice" aria-hidden="true"><i></i></span>
+                <span><strong>Rice</strong><small>200 g serving</small></span>
+                <span class="food-add" aria-hidden="true">＋</span>
+              </button>
+              <button class="food-item" type="button" data-food-item="greens">
+                <span class="food-visual food-greens" aria-hidden="true"><i></i></span>
+                <span><strong>Greens</strong><small>Large handful</small></span>
+                <span class="food-add" aria-hidden="true">＋</span>
+              </button>
+              <button class="food-item" type="button" data-food-item="yogurt">
+                <span class="food-visual food-yogurt" aria-hidden="true"><i></i></span>
+                <span><strong>Skyr</strong><small>200 g serving</small></span>
+                <span class="food-add" aria-hidden="true">＋</span>
+              </button>
+              <button class="food-item" type="button" data-food-item="berries">
+                <span class="food-visual food-berries" aria-hidden="true"><i></i></span>
+                <span><strong>Berries</strong><small>120 g serving</small></span>
+                <span class="food-add" aria-hidden="true">＋</span>
+              </button>
+              <button class="food-item" type="button" data-food-item="avocado">
+                <span class="food-visual food-avocado" aria-hidden="true"><i></i></span>
+                <span><strong>Avocado</strong><small>Half fruit</small></span>
+                <span class="food-add" aria-hidden="true">＋</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="nutrition-ledger" aria-labelledby="nutrition-ledger-title" data-food-receiver>
+            <div class="ledger-head">
+              <div>
+                <span class="game-kicker">Today / live</span>
+                <h3 id="nutrition-ledger-title">Nutrition ledger</h3>
+              </div>
+              <div class="daily-score" aria-label="Daily nutrition score">
+                <span>Score</span>
+                <strong><output data-score-value data-value="0">0</output><small>/100</small></strong>
+              </div>
+            </div>
+
+            <div class="score-meter" aria-hidden="true">
+              <span class="score-meter-fill" data-score-track></span>
+            </div>
+
+            <table class="nutrition-table">
+              <caption class="visually-hidden">Current nutrition totals for the interactive day</caption>
+              <tbody>
+                <tr><th scope="row">Energy</th><td><output data-kcal-value data-value="0">0</output><span>kcal</span></td><td><span class="table-target">of 2,200</span></td></tr>
+                <tr><th scope="row">Protein</th><td><output data-protein-value data-value="0">0</output><span>g</span></td><td><span class="table-target">of 120 g</span></td></tr>
+                <tr><th scope="row">Carbs</th><td><output data-carbs-value data-value="0">0</output><span>g</span></td><td><span class="table-target">of 260 g</span></td></tr>
+                <tr><th scope="row">Fat</th><td><output data-fat-value data-value="0">0</output><span>g</span></td><td><span class="table-target">of 75 g</span></td></tr>
+                <tr><th scope="row">Fiber</th><td><output data-fiber-value data-value="0">0</output><span>g</span></td><td><span class="table-target">of 30 g</span></td></tr>
+              </tbody>
+            </table>
+
+            <div class="meal-tray">
+              <div class="meal-tray-head">
+                <span>Added today</span>
+                <button type="button" class="game-reset" data-nutrition-reset disabled>Reset</button>
+              </div>
+              <div class="meal-tray-items" data-meal-tray>
+                <p class="empty-tray" data-empty-tray>No food added yet. Choose an item from the shelf.</p>
+              </div>
+            </div>
+            <p class="game-status visually-hidden" data-nutrition-status aria-live="polite"></p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-paper nutrition-method-section">
+      <div class="page-shell nutrition-method-layout">
+        <aside class="nutrition-method-copy">
+          <p class="eyebrow slow-reveal">Interactive meal analysis</p>
+          <h2 class="section-title small" data-word-reveal>An estimate that stays honest.</h2>
+          <p class="lede slow-reveal">
+            Meal photos are uncertain by nature. Lihas turns the image into an editable estimate, then connects the result to the day.
+          </p>
+        </aside>
+
+        <div class="nutrition-method">
+          <article class="method-card slow-reveal" style="--stack-index:0">
+            <span class="method-index">Image / 01</span>
+            <div class="method-signal" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <h3>Find the visible foods.</h3>
+            <p>Identify likely ingredients and estimate the portions the camera can actually support.</p>
+            <div class="method-readout"><span>Chicken</span><strong>92% confidence</strong></div>
+          </article>
+          <article class="method-card slow-reveal" style="--stack-index:1">
+            <span class="method-index">Control / 02</span>
+            <div class="portion-control" aria-hidden="true"><span></span><i></i></div>
+            <h3>Keep the estimate editable.</h3>
+            <p>Show every detected component so a serving or ingredient can be corrected before it affects the day.</p>
+            <div class="method-readout"><span>Visible portion</span><strong>150–180 g</strong></div>
+          </article>
+          <article class="method-card slow-reveal" style="--stack-index:2">
+            <span class="method-index">Context / 03</span>
+            <div class="context-wave" aria-hidden="true"><i></i><i></i><i></i></div>
+            <h3>Connect one plate to today.</h3>
+            <p>Update energy, macros, hydration context and the overall score without labeling a single meal good or bad.</p>
+            <div class="method-readout"><span>Daily score</span><strong>+14 points</strong></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-night nutrition-continuum">
+      <div class="page-shell">
+        <header class="depth-header depth-header-split">
+          <div>
+            <p class="eyebrow slow-reveal">From image to daily context</p>
+            <h2 class="section-title small" data-word-reveal>The estimate stays under your control.</h2>
+          </div>
+          <p class="lede slow-reveal">Photo analysis is only the first pass. You can correct the food and serving before it updates the meal score, daily macros, hydration context and longer trends.</p>
+        </header>
+
+        <div class="nutrition-flow">
+          <article class="nutrition-flow-step slow-reveal"><span>01</span><strong>Detect</strong><p>Find likely foods and visible portions.</p></article>
+          <article class="nutrition-flow-step slow-reveal" style="--delay:70ms"><span>02</span><strong>Review</strong><p>Edit an ingredient or serving before saving.</p></article>
+          <article class="nutrition-flow-step slow-reveal" style="--delay:140ms"><span>03</span><strong>Score</strong><p>Use protein and fiber with sugar, saturated fat, sodium and energy density.</p></article>
+          <article class="nutrition-flow-step slow-reveal" style="--delay:210ms"><span>04</span><strong>Connect</strong><p>Update today’s totals, water and the remaining target.</p></article>
+        </div>
+
+        <div class="nutrition-proof slow-reveal">
+          <span>One meal</span><i aria-hidden="true"></i><span>Editable nutrients</span><i aria-hidden="true"></i><span>Daily score</span><i aria-hidden="true"></i><span>Trend</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-night">
+      <div class="page-shell founder-grid">
+        <div class="founder-mark slow-reveal" aria-hidden="true"><img src="/assets/lihas-logo.png" alt=""></div>
+        <div>
+          <p class="eyebrow slow-reveal">The daily view</p>
+          <blockquote class="editorial-quote scrub-text" data-scrub-text>
+            A meal is context, not a verdict. Lihas shows what changed, what remains, and how the whole day is tracking.
+          </blockquote>
+          <div class="founder-meta slow-reveal">
+            <p><strong>Useful context</strong>See what the meal changed and what remains for today.</p>
+            <p><strong>Honest estimates</strong>Image analysis is guidance, not laboratory measurement.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="download">
+      <div class="final-cta-inner">
+        <p class="eyebrow slow-reveal" style="color:rgba(255,255,255,.75)">A faster food log</p>
+        <h2 data-word-reveal>Your meal, translated into a decision.</h2>
+        <span class="button button-light is-disabled slow-reveal" aria-disabled="true" aria-label="Lihas App Store link coming soon">App Store · coming soon <span class="button-arrow">↗</span></span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a class="wordmark" href="/"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a><p>Health intelligence for active people. Designed and built in Finland.</p></div>
+      <div class="footer-col"><strong>Product</strong><a href="/health/">Health</a><a href="/nutrition/">Nutrition</a><a href="/training/">Training</a><a href="/coach/">Coach</a></div>
+      <div class="footer-col"><strong>Company</strong><a href="/">About</a><a href="mailto:hello@lihas.app">Contact</a></div>
+      <div class="footer-col"><strong>Legal</strong><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/impressum">Imprint</a></div>
+    </div>
+    <div class="footer-base"><span>© <span data-year></span> Lihas</span><span>Health guidance, not medical advice</span></div>
+  </footer>
+</body>
+</html>

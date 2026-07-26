@@ -15,6 +15,7 @@ const MIME = {
   '.jpeg': 'image/jpeg',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
+  '.mp4': 'video/mp4',
   '.ico': 'image/x-icon',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
@@ -22,7 +23,9 @@ const MIME = {
 
 http.createServer((req, res) => {
   let urlPath = decodeURIComponent(req.url.split('?')[0]);
-  if (urlPath === '/') urlPath = '/index.html';
+  // Directory requests resolve to their index.html, like the production host does
+  // ("/" → /index.html, "/de/" → /de/index.html).
+  if (urlPath.endsWith('/')) urlPath += 'index.html';
   const filePath = path.join(__dirname, urlPath);
 
   fs.readFile(filePath, (err, data) => {

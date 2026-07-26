@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070b">
+  <meta name="description" content="Lihas connects readiness, sleep, activity and stress into a transparent daily health analysis.">
+  <title>Health intelligence · Lihas</title>
+  <link rel="icon" type="image/png" href="/assets/lihas-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://use.typekit.net">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/jja4tyv.css">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="/assets/site.js" defer></script>
+</head>
+<body data-page="health">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="nav-rail" aria-hidden="true"></div>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a class="wordmark" href="/" aria-label="Lihas home"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a>
+    <div class="nav-links">
+      <a href="/health/" data-nav="health">Health</a>
+      <a href="/nutrition/" data-nav="nutrition">Nutrition</a>
+      <a href="/training/" data-nav="training">Training</a>
+      <a href="/coach/" data-nav="coach">Coach</a>
+    </div>
+    <a class="nav-cta" href="#download">Get the app</a>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-hero-inner">
+        <p class="page-number slow-reveal">Health intelligence</p>
+        <h1 class="page-title" data-word-reveal>Your body, in context.</h1>
+        <p class="page-lede slow-reveal" style="--delay: 380ms">
+          Lihas connects the signals that usually live on separate screens, then shows the score, the evidence and one practical decision.
+        </p>
+      </div>
+      <div class="page-jump">Explore the analysis</div>
+    </header>
+
+    <section class="section section-paper">
+      <div class="page-shell analysis-frame">
+        <div class="health-tabs slow-reveal" role="tablist" aria-label="Health analysis areas">
+          <button class="health-tab" type="button" role="tab" aria-selected="true" data-health-tab="readiness">
+            <span class="tab-index">01</span><span>Readiness</span><span class="tab-state"></span>
+          </button>
+          <button class="health-tab" type="button" role="tab" aria-selected="false" data-health-tab="sleep" tabindex="-1">
+            <span class="tab-index">02</span><span>Sleep</span><span class="tab-state"></span>
+          </button>
+          <button class="health-tab" type="button" role="tab" aria-selected="false" data-health-tab="activity" tabindex="-1">
+            <span class="tab-index">03</span><span>Activity</span><span class="tab-state"></span>
+          </button>
+          <button class="health-tab" type="button" role="tab" aria-selected="false" data-health-tab="stress" tabindex="-1">
+            <span class="tab-index">04</span><span>Stress</span><span class="tab-state"></span>
+          </button>
+        </div>
+
+        <div>
+          <article class="analysis-panel is-active" role="tabpanel" data-health-panel="readiness">
+            <p class="eyebrow">Today / 07:42</p>
+            <h2 class="section-title small">Ready enough to progress, without forcing it.</h2>
+            <div class="score-layout">
+              <div class="score-card">
+                <span class="score-label">Readiness score</span>
+                <div class="score-ring" style="background: radial-gradient(circle, var(--paper-bright) 58%, transparent 59%), conic-gradient(var(--blue) 0 82%, rgba(11,16,24,.09) 82% 100%)">
+                  <span>82</span>
+                </div>
+                <p class="score-note">High confidence · 6 of 7 expected signals available</p>
+              </div>
+              <div>
+                <div class="signal-card">
+                  <h3>What moved the score</h3>
+                  <div class="signal-list">
+                    <div class="signal-row"><span class="signal-name">HRV</span><span class="signal-track"><span class="signal-fill" style="--value:.88"></span></span><span class="signal-value">+11%</span></div>
+                    <div class="signal-row"><span class="signal-name">Resting HR</span><span class="signal-track"><span class="signal-fill" style="--value:.79"></span></span><span class="signal-value">52 bpm</span></div>
+                    <div class="signal-row"><span class="signal-name">Sleep</span><span class="signal-track"><span class="signal-fill" style="--value:.84"></span></span><span class="signal-value">7h 48m</span></div>
+                    <div class="signal-row"><span class="signal-name">Strain</span><span class="signal-track"><span class="signal-fill" style="--value:.62"></span></span><span class="signal-value">Moderate</span></div>
+                    <div class="signal-row"><span class="signal-name">Trend</span><span class="signal-track"><span class="signal-fill" style="--value:.76"></span></span><span class="signal-value">Stable</span></div>
+                  </div>
+                </div>
+                <div class="decision-card">
+                  <strong>Today’s move</strong>
+                  <p>Train as planned. Keep one repetition in reserve on heavy lower-body sets.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="analysis-panel" role="tabpanel" data-health-panel="sleep" hidden>
+            <p class="eyebrow">Last night / 23:18–07:21</p>
+            <h2 class="section-title small">Enough duration. Deep sleep arrived later than usual.</h2>
+            <div class="score-layout">
+              <div class="score-card">
+                <span class="score-label">Sleep score</span>
+                <div class="score-ring" style="background: radial-gradient(circle, var(--paper-bright) 58%, transparent 59%), conic-gradient(#6d98ff 0 79%, rgba(11,16,24,.09) 79% 100%)"><span>79</span></div>
+                <p class="score-note">8h 03m in bed · 7h 31m asleep · 93% efficiency</p>
+              </div>
+              <div>
+                <div class="signal-card">
+                  <h3>Sleep architecture</h3>
+                  <div class="signal-list">
+                    <div class="signal-row"><span class="signal-name">Awake</span><span class="signal-track"><span class="signal-fill" style="--value:.17;background:#ff806c"></span></span><span class="signal-value">32m</span></div>
+                    <div class="signal-row"><span class="signal-name">REM</span><span class="signal-track"><span class="signal-fill" style="--value:.72;background:#9eb8ff"></span></span><span class="signal-value">1h 44m</span></div>
+                    <div class="signal-row"><span class="signal-name">Light</span><span class="signal-track"><span class="signal-fill" style="--value:.91;background:#6d98ff"></span></span><span class="signal-value">4h 18m</span></div>
+                    <div class="signal-row"><span class="signal-name">Deep</span><span class="signal-track"><span class="signal-fill" style="--value:.58;background:#2864f0"></span></span><span class="signal-value">1h 29m</span></div>
+                    <div class="signal-row"><span class="signal-name">Timing</span><span class="signal-track"><span class="signal-fill" style="--value:.66"></span></span><span class="signal-value">+41m late</span></div>
+                  </div>
+                </div>
+                <div class="decision-card"><strong>Tonight’s move</strong><p>Keep the wake time. Begin the wind-down 35 minutes earlier.</p></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="analysis-panel" role="tabpanel" data-health-panel="activity" hidden>
+            <p class="eyebrow">Rolling 7 days</p>
+            <h2 class="section-title small">Good consistency. Lower-body load is accumulating.</h2>
+            <div class="score-layout">
+              <div class="score-card">
+                <span class="score-label">Activity score</span>
+                <div class="score-ring" style="background: radial-gradient(circle, var(--paper-bright) 58%, transparent 59%), conic-gradient(#2864f0 0 86%, rgba(11,16,24,.09) 86% 100%)"><span>86</span></div>
+                <p class="score-note">4 training days · 54 active minutes per day</p>
+              </div>
+              <div>
+                <div class="signal-card">
+                  <h3>Load distribution</h3>
+                  <div class="signal-list">
+                    <div class="signal-row"><span class="signal-name">Steps</span><span class="signal-track"><span class="signal-fill" style="--value:.82"></span></span><span class="signal-value">9,480</span></div>
+                    <div class="signal-row"><span class="signal-name">Cardio</span><span class="signal-track"><span class="signal-fill" style="--value:.64"></span></span><span class="signal-value">116 min</span></div>
+                    <div class="signal-row"><span class="signal-name">Strength</span><span class="signal-track"><span class="signal-fill" style="--value:.87"></span></span><span class="signal-value">4 sessions</span></div>
+                    <div class="signal-row"><span class="signal-name">Lower body</span><span class="signal-track"><span class="signal-fill" style="--value:.95;background:#ff806c"></span></span><span class="signal-value">High</span></div>
+                    <div class="signal-row"><span class="signal-name">Upper body</span><span class="signal-track"><span class="signal-fill" style="--value:.58"></span></span><span class="signal-value">Moderate</span></div>
+                  </div>
+                </div>
+                <div class="decision-card"><strong>Next session</strong><p>Use an upper-body emphasis. Delay heavy squats by 24 hours.</p></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="analysis-panel" role="tabpanel" data-health-panel="stress" hidden>
+            <p class="eyebrow">Today / continuous</p>
+            <h2 class="section-title small">Stress rose after lunch and has not fully resolved.</h2>
+            <div class="score-layout">
+              <div class="score-card">
+                <span class="score-label">Balance score</span>
+                <div class="score-ring" style="background: radial-gradient(circle, var(--paper-bright) 58%, transparent 59%), conic-gradient(#ffc66d 0 68%, rgba(11,16,24,.09) 68% 100%)"><span>68</span></div>
+                <p class="score-note">Moderate stress · recovery windows were shorter than baseline</p>
+              </div>
+              <div>
+                <div class="signal-card">
+                  <h3>Autonomic pattern</h3>
+                  <div class="signal-list">
+                    <div class="signal-row"><span class="signal-name">Morning</span><span class="signal-track"><span class="signal-fill" style="--value:.38;background:#b6ee65"></span></span><span class="signal-value">Calm</span></div>
+                    <div class="signal-row"><span class="signal-name">Midday</span><span class="signal-track"><span class="signal-fill" style="--value:.78;background:#ffc66d"></span></span><span class="signal-value">Elevated</span></div>
+                    <div class="signal-row"><span class="signal-name">Evening</span><span class="signal-track"><span class="signal-fill" style="--value:.63;background:#ffc66d"></span></span><span class="signal-value">Moderate</span></div>
+                    <div class="signal-row"><span class="signal-name">Recovery</span><span class="signal-track"><span class="signal-fill" style="--value:.47"></span></span><span class="signal-value">42 min</span></div>
+                    <div class="signal-row"><span class="signal-name">HRV trend</span><span class="signal-track"><span class="signal-fill" style="--value:.56"></span></span><span class="signal-value">Slightly down</span></div>
+                  </div>
+                </div>
+                <div class="decision-card"><strong>Right now</strong><p>Take a 12-minute walk before training. Recheck how you feel after the warm-up.</p></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-night">
+      <div class="page-shell">
+        <p class="eyebrow slow-reveal">How the analysis works</p>
+        <h2 class="section-title" data-word-reveal>A score is only useful when its reasoning stays visible.</h2>
+        <div class="logic-line">
+          <div class="logic-step slow-reveal"><span class="logic-no">01 / Baseline</span><span class="logic-title">Learn your normal</span><span class="logic-copy">Personal rolling baselines matter more than population averages.</span></div>
+          <div class="logic-step slow-reveal" style="--delay:80ms"><span class="logic-no">02 / Change</span><span class="logic-title">Detect the deviation</span><span class="logic-copy">Today is compared with your own recent range, data quality included.</span></div>
+          <div class="logic-step slow-reveal" style="--delay:160ms"><span class="logic-no">03 / Context</span><span class="logic-title">Connect the signals</span><span class="logic-copy">Sleep, strain, stress and recovery are interpreted together.</span></div>
+          <div class="logic-step slow-reveal" style="--delay:240ms"><span class="logic-no">04 / Action</span><span class="logic-title">Make one decision</span><span class="logic-copy">The result becomes a specific adjustment, not a vague warning.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-paper health-blueprint">
+      <div class="page-shell">
+        <header class="depth-header depth-header-split">
+          <div>
+            <p class="eyebrow slow-reveal">Transparent by design</p>
+            <h2 class="section-title small" data-word-reveal>Personal baselines before population averages.</h2>
+          </div>
+          <p class="lede slow-reveal">Lihas only scores what the available data can support. Missing or stale signals reduce confidence instead of being silently invented.</p>
+        </header>
+
+        <div class="blueprint-table">
+          <article class="blueprint-row slow-reveal">
+            <span class="blueprint-index">01</span>
+            <h3>Readiness</h3>
+            <p>HRV, resting heart rate, sleep and residual training load are normalized against your own rolling baseline.</p>
+            <span class="blueprint-threshold">14+ days to calibrate</span>
+          </article>
+          <article class="blueprint-row slow-reveal">
+            <span class="blueprint-index">02</span>
+            <h3>Sleep</h3>
+            <p>Duration, deep and REM sleep, waking and fragmentation combine with efficiency, timing regularity and sleep debt when available.</p>
+            <span class="blueprint-threshold">Stages + continuity</span>
+          </article>
+          <article class="blueprint-row slow-reveal">
+            <span class="blueprint-index">03</span>
+            <h3>Daily balance</h3>
+            <p>Movement, strain, recovery, sleep and stress remain independent analyses before they join one coverage-aware decision.</p>
+            <span class="blueprint-threshold">No vendor score reused</span>
+          </article>
+          <article class="blueprint-row slow-reveal">
+            <span class="blueprint-index">04</span>
+            <h3>Long view</h3>
+            <p>Energy reserve, health radar and healthspan trends appear only when history and signal coverage are sufficient.</p>
+            <span class="blueprint-threshold">Confidence first</span>
+          </article>
+        </div>
+
+        <div class="source-line slow-reveal">
+          <span>Data can arrive through</span>
+          <strong>Apple Health</strong><strong>Health Connect</strong><strong>Oura</strong><strong>Polar</strong><strong>Fitbit</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="download">
+      <div class="final-cta-inner">
+        <p class="eyebrow slow-reveal" style="color:rgba(255,255,255,.75)">Your data, made useful</p>
+        <h2 data-word-reveal>See the signal. Understand the move.</h2>
+        <span class="button button-light is-disabled slow-reveal" aria-disabled="true" aria-label="Lihas App Store link coming soon">App Store · coming soon <span class="button-arrow">↗</span></span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a class="wordmark" href="/"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a><p>Health intelligence for active people. Designed and built in Finland.</p></div>
+      <div class="footer-col"><strong>Product</strong><a href="/health/">Health</a><a href="/nutrition/">Nutrition</a><a href="/training/">Training</a><a href="/coach/">Coach</a></div>
+      <div class="footer-col"><strong>Company</strong><a href="/">About</a><a href="mailto:hello@lihas.app">Contact</a></div>
+      <div class="footer-col"><strong>Legal</strong><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/impressum">Imprint</a></div>
+    </div>
+    <div class="footer-base"><span>© <span data-year></span> Lihas</span><span>Health guidance, not medical advice</span></div>
+  </footer>
+</body>
+</html>

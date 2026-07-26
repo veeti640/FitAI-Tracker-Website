@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070b">
+  <meta name="description" content="Ask Lihas a training, nutrition or recovery question and receive a concise answer grounded in your own data.">
+  <title>Personal coach · Lihas</title>
+  <link rel="icon" type="image/png" href="/assets/lihas-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://use.typekit.net">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/jja4tyv.css">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="/assets/site.js" defer></script>
+</head>
+<body data-page="coach">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="nav-rail" aria-hidden="true"></div>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a class="wordmark" href="/" aria-label="Lihas home"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a>
+    <div class="nav-links">
+      <a href="/health/" data-nav="health">Health</a>
+      <a href="/nutrition/" data-nav="nutrition">Nutrition</a>
+      <a href="/training/" data-nav="training">Training</a>
+      <a href="/coach/" data-nav="coach">Coach</a>
+    </div>
+    <a class="nav-cta" href="#download">Get the app</a>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-hero-inner">
+        <p class="page-number slow-reveal">Personal coach</p>
+        <h1 class="page-title" data-word-reveal>Ask less. Know more.</h1>
+        <p class="page-lede slow-reveal" style="--delay:380ms">
+          Lihas answers with your recent training, recovery and nutrition in view, then turns the answer into one concrete next action.
+        </p>
+      </div>
+      <div class="page-jump">See the conversation</div>
+    </header>
+
+    <section class="section section-night">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-shell coach-stage">
+        <div class="conversation slow-reveal" data-parallax="-13">
+          <div class="conversation-head">
+            <span class="coach-orb" aria-hidden="true">L</span>
+            <span class="conversation-status">Context connected</span>
+          </div>
+          <div class="message user">Should I do the heavy leg session today?</div>
+          <div class="message coach">
+            Not as written. Your sleep was solid, but lower-body load is already high and HRV is 9% below your seven-day baseline.
+            <div class="message-action">Recommended adjustment</div>
+          </div>
+          <div class="message coach">
+            Keep the session, reduce squat volume from 5 to 3 working sets, and stop at RPE 8. Move the two removed sets to Friday if readiness recovers.
+          </div>
+          <div class="message user">What should I watch in the warm-up?</div>
+          <div class="message coach">
+            Compare bar speed and knee comfort with last week. If either feels clearly worse after two ramp-up sets, switch to the upper-body session.
+          </div>
+        </div>
+
+        <div>
+          <p class="eyebrow slow-reveal">Grounded, not generic</p>
+          <h2 class="section-title small" data-word-reveal>The answer includes the reason.</h2>
+          <p class="lede slow-reveal">
+            Useful coaching is specific enough to act on and transparent enough to question. Lihas keeps the evidence beside the recommendation.
+          </p>
+          <div class="evidence-list">
+            <div class="evidence-item slow-reveal"><span class="evidence-no">01</span><div><strong>Recent performance</strong><p>What you completed, how hard it felt and whether progression is holding.</p></div></div>
+            <div class="evidence-item slow-reveal"><span class="evidence-no">02</span><div><strong>Recovery context</strong><p>Sleep, HRV, resting heart rate, stress and missing-data confidence.</p></div></div>
+            <div class="evidence-item slow-reveal"><span class="evidence-no">03</span><div><strong>Your constraints</strong><p>Goal, available time, equipment, preference and previous exclusions.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-paper">
+      <div class="page-shell founder-grid">
+        <p class="eyebrow slow-reveal">The coaching standard</p>
+        <div>
+          <h2 class="section-title" data-word-reveal>Clear enough to use between sets.</h2>
+          <div class="route-list">
+            <div class="route-row slow-reveal">
+              <span class="route-number">01</span><span class="route-name">Direct</span>
+              <span class="route-description">Lead with the decision. Keep explanation proportional to the question.</span><span class="route-arrow">·</span>
+            </div>
+            <div class="route-row slow-reveal">
+              <span class="route-number">02</span><span class="route-name">Specific</span>
+              <span class="route-description">Use sets, repetitions, time, intensity or food amounts when they make the advice actionable.</span><span class="route-arrow">·</span>
+            </div>
+            <div class="route-row slow-reveal">
+              <span class="route-number">03</span><span class="route-name">Honest</span>
+              <span class="route-description">State uncertainty, missing context and the limit between guidance and medical advice.</span><span class="route-arrow">·</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-night coach-controls">
+      <div class="page-shell">
+        <header class="depth-header depth-header-split">
+          <div>
+            <p class="eyebrow slow-reveal">You control the context</p>
+            <h2 class="section-title small" data-word-reveal>A coach that remembers only with permission.</h2>
+          </div>
+          <p class="lede slow-reveal">Health and workout context is consent-gated. You choose the coaching style, own the priorities that carry forward and can clear the conversation history.</p>
+        </header>
+
+        <div class="coach-control-grid">
+          <article class="coach-control-card slow-reveal">
+            <span class="capability-index">Style</span>
+            <div class="coach-modes" aria-label="Available coaching styles">
+              <span>Supportive</span><span>Balanced</span><span>Direct</span><span>Analytical</span>
+            </div>
+            <h3>The same evidence, in your preferred voice.</h3>
+          </article>
+          <article class="coach-control-card slow-reveal" style="--delay:80ms">
+            <span class="capability-index">Actions</span>
+            <div class="coach-output">
+              <span>Save training plan</span><span>Save meal plan</span><span>Start next chat</span>
+            </div>
+            <h3>The conversation can become a useful object.</h3>
+          </article>
+          <article class="coach-control-card slow-reveal" style="--delay:160ms">
+            <span class="capability-index">Integrity</span>
+            <div class="confidence-readout"><strong>6 / 7</strong><span>signals available</span></div>
+            <h3>Missing data stays missing, not guessed.</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-night">
+      <div class="page-shell founder-grid">
+        <div class="founder-mark slow-reveal" aria-hidden="true"><img src="/assets/lihas-logo.png" alt=""></div>
+        <div>
+          <p class="eyebrow slow-reveal">Why it matters</p>
+          <blockquote class="editorial-quote scrub-text" data-scrub-text>
+            The goal is not to replace your judgment. It is to put the right parts of your own data in front of you when a decision needs to be made.
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="download">
+      <div class="final-cta-inner">
+        <p class="eyebrow slow-reveal" style="color:rgba(255,255,255,.75)">Your context, one conversation</p>
+        <h2 data-word-reveal>Ask the question behind the score.</h2>
+        <span class="button button-light is-disabled slow-reveal" aria-disabled="true" aria-label="Lihas App Store link coming soon">App Store · coming soon <span class="button-arrow">↗</span></span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a class="wordmark" href="/"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a><p>Health intelligence for active people. Designed and built in Finland.</p></div>
+      <div class="footer-col"><strong>Product</strong><a href="/health/">Health</a><a href="/nutrition/">Nutrition</a><a href="/training/">Training</a><a href="/coach/">Coach</a></div>
+      <div class="footer-col"><strong>Company</strong><a href="/">About</a><a href="mailto:hello@lihas.app">Contact</a></div>
+      <div class="footer-col"><strong>Legal</strong><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/impressum">Imprint</a></div>
+    </div>
+    <div class="footer-base"><span>© <span data-year></span> Lihas</span><span>Health guidance, not medical advice</span></div>
+  </footer>
+</body>
+</html>

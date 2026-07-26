@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070b">
+  <meta name="description" content="Lihas turns your training goal, equipment and recovery into a personal plan that adapts with performance.">
+  <title>Adaptive training · Lihas</title>
+  <link rel="icon" type="image/png" href="/assets/lihas-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://use.typekit.net">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/jja4tyv.css">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="/assets/site.js" defer></script>
+</head>
+<body data-page="training">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="nav-rail" aria-hidden="true"></div>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a class="wordmark" href="/" aria-label="Lihas home"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a>
+    <div class="nav-links">
+      <a href="/health/" data-nav="health">Health</a>
+      <a href="/nutrition/" data-nav="nutrition">Nutrition</a>
+      <a href="/training/" data-nav="training">Training</a>
+      <a href="/coach/" data-nav="coach">Coach</a>
+    </div>
+    <a class="nav-cta" href="#download">Get the app</a>
+  </nav>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-hero-inner">
+        <p class="page-number slow-reveal">Adaptive training</p>
+        <h1 class="page-title" data-word-reveal>Built around your reality.</h1>
+        <p class="page-lede slow-reveal" style="--delay:380ms">
+          Describe what you want to train. Lihas combines the request with your level, equipment, recent work and recovery before it writes the plan.
+        </p>
+      </div>
+      <div class="page-jump">See the tailoring</div>
+    </header>
+
+    <section class="section section-night">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-shell plan-stage">
+        <div class="video-shell iphone-15 slow-reveal" data-parallax="-12">
+          <video id="plan-video" src="/assets/trainingplan.mp4" poster="/assets/trainingplan-poster.jpg" muted loop autoplay playsinline preload="metadata" aria-label="Screen recording of Lihas generating a personalized training plan"></video>
+          <span class="dynamic-island" aria-hidden="true"></span>
+          <button class="video-control" type="button" aria-controls="plan-video" data-video-control aria-label="Pause product video">Ⅱ</button>
+        </div>
+
+        <div class="training-tailor">
+          <p class="eyebrow slow-reveal">Tailored training plans</p>
+          <h2 class="section-title small" data-word-reveal>One plan, shaped around your reality.</h2>
+          <blockquote class="plan-prompt slow-reveal">
+            Tailored to your goal, schedule, equipment and current recovery, then adjusted by the work you actually complete.
+          </blockquote>
+          <div class="constraint-ribbon slow-reveal" aria-label="Plan inputs">
+            <span><small>Goal</small>Hypertrophy</span>
+            <span><small>Time</small>55 min</span>
+            <span><small>Equipment</small>Full gym</span>
+            <span><small>Recovery</small>82 / ready</span>
+          </div>
+          <ol class="plan-steps">
+            <li class="slow-reveal"><div><strong>The request stays intact</strong>Target muscles, exclusions, time and equipment become hard constraints.</div></li>
+            <li class="slow-reveal"><div><strong>Your context shapes the load</strong>Experience, recent sets and recovery influence volume and intensity.</div></li>
+            <li class="slow-reveal"><div><strong>The output is actionable</strong>Exercises, sets, repetitions, rest and progression arrive as a structured plan.</div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-paper">
+      <div class="page-shell">
+        <p class="eyebrow slow-reveal">Not a one-time template</p>
+        <h2 class="section-title" data-word-reveal>The plan learns from the work you actually complete.</h2>
+        <div class="route-list">
+          <div class="route-row slow-reveal">
+            <span class="route-number">01</span>
+            <span class="route-name">Perform</span>
+            <span class="route-description">Log the load, repetitions, effort and any substitutions from the real session.</span>
+            <span class="route-arrow" aria-hidden="true">·</span>
+          </div>
+          <div class="route-row slow-reveal">
+            <span class="route-number">02</span>
+            <span class="route-name">Compare</span>
+            <span class="route-description">Track progression against your own recent performance and the planned target.</span>
+            <span class="route-arrow" aria-hidden="true">·</span>
+          </div>
+          <div class="route-row slow-reveal">
+            <span class="route-number">03</span>
+            <span class="route-name">Adapt</span>
+            <span class="route-description">Adjust the next exposure when performance, readiness or fatigue materially changes.</span>
+            <span class="route-arrow" aria-hidden="true">·</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-night session-runtime">
+      <div class="page-shell runtime-grid">
+        <div class="runtime-console slow-reveal">
+          <span class="runtime-status"><i></i> Session live</span>
+          <strong class="runtime-clock">00:47:12</strong>
+          <div class="runtime-stats">
+            <span>Working sets<strong>18</strong></span>
+            <span>Volume<strong>7,840 kg</strong></span>
+            <span>Session effort<strong>8.1</strong></span>
+          </div>
+          <div class="runtime-score"><span style="--runtime-value:.84"></span><small>Workout score / 84</small></div>
+        </div>
+        <div class="runtime-copy">
+          <p class="eyebrow slow-reveal">From plan to proof</p>
+          <h2 class="section-title small" data-word-reveal>Finish the session. Improve the next one.</h2>
+          <p class="lede slow-reveal">Gym arrival can start a live session automatically. Lihas then compares volume, intensity and work density with your own history—not a generic leaderboard.</p>
+          <div class="runtime-footnotes slow-reveal">
+            <span><strong>Strength map</strong>Muscle-level ranking shows strong and weak links.</span>
+            <span><strong>Progress loop</strong>Completed loads and repetitions shape future progression.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-night">
+      <div class="page-shell">
+        <p class="eyebrow slow-reveal">The constraint chain</p>
+        <h2 class="section-title" data-word-reveal>Specific input should create specific training.</h2>
+        <div class="logic-line">
+          <div class="logic-step slow-reveal"><span class="logic-no">01 / Goal</span><span class="logic-title">Muscles and outcome</span><span class="logic-copy">The requested focus is preserved as a generation constraint.</span></div>
+          <div class="logic-step slow-reveal" style="--delay:80ms"><span class="logic-no">02 / Reality</span><span class="logic-title">Time and equipment</span><span class="logic-copy">Exercise choice must fit the gym, duration and exclusions.</span></div>
+          <div class="logic-step slow-reveal" style="--delay:160ms"><span class="logic-no">03 / Person</span><span class="logic-title">Level and history</span><span class="logic-copy">Volume and loading reflect capability, not generic averages.</span></div>
+          <div class="logic-step slow-reveal" style="--delay:240ms"><span class="logic-no">04 / Feedback</span><span class="logic-title">Recovery and results</span><span class="logic-copy">The next plan changes when your real performance changes.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="download">
+      <div class="final-cta-inner">
+        <p class="eyebrow slow-reveal" style="color:rgba(255,255,255,.75)">A plan that fits</p>
+        <h2 data-word-reveal>Training built around you. Not the average user.</h2>
+        <span class="button button-light is-disabled slow-reveal" aria-disabled="true" aria-label="Lihas App Store link coming soon">App Store · coming soon <span class="button-arrow">↗</span></span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a class="wordmark" href="/"><img src="/assets/lihas-logo.png" alt=""><span>Lihas</span></a><p>Health intelligence for active people. Designed and built in Finland.</p></div>
+      <div class="footer-col"><strong>Product</strong><a href="/health/">Health</a><a href="/nutrition/">Nutrition</a><a href="/training/">Training</a><a href="/coach/">Coach</a></div>
+      <div class="footer-col"><strong>Company</strong><a href="/">About</a><a href="mailto:hello@lihas.app">Contact</a></div>
+      <div class="footer-col"><strong>Legal</strong><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/impressum">Imprint</a></div>
+    </div>
+    <div class="footer-base"><span>© <span data-year></span> Lihas</span><span>Health guidance, not medical advice</span></div>
+  </footer>
+</body>
+</html>

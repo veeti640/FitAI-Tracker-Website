@@ -3,9 +3,15 @@
   const finePointer = window.matchMedia("(pointer: fine)").matches;
   const body = document.body;
   let lenis = null;
+  let headerFloating = null;
+  let scrollRenderFrame = 0;
+  let scrollMotionTargets = null;
 
   const setHeaderState = (scrollY = window.scrollY) => {
-    body.classList.toggle("has-floating-nav", scrollY > 12);
+    const nextFloating = scrollY > 12;
+    if (nextFloating === headerFloating) return;
+    headerFloating = nextFloating;
+    body.classList.toggle("has-floating-nav", nextFloating);
   };
 
   const clamp = (value, minimum = 0, maximum = 1) =>
@@ -83,26 +89,34 @@
     if (reduceMotion) {
       characters.forEach((character) => {
         character.style.opacity = "1";
-        character.style.filter = "none";
+        character.style.transform = "none";
       });
       return;
     }
 
     const baseDelay = loadReveal ? 190 : 0;
-    const stagger = characters.length > 42 ? 34 : 48;
+    const stagger = characters.length > 42 ? 30 : 38;
     characters.forEach((character, index) => {
-      character.animate(
+      const animation = character.animate(
         [
-          { opacity: 0, filter: "blur(10px)" },
-          { opacity: 1, filter: "blur(0px)" },
+          { opacity: 0, transform: "translate3d(0, 0.18em, 0)" },
+          { opacity: 1, transform: "translate3d(0, 0, 0)" },
         ],
         {
-          duration: index % 2 === 0 ? 640 : 560,
-          delay: baseDelay + Math.min(index * stagger, 2200),
+          duration: index % 2 === 0 ? 620 : 560,
+          delay: baseDelay + Math.min(index * stagger, 1700),
           easing: "cubic-bezier(.16,1,.3,1)",
           fill: "both",
         },
       );
+
+      animation.finished
+        .then(() => {
+          character.style.opacity = "1";
+          character.style.transform = "none";
+          animation.cancel();
+        })
+        .catch(() => {});
     });
   };
 
@@ -159,47 +173,91 @@
     revealElements.forEach((element) => observer.observe(element));
   };
 
+  const getScrollMotionTargets = () => {
+    if (scrollMotionTargets) return scrollMotionTargets;
+
+    scrollMotionTargets = {
+      scrub: [...document.querySelectorAll("[data-scrub-text]")].map((element) => ({
+        element,
+        words: [...element.querySelectorAll(".scrub-word-live")],
+      })),
+      parallax: [...document.querySelectorAll("[data-parallax]")].map((element) => ({
+        element,
+        strength: Number(element.dataset.parallax || 24),
+      })),
+      scenes: [...document.querySelectorAll("[data-decision-scene]")].map((scene) => ({
+        scene,
+        lens: scene.querySelector("[data-decision-lens]"),
+        lanes: [...scene.querySelectorAll("[data-decision-lane]")].map((lane) => ({
+          lane,
+          direction: Number(lane.dataset.decisionLane || 1),
+        })),
+      })),
+    };
+
+    return scrollMotionTargets;
+  };
+
   const renderScrollMotion = () => {
     setHeaderState(window.scrollY);
     if (reduceMotion) return;
 
-    document.querySelectorAll("[data-scrub-text]").forEach((element) => {
-      const rect = element.getBoundingClientRect();
-      const start = window.innerHeight * 0.84;
-      const end = window.innerHeight * 0.22;
+    const viewportHeight = window.innerHeight;
+    const targets = getScrollMotionTargets();
+
+    // Read layout first, then write styles. This prevents a read/write loop from
+    // forcing repeated synchronous layout work during a single scroll frame.
+    const scrubFrames = targets.scrub.map((target) => ({
+      ...target,
+      rect: target.element.getBoundingClientRect(),
+    }));
+    const parallaxFrames = targets.parallax.map((target) => ({
+      ...target,
+      rect: target.element.getBoundingClientRect(),
+    }));
+    const sceneFrames = targets.scenes.map((target) => ({
+      ...target,
+      rect: target.scene.getBoundingClientRect(),
+    }));
+
+    scrubFrames.forEach(({ rect, words }) => {
+      if (rect.top > viewportHeight + 120) return;
+      if (rect.bottom < -120) {
+        words.forEach((word) => {
+          word.style.opacity = "1";
+        });
+        return;
+      }
+
+      const start = viewportHeight * 0.84;
+      const end = viewportHeight * 0.22;
       const progress = clamp((start - rect.top) / (start - end));
-      const words = element.querySelectorAll(".scrub-word-live");
       const spread = Math.max(words.length - 1, 1);
 
       words.forEach((word, index) => {
         const wordProgress = clamp(
           progress * 1.46 - (index / spread) * 0.46,
         );
-        const eased = 1 - Math.pow(1 - wordProgress, 3);
-        word.style.opacity = String(eased);
+        word.style.opacity = String(1 - Math.pow(1 - wordProgress, 3));
       });
     });
 
-    document.querySelectorAll("[data-parallax]").forEach((element) => {
-      const rect = element.getBoundingClientRect();
-      if (rect.bottom < -120 || rect.top > window.innerHeight + 120) return;
-      const strength = Number(element.dataset.parallax || 24);
+    parallaxFrames.forEach(({ element, rect, strength }) => {
+      if (rect.bottom < -120 || rect.top > viewportHeight + 120) return;
       const progress =
-        (rect.top + rect.height / 2 - window.innerHeight / 2) /
-        window.innerHeight;
+        (rect.top + rect.height / 2 - viewportHeight / 2) /
+        viewportHeight;
       element.style.setProperty("--parallax-y", `${progress * strength}px`);
     });
 
-    document.querySelectorAll("[data-decision-scene]").forEach((scene) => {
-      const rect = scene.getBoundingClientRect();
-      const range = Math.max(rect.height - window.innerHeight, 1);
+    sceneFrames.forEach(({ rect, lens, lanes }) => {
+      if (rect.bottom < -160 || rect.top > viewportHeight + 160) return;
+      const range = Math.max(rect.height - viewportHeight, 1);
       const progress = clamp(-rect.top / range);
       const lensProgress = clamp((progress - 0.12) / 0.58);
       const lensEased = 1 - Math.pow(1 - lensProgress, 3);
-      const lens = scene.querySelector("[data-decision-lens]");
 
-      scene.querySelectorAll("[data-decision-lane]").forEach((lane) => {
-        const direction = Number(lane.dataset.decisionLane || 1);
+      lanes.forEach(({ lane, direction }) => {
         const travel = (progress - 0.5) * 250 * direction;
         lane.style.transform = `translate3d(${travel}px, 0, 0)`;
       });
@@ -211,36 +269,30 @@
     });
   };
 
+  const scheduleScrollMotion = () => {
+    if (scrollRenderFrame) return;
+    scrollRenderFrame = requestAnimationFrame(() => {
+      scrollRenderFrame = 0;
+      renderScrollMotion();
+    });
+  };
+
   const initSmoothScroll = () => {
     if (reduceMotion || !finePointer || typeof window.Lenis !== "function") {
-      window.addEventListener("scroll", renderScrollMotion, { passive: true });
+      window.addEventListener("scroll", scheduleScrollMotion, { passive: true });
       renderScrollMotion();
       return;
     }
 
     lenis = new window.Lenis({
-      duration: 1.55,
-      easing: (value) => 1 - Math.pow(1 - value, 3),
+      lerp: 0.16,
       smoothWheel: true,
-      wheelMultiplier: 0.82,
+      wheelMultiplier: 0.96,
       touchMultiplier: 1,
+      autoRaf: true,
     });
 
-    lenis.on("scroll", () => {
-      renderScrollMotion();
-      window.ScrollTrigger?.update();
-    });
-
-    if (window.gsap) {
-      window.gsap.ticker.add((time) => lenis.raf(time * 1000));
-      window.gsap.ticker.lagSmoothing(0);
-    } else {
-      const frame = (time) => {
-        lenis.raf(time);
-        requestAnimationFrame(frame);
-      };
-      requestAnimationFrame(frame);
-    }
+    lenis.on("scroll", scheduleScrollMotion);
 
     renderScrollMotion();
   };
@@ -267,15 +319,28 @@
     if (reduceMotion || !finePointer) return;
 
     document.querySelectorAll(".site-nav a").forEach((link) => {
+      let pointerFrame = 0;
+      let pointerX = 0;
+      let pointerY = 0;
+
       link.addEventListener("pointermove", (event) => {
-        const rect = link.getBoundingClientRect();
-        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 5;
-        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 4;
-        link.style.setProperty("--nav-shift-x", `${x}px`);
-        link.style.setProperty("--nav-shift-y", `${y}px`);
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        if (pointerFrame) return;
+
+        pointerFrame = requestAnimationFrame(() => {
+          pointerFrame = 0;
+          const rect = link.getBoundingClientRect();
+          const x = ((pointerX - rect.left) / rect.width - 0.5) * 5;
+          const y = ((pointerY - rect.top) / rect.height - 0.5) * 4;
+          link.style.setProperty("--nav-shift-x", `${x}px`);
+          link.style.setProperty("--nav-shift-y", `${y}px`);
+        });
       });
 
       link.addEventListener("pointerleave", () => {
+        if (pointerFrame) cancelAnimationFrame(pointerFrame);
+        pointerFrame = 0;
         link.style.setProperty("--nav-shift-x", "0px");
         link.style.setProperty("--nav-shift-y", "0px");
       });
@@ -283,40 +348,26 @@
   };
 
   const initPageMotion = () => {
-    const gsap = window.gsap;
-    const ScrollTrigger = window.ScrollTrigger;
-    if (reduceMotion || !gsap || !ScrollTrigger) return;
+    if (reduceMotion) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-
+    const groups = [];
     const enter = (
       selector,
-      trigger,
+      triggerSelector,
       fromTransform = "translate3d(0, 22px, 0)",
       stagger = 0.065,
     ) => {
-      const targets = gsap.utils.toArray(selector);
+      const targets = [...document.querySelectorAll(selector)];
       if (!targets.length) return;
 
-      gsap.fromTo(
+      groups.push({
         targets,
-        { opacity: 0.28, transform: fromTransform },
-        {
-          opacity: 1,
-          transform: "translate3d(0, 0, 0)",
-          duration: 1.15,
-          stagger,
-          ease: "power4.out",
-          clearProps: "transform,opacity",
-          scrollTrigger: trigger
-            ? {
-                trigger,
-                start: "top 78%",
-                once: true,
-              }
-            : undefined,
-        },
-      );
+        trigger: triggerSelector
+          ? document.querySelector(triggerSelector)
+          : null,
+        fromTransform,
+        stagger,
+      });
     };
 
     const page = body.dataset.page || "home";
@@ -365,7 +416,61 @@
       );
     }
 
-    document.fonts?.ready.then(() => ScrollTrigger.refresh());
+    const play = ({ targets, fromTransform, stagger }) => {
+      targets.forEach((target, index) => {
+        const animation = target.animate(
+          [
+            { opacity: 0.28, transform: fromTransform },
+            { opacity: 1, transform: "translate3d(0, 0, 0)" },
+          ],
+          {
+            duration: 760,
+            delay: Math.min(index * stagger * 1000, 420),
+            easing: "cubic-bezier(.16,1,.3,1)",
+            fill: "both",
+          },
+        );
+
+        animation.finished
+          .then(() => {
+            target.style.opacity = "1";
+            target.style.transform = "none";
+            animation.cancel();
+          })
+          .catch(() => {});
+      });
+    };
+
+    const triggeredGroups = groups.filter(({ trigger }) => trigger);
+    groups
+      .filter(({ trigger }) => !trigger)
+      .forEach((group) => requestAnimationFrame(() => play(group)));
+
+    if (!triggeredGroups.length) return;
+    if (!("IntersectionObserver" in window)) {
+      triggeredGroups.forEach(play);
+      return;
+    }
+
+    const groupByTrigger = new Map(
+      triggeredGroups.map((group) => [group.trigger, group]),
+    );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const group = groupByTrigger.get(entry.target);
+          if (group) play(group);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -18% 0px",
+      },
+    );
+
+    triggeredGroups.forEach(({ trigger }) => observer.observe(trigger));
   };
 
   const initNutritionGame = () => {
@@ -508,18 +613,21 @@
         const selected = panel.dataset.healthPanel === name;
         panel.classList.toggle("is-active", selected);
         panel.hidden = !selected;
-        if (selected && !reduceMotion && window.gsap) {
-          window.gsap.fromTo(
-            panel,
-            { opacity: 0, transform: "translate3d(0, 22px, 0)" },
+        if (selected && !reduceMotion) {
+          const animation = panel.animate(
+            [
+              { opacity: 0, transform: "translate3d(0, 18px, 0)" },
+              { opacity: 1, transform: "translate3d(0, 0, 0)" },
+            ],
             {
-              opacity: 1,
-              transform: "translate3d(0, 0, 0)",
-              duration: 0.72,
-              ease: "power4.out",
-              clearProps: "transform,opacity",
+              duration: 460,
+              easing: "cubic-bezier(.16,1,.3,1)",
+              fill: "both",
             },
           );
+          animation.finished
+            .then(() => animation.cancel())
+            .catch(() => {});
         }
       });
     };
@@ -583,5 +691,8 @@
   initHealthTabs();
   initVideoControls();
   setYear();
-  window.addEventListener("resize", renderScrollMotion, { passive: true });
+  window.addEventListener("resize", () => {
+    scrollMotionTargets = null;
+    scheduleScrollMotion();
+  }, { passive: true });
 })();

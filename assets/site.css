@@ -29,6 +29,8 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --nav-morph-duration: 620ms;
+  --nav-morph-ease: cubic-bezier(0.32, 0.72, 0, 1);
   --shadow-float: 0 34px 90px rgba(4, 8, 18, 0.26), 0 6px 22px rgba(4, 8, 18, 0.12);
 }
 
@@ -115,9 +117,10 @@ video {
   transform: translateY(0);
   transform-origin: center top;
   transition:
-    opacity 0.58s var(--ease-drawer),
-    transform 0.68s var(--ease-drawer);
+    opacity var(--nav-morph-duration) var(--nav-morph-ease),
+    transform var(--nav-morph-duration) var(--nav-morph-ease);
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 body.has-floating-nav .nav-rail {
@@ -138,8 +141,9 @@ body.has-floating-nav .nav-rail {
   justify-content: space-between;
   color: var(--white);
   transform: translate3d(0, 0, 0);
-  transition: transform 0.68s var(--ease-drawer);
+  transition: transform var(--nav-morph-duration) var(--nav-morph-ease);
   isolation: isolate;
+  will-change: transform;
 }
 
 .site-nav::before,
@@ -155,9 +159,10 @@ body.has-floating-nav .nav-rail {
   opacity: 0;
   transform: translateX(-50%) scaleX(1.055);
   transition:
-    opacity 0.58s var(--ease-drawer),
-    transform 0.68s var(--ease-drawer);
+    opacity var(--nav-morph-duration) var(--nav-morph-ease),
+    transform var(--nav-morph-duration) var(--nav-morph-ease);
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
 .site-nav::before {
@@ -197,18 +202,34 @@ body.has-floating-nav .site-nav::after {
 }
 
 .site-nav > .wordmark,
+.site-nav > .nav-links,
 .site-nav > .nav-cta {
-  transition:
-    transform 0.68s var(--ease-drawer),
-    opacity 0.28s ease;
+  transition: transform var(--nav-morph-duration) var(--nav-morph-ease);
+  will-change: transform;
+}
+
+.site-nav > .wordmark {
+  transform-origin: left center;
+}
+
+.site-nav > .nav-links {
+  transform-origin: center;
+}
+
+.site-nav > .nav-cta {
+  transform-origin: right center;
 }
 
 body.has-floating-nav .site-nav > .wordmark {
-  transform: translateX(max(0px, calc((100vw - 1012px) / 2)));
+  transform: translate3d(max(0px, calc((100vw - 1012px) / 2)), 0, 0) scale(0.94);
+}
+
+body.has-floating-nav .site-nav > .nav-links {
+  transform: scale(0.96);
 }
 
 body.has-floating-nav .site-nav > .nav-cta {
-  transform: translateX(min(0px, calc((1012px - 100vw) / 2)));
+  transform: translate3d(min(0px, calc((1012px - 100vw) / 2)), 0, 0) scale(0.94);
 }
 
 .wordmark {
@@ -738,7 +759,6 @@ h3 {
 .word-char {
   display: inline-block;
   opacity: 0;
-  will-change: opacity, filter;
 }
 
 .scrub-text .scrub-word {

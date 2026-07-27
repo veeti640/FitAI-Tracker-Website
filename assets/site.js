@@ -8,7 +8,7 @@
   let scrollMotionTargets = null;
 
   const setHeaderState = (scrollY = window.scrollY) => {
-    const nextFloating = scrollY > 12;
+    const nextFloating = scrollY >= 10;
     if (nextFloating === headerFloating) return;
     headerFloating = nextFloating;
     body.classList.toggle("has-floating-nav", nextFloating);

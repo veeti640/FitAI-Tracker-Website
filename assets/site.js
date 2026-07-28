@@ -287,19 +287,23 @@
       if (rect.bottom < -160 || rect.top > viewportHeight + 160) return;
 
       const reveal = clamp(
-        (viewportHeight * 0.22 - rect.top) / (viewportHeight * 0.56),
+        (viewportHeight * 0.68 - rect.top) / (viewportHeight * 0.5),
       );
       const revealEased = reveal * reveal * (3 - 2 * reveal);
+      const blurReveal = clamp(
+        (viewportHeight * 0.5 - rect.top) / (viewportHeight * 0.62),
+      );
+      const blurEased = blurReveal * blurReveal * (3 - 2 * blurReveal);
       const phoneProgress = clamp(
-        (viewportHeight * 0.2 - rect.top) / (viewportHeight * 0.92),
+        (viewportHeight * 0.38 - rect.top) / (viewportHeight * 0.95),
       );
 
       if (blur) {
-        blur.style.opacity = String(revealEased);
+        blur.style.opacity = String(blurEased);
       }
 
       if (shade) {
-        shade.style.opacity = String(0.18 + revealEased * 0.48);
+        shade.style.opacity = String(0.18 + blurEased * 0.44);
       }
 
       if (copy) {

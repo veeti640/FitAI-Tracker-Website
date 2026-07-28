@@ -953,6 +953,319 @@ h3 {
   border-color: rgba(255, 255, 255, 0.18);
 }
 
+.health-bridge {
+  position: relative;
+  height: 1500px;
+  overflow: hidden;
+  color: var(--white);
+  background: #05060a;
+}
+
+.health-bridge-stage {
+  position: relative;
+  left: 50%;
+  width: min(2100px, 142vw);
+  height: 1370px;
+  transform: translateX(-50%);
+}
+
+.health-bridge-visual {
+  position: absolute;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  height: 1000px;
+  overflow: hidden;
+  background: #080a0d;
+}
+
+.health-bridge-image {
+  position: absolute;
+  inset: -2%;
+  width: 104%;
+  height: 104%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  transform: scale(1.025);
+}
+
+.health-bridge-image-blur {
+  opacity: 0;
+  filter: blur(9px);
+  transform: scale(1.055);
+  will-change: opacity;
+}
+
+.health-bridge-shade {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background:
+    linear-gradient(180deg, rgba(3, 5, 8, 0.1) 0%, rgba(3, 5, 8, 0.2) 45%, rgba(3, 5, 8, 0.64) 100%),
+    rgba(3, 5, 8, 0.24);
+  will-change: opacity;
+}
+
+.health-bridge-copy {
+  position: absolute;
+  z-index: 3;
+  top: 156px;
+  left: 50%;
+  width: min(760px, calc(100vw - 48px));
+  padding: 0 16px;
+  text-align: center;
+  opacity: 0;
+  transform: translate3d(-50%, 20px, 0) scale(0.95);
+  transform-origin: 50% 44%;
+  will-change: opacity, transform;
+}
+
+.health-source-icons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.health-source-icon {
+  position: relative;
+  display: grid;
+  width: 104px;
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 25%;
+  box-shadow:
+    0 24px 54px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
+}
+
+.apple-health-icon {
+  background:
+    radial-gradient(circle at 36% 18%, rgba(255, 255, 255, 0.98), transparent 46%),
+    linear-gradient(145deg, #ffffff, #e8e8ea);
+}
+
+.apple-health-icon > span {
+  position: relative;
+  width: 50px;
+  height: 45px;
+  filter: drop-shadow(0 8px 10px rgba(255, 48, 79, 0.18));
+}
+
+.apple-health-icon > span::before,
+.apple-health-icon > span::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 25px;
+  width: 25px;
+  height: 40px;
+  border-radius: 25px 25px 0 0;
+  background: linear-gradient(180deg, #ff4b68, #ff224d);
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.apple-health-icon > span::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+.apple-fitness-icon {
+  background:
+    radial-gradient(circle at 32% 20%, rgba(255, 255, 255, 0.12), transparent 42%),
+    linear-gradient(145deg, #202327, #08090b 72%);
+}
+
+.fitness-ring {
+  position: absolute;
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+}
+
+.fitness-ring-move {
+  width: 66px;
+  height: 66px;
+  background: conic-gradient(#fa2968 0 84%, rgba(250, 41, 104, 0.22) 84%);
+}
+
+.fitness-ring-exercise {
+  width: 48px;
+  height: 48px;
+  background: conic-gradient(#9bf129 0 69%, rgba(155, 241, 41, 0.2) 69%);
+}
+
+.fitness-ring-stand {
+  width: 30px;
+  height: 30px;
+  background: conic-gradient(#48d9f5 0 76%, rgba(72, 217, 245, 0.22) 76%);
+}
+
+.health-bridge-kicker {
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.health-bridge-copy h2 {
+  max-width: 760px;
+  margin: 0;
+  padding-bottom: 0.1em;
+  font-family: var(--font-display);
+  font-size: clamp(52px, 5.1vw, 78px);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.health-bridge-copy > p:last-child {
+  max-width: 690px;
+  margin: 15px auto 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(17px, 1.55vw, 21px);
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  line-height: 1.48;
+  text-wrap: balance;
+}
+
+.health-phone-deck {
+  position: absolute;
+  z-index: 4;
+  top: 560px;
+  left: 50%;
+  display: flex;
+  width: min(1040px, 82vw);
+  justify-content: center;
+  gap: clamp(14px, 2vw, 28px);
+  transform: translateX(-50%);
+}
+
+.health-phone-wrap {
+  position: relative;
+  width: min(300px, 24vw);
+  flex: 0 0 auto;
+  will-change: transform;
+}
+
+.health-phone-left {
+  margin-top: 64px;
+  z-index: 1;
+}
+
+.health-phone-centre {
+  z-index: 3;
+}
+
+.health-phone-right {
+  margin-top: 116px;
+  z-index: 2;
+}
+
+.health-phone {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 393 / 852;
+  padding: 8px;
+  border: 1px solid rgba(235, 238, 241, 0.62);
+  border-radius: clamp(40px, 4.2vw, 56px);
+  background:
+    linear-gradient(102deg, #6e7072 0%, #1c1d1f 5%, #55585b 11%, #161719 48%, #74777a 94%, #242527 100%);
+  box-shadow:
+    0 54px 92px rgba(0, 0, 0, 0.48),
+    0 10px 28px rgba(0, 0, 0, 0.46),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.health-phone::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.health-phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: clamp(34px, 3.65vw, 48px);
+  background:
+    radial-gradient(circle at 48% 17%, rgba(37, 59, 98, 0.22), transparent 31%),
+    linear-gradient(180deg, #080b12 0%, #030406 100%);
+  box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.82);
+}
+
+.health-phone-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.035), transparent 28%);
+  pointer-events: none;
+}
+
+.health-phone-island {
+  position: absolute;
+  z-index: 2;
+  top: 13px;
+  left: 50%;
+  width: 32%;
+  height: 3.5%;
+  min-height: 23px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+  background: #000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.68);
+  transform: translateX(-50%);
+}
+
+.health-phone-button {
+  position: absolute;
+  z-index: -1;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+  background: linear-gradient(180deg, #787b7f, #282a2d);
+}
+
+.health-phone-action {
+  top: 15%;
+  left: -3px;
+  height: 5%;
+}
+
+.health-phone-volume-up {
+  top: 23%;
+  left: -3px;
+  height: 8%;
+}
+
+.health-phone-volume-down {
+  top: 33%;
+  left: -3px;
+  height: 8%;
+}
+
+.health-phone-power {
+  top: 25%;
+  right: -3px;
+  height: 13%;
+  border-radius: 0 3px 3px 0;
+}
+
 .product-theatre {
   position: relative;
   min-height: 1160px;
@@ -3782,6 +4095,109 @@ body[data-page="nutrition"] .final-cta {
     width: 67%;
   }
 
+  .health-bridge {
+    height: 1160px;
+  }
+
+  .health-bridge-stage {
+    width: 100vw;
+    height: 1100px;
+  }
+
+  .health-bridge-visual {
+    top: 0;
+    height: 760px;
+  }
+
+  .health-bridge-image {
+    object-position: 42% 50%;
+  }
+
+  .health-bridge-copy {
+    top: 150px;
+    width: calc(100vw - 28px);
+    padding-inline: 0;
+  }
+
+  .health-source-icons {
+    gap: 13px;
+    margin-bottom: 22px;
+  }
+
+  .health-source-icon {
+    width: 76px;
+  }
+
+  .apple-health-icon > span {
+    width: 40px;
+    height: 36px;
+    transform: scale(0.8);
+  }
+
+  .fitness-ring-move {
+    width: 50px;
+    height: 50px;
+  }
+
+  .fitness-ring-exercise {
+    width: 36px;
+    height: 36px;
+  }
+
+  .fitness-ring-stand {
+    width: 22px;
+    height: 22px;
+  }
+
+  .fitness-ring {
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+  }
+
+  .health-bridge-copy h2 {
+    font-size: clamp(42px, 12.8vw, 60px);
+    line-height: 1.03;
+  }
+
+  .health-bridge-copy > p:last-child {
+    max-width: 510px;
+    margin-top: 10px;
+    font-size: 16px;
+    line-height: 1.43;
+  }
+
+  .health-phone-deck {
+    top: 590px;
+    width: 165vw;
+    gap: 12px;
+  }
+
+  .health-phone-wrap {
+    width: min(185px, 46vw);
+  }
+
+  .health-phone-left {
+    margin-top: 36px;
+  }
+
+  .health-phone-right {
+    margin-top: 68px;
+  }
+
+  .health-phone {
+    padding: 5px;
+    border-radius: 34px;
+  }
+
+  .health-phone-screen {
+    border-radius: 29px;
+  }
+
+  .health-phone-island {
+    top: 9px;
+    min-height: 16px;
+  }
+
   .product-theatre {
     min-height: auto;
     padding-block: 104px 140px;
@@ -4033,6 +4449,23 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .decision-lane {
+    transform: none !important;
+  }
+
+  .health-bridge-image-blur {
+    opacity: 0.82;
+  }
+
+  .health-bridge-shade {
+    opacity: 0.62;
+  }
+
+  .health-bridge-copy {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+
+  .health-phone-wrap {
     transform: none !important;
   }
 }

@@ -193,6 +193,17 @@
           direction: Number(lane.dataset.decisionLane || 1),
         })),
       })),
+      healthBridges: [...document.querySelectorAll("[data-health-bridge]")].map((scene) => ({
+        scene,
+        blur: scene.querySelector("[data-health-bridge-blur]"),
+        shade: scene.querySelector("[data-health-bridge-shade]"),
+        copy: scene.querySelector("[data-health-bridge-copy]"),
+        phones: [...scene.querySelectorAll("[data-health-bridge-phone]")].map((phone) => ({
+          phone,
+          enter: Number(phone.dataset.enter || 160),
+          delay: Number(phone.dataset.delay || 0),
+        })),
+      })),
     };
 
     return scrollMotionTargets;
@@ -216,6 +227,10 @@
       rect: target.element.getBoundingClientRect(),
     }));
     const sceneFrames = targets.scenes.map((target) => ({
+      ...target,
+      rect: target.scene.getBoundingClientRect(),
+    }));
+    const bridgeFrames = targets.healthBridges.map((target) => ({
       ...target,
       rect: target.scene.getBoundingClientRect(),
     }));
@@ -266,6 +281,39 @@
         lens.style.opacity = String(0.28 + lensEased * 0.72);
         lens.style.transform = `translate3d(0, ${(1 - lensEased) * 42}px, 0) scale(${0.94 + lensEased * 0.06})`;
       }
+    });
+
+    bridgeFrames.forEach(({ rect, blur, shade, copy, phones }) => {
+      if (rect.bottom < -160 || rect.top > viewportHeight + 160) return;
+
+      const reveal = clamp(
+        (viewportHeight * 0.22 - rect.top) / (viewportHeight * 0.56),
+      );
+      const revealEased = reveal * reveal * (3 - 2 * reveal);
+      const phoneProgress = clamp(
+        (viewportHeight * 0.2 - rect.top) / (viewportHeight * 0.92),
+      );
+
+      if (blur) {
+        blur.style.opacity = String(revealEased);
+      }
+
+      if (shade) {
+        shade.style.opacity = String(0.18 + revealEased * 0.48);
+      }
+
+      if (copy) {
+        copy.style.opacity = String(revealEased);
+        copy.style.transform = `translate3d(-50%, ${(1 - revealEased) * 20}px, 0) scale(${0.95 + revealEased * 0.05})`;
+      }
+
+      phones.forEach(({ phone, enter, delay }) => {
+        const localProgress = clamp(
+          (phoneProgress - delay) / Math.max(1 - delay, 0.01),
+        );
+        const localEased = 1 - Math.pow(1 - localProgress, 3);
+        phone.style.transform = `translate3d(0, ${enter * (1 - localEased)}px, 0)`;
+      });
     });
   };
 

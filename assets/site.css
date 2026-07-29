@@ -1293,9 +1293,9 @@ h3 {
 .privacy-vault-phone {
   position: absolute;
   z-index: 3;
-  bottom: -265px;
+  bottom: -95px;
   left: 50%;
-  width: min(780px, 68%);
+  width: min(650px, 58%);
   transform: translateX(-50%);
   filter:
     drop-shadow(0 46px 54px rgba(4, 11, 35, 0.34))
@@ -4265,8 +4265,8 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .privacy-vault-phone {
-    bottom: -100px;
-    width: min(500px, 120%);
+    bottom: -30px;
+    width: min(430px, 108%);
   }
 
   .product-theatre {

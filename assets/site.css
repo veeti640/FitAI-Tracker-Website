@@ -555,6 +555,7 @@ h3 {
     0 0 0 240px rgba(57, 103, 225, 0.02);
   transform: translateX(-50%) rotate(-8deg);
   pointer-events: none;
+  transition: opacity 240ms ease;
 }
 
 .hero::after {
@@ -568,60 +569,40 @@ h3 {
   background: rgba(49, 92, 211, 0.16);
   filter: blur(110px);
   pointer-events: none;
+  transition: opacity 240ms ease;
 }
 
-.hero-pointer-field {
+.hero-warp-canvas {
   position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  width: clamp(390px, 43vw, 680px);
-  aspect-ratio: 1;
-  opacity: 0.16;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
   pointer-events: none;
-  will-change: transform, opacity;
-  transform: translate3d(-50%, -50%, 0);
-  transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 240ms ease;
 }
 
-.hero-pointer-field::before {
-  content: "";
-  position: absolute;
-  inset: 4%;
-  border: 1px solid rgba(148, 177, 255, 0.11);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(112, 151, 255, 0.19), rgba(42, 80, 181, 0.075) 36%, transparent 69%);
-  box-shadow:
-    inset 0 0 76px rgba(76, 119, 231, 0.075),
-    0 0 110px rgba(50, 92, 210, 0.07);
+.hero.has-warp-canvas .hero-warp-canvas {
+  opacity: 1;
 }
 
-.hero-pointer-orbit {
-  position: absolute;
-  inset: 18%;
-  border: 1px solid rgba(174, 195, 255, 0.1);
-  border-radius: 50%;
-  box-shadow: 0 0 54px rgba(91, 133, 239, 0.08);
+.hero.has-warp-canvas::before,
+.hero.has-warp-canvas::after {
+  opacity: 0;
 }
 
-.hero-pointer-core {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  border: 1px solid rgba(225, 234, 255, 0.5);
-  border-radius: 50%;
-  background: rgba(138, 168, 255, 0.25);
-  box-shadow:
-    0 0 0 14px rgba(116, 153, 255, 0.035),
-    0 0 30px rgba(124, 160, 255, 0.34);
-  transform: translate3d(-50%, -50%, 0);
+.hero.has-warp-canvas .hero-copy .word-char,
+.hero.has-warp-canvas .eyebrow,
+.hero.has-warp-canvas .hero-sub,
+.hero.has-warp-canvas .hero-actions {
+  transform-origin: center;
+  will-change: transform;
 }
 
-.hero.is-pointer-active .hero-pointer-field {
-  opacity: 0.74;
+.hero > .grain {
+  z-index: 1;
 }
 
 .hero-inner {
@@ -1443,10 +1424,94 @@ h3 {
 }
 
 .apple-sync-stage {
+  position: relative;
+  display: flex;
+  min-height: 540px;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(54px, 8vw, 138px);
+  isolation: isolate;
+}
+
+.apple-sync-stage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 6% 8%;
+  background: radial-gradient(ellipse at center, rgba(60, 104, 222, 0.16), rgba(60, 104, 222, 0.035) 46%, transparent 72%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+.ecosystem-app {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) clamp(110px, 10vw, 170px) minmax(320px, 0.72fr);
-  min-height: 620px;
-  align-items: stretch;
+  justify-items: center;
+  gap: 28px;
+  margin: 0;
+}
+
+.ecosystem-app img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 34px 44px rgba(0, 0, 0, 0.34));
+}
+
+.ecosystem-app figcaption {
+  color: rgba(225, 232, 247, 0.64);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ecosystem-activity {
+  display: grid;
+  width: clamp(500px, 48vw, 690px);
+  justify-items: center;
+  gap: clamp(34px, 4vw, 58px);
+  margin: 0;
+}
+
+.ecosystem-activity > figcaption {
+  color: #eef2fb;
+  font-family: var(--font-ui);
+  font-size: clamp(32px, 3.8vw, 54px);
+  font-weight: 510;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.ecosystem-activity .activity-card-body {
+  width: 100%;
+  margin-top: 0;
+}
+
+.ecosystem-activity .activity-rings {
+  width: clamp(230px, 22vw, 310px);
+}
+
+.ecosystem-activity .activity-details {
+  gap: clamp(28px, 3vw, 42px);
+}
+
+.ecosystem-activity .activity-details strong {
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+.ecosystem-fitness {
+  width: clamp(190px, 21vw, 315px);
+}
+
+.ecosystem-times {
+  color: rgba(218, 227, 248, 0.78);
+  font-family: var(--font-ui);
+  font-size: clamp(70px, 8vw, 128px);
+  font-weight: 250;
+  line-height: 1;
+  text-shadow: 0 0 42px rgba(104, 145, 244, 0.24);
 }
 
 .apple-live-panel,
@@ -1512,7 +1577,6 @@ h3 {
 }
 
 .apple-app-id span,
-.fitness-kicker,
 .apple-live-reading > span {
   color: rgba(216, 224, 243, 0.52);
   font-family: var(--font-mono);
@@ -1722,105 +1786,176 @@ h3 {
 .apple-fitness-panel {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: clamp(34px, 4vw, 58px);
   border-radius: 8px 40px 40px 8px;
 }
 
-.fitness-logo-stage {
-  position: relative;
-  width: 150px;
-  margin-bottom: 34px;
+.activity-card-heading {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
-.fitness-logo-stage img {
-  position: relative;
-  z-index: 1;
+.activity-card-heading img {
+  display: block;
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.28));
+}
+
+.activity-card-heading div {
+  display: grid;
+  gap: 2px;
+}
+
+.activity-card-heading p {
+  margin: 0;
+  color: rgba(216, 224, 243, 0.52);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.activity-card-heading h3 {
+  margin: 0;
+  color: #eef2fb;
+  font-family: var(--font-ui);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.activity-card-body {
+  display: flex;
+  gap: clamp(20px, 2.4vw, 38px);
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin-top: clamp(52px, 7vw, 92px);
+}
+
+.activity-rings {
+  width: clamp(170px, 15vw, 220px);
+  flex: 0 0 auto;
+}
+
+.activity-rings svg {
   display: block;
   width: 100%;
-  filter: drop-shadow(0 28px 34px rgba(0, 0, 0, 0.34));
-  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  height: auto;
+  overflow: visible;
 }
 
-.fitness-orbit {
-  position: absolute;
-  inset: -19%;
-  border: 1px solid rgba(147, 176, 245, 0.13);
-  border-radius: 36%;
-  opacity: 0.6;
+.activity-ring-track,
+.activity-ring {
+  fill: none;
+  stroke-width: 16;
+  vector-effect: non-scaling-stroke;
 }
 
-.apple-sync.is-syncing .fitness-logo-stage img {
-  transform: scale(1.035);
+.activity-ring-track {
+  stroke: rgba(255, 255, 255, 0.055);
 }
 
-.fitness-kicker {
-  margin: 0 0 13px;
-  color: #83a8ff;
+.activity-ring {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.15));
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-.apple-fitness-panel h3 {
-  max-width: 420px;
-  margin: 0;
-  color: #e6ecfb;
-  font-family: var(--font-ui);
-  font-size: clamp(39px, 3.7vw, 58px);
-  font-weight: 560;
-  letter-spacing: -0.052em;
-  line-height: 0.96;
+.activity-ring-move {
+  stroke: url("#activity-move-gradient");
+  stroke-dasharray: 578.05;
+  stroke-dashoffset: 578.05;
 }
 
-.fitness-copy {
-  max-width: 420px;
-  margin: 22px 0 0;
-  color: rgba(218, 226, 244, 0.58);
-  font-size: 16px;
-  line-height: 1.55;
+.activity-ring-exercise {
+  stroke: url("#activity-exercise-gradient");
+  stroke-dasharray: 439.82;
+  stroke-dashoffset: 439.82;
+  transition-delay: 180ms;
 }
 
-.fitness-metrics {
+.activity-ring-stand {
+  stroke: url("#activity-stand-gradient");
+  stroke-dasharray: 301.59;
+  stroke-dashoffset: 301.59;
+  transition-delay: 360ms;
+}
+
+.apple-sync-stage.is-visible .activity-ring-move {
+  stroke-dashoffset: 86.71;
+}
+
+.apple-sync-stage.is-visible .activity-ring-exercise {
+  stroke-dashoffset: 175.93;
+}
+
+.apple-sync-stage.is-visible .activity-ring-stand {
+  stroke-dashoffset: 211.12;
+}
+
+.activity-details {
   display: grid;
-  gap: 13px;
-  margin-top: 32px;
-  padding-top: 26px;
-  border-top: 1px solid rgba(166, 185, 229, 0.13);
+  gap: 27px;
+  min-width: 146px;
 }
 
-.fitness-metrics > span {
+.activity-details > div {
   display: grid;
-  grid-template-columns: 8px 1fr auto;
-  gap: 12px;
-  align-items: center;
-  color: rgba(225, 231, 246, 0.54);
-  font-size: 13px;
+  gap: 4px;
 }
 
-.fitness-metrics i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.fitness-metrics strong {
-  color: #eef2fb;
-  font-family: var(--font-mono);
+.activity-details span {
+  color: rgba(216, 224, 243, 0.55);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 540;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
-.metric-move {
-  background: #ff375f;
-  box-shadow: 0 0 12px rgba(255, 55, 95, 0.38);
+.activity-details strong {
+  font-family: var(--font-ui);
+  font-size: clamp(24px, 2.3vw, 34px);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.metric-exercise {
-  background: #b9ff21;
-  box-shadow: 0 0 12px rgba(185, 255, 33, 0.3);
+.activity-details small {
+  margin-left: 3px;
+  color: rgba(216, 224, 243, 0.52);
+  font-size: 0.48em;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
-.metric-stand {
-  background: #29d5e6;
-  box-shadow: 0 0 12px rgba(41, 213, 230, 0.3);
+.activity-value-move {
+  color: #ff2d55;
+}
+
+.activity-value-exercise {
+  color: #a3f900;
+}
+
+.activity-value-stand {
+  color: #04c7dd;
+}
+
+.activity-sync-copy {
+  max-width: 470px;
+  margin: 54px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid rgba(166, 185, 229, 0.12);
+  color: rgba(218, 226, 244, 0.48);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .apple-sync-note {
@@ -4279,19 +4414,19 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .apple-sync-stage {
-    grid-template-columns: minmax(0, 1fr) 82px minmax(280px, 0.78fr);
+    gap: clamp(34px, 5vw, 68px);
   }
 
   .apple-live-panel {
     padding: 30px;
   }
 
-  .apple-fitness-panel {
-    padding: 34px 28px;
+  .ecosystem-activity {
+    width: clamp(430px, 52vw, 570px);
   }
 
-  .fitness-logo-stage {
-    width: 120px;
+  .ecosystem-fitness {
+    width: clamp(170px, 22vw, 250px);
   }
 }
 
@@ -4324,6 +4459,10 @@ body[data-page="nutrition"] .final-cta {
     height: 25px;
   }
 
+  .wordmark span {
+    display: none;
+  }
+
   .nav-links {
     gap: 0;
   }
@@ -4343,12 +4482,13 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .display {
-    font-size: clamp(60px, 18vw, 86px);
+    font-size: clamp(56px, 16.3vw, 78px);
     line-height: 0.98;
   }
 
   .hero-sub {
-    font-size: 17px;
+    max-width: 100%;
+    font-size: 16px;
   }
 
   .hero-index {
@@ -4622,78 +4762,55 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .apple-sync-stage {
-    grid-template-columns: 1fr;
     min-height: 0;
+    flex-direction: column;
+    gap: 34px;
+    padding: 42px 0 28px;
   }
 
-  .apple-live-panel {
-    min-height: 510px;
-    padding: 24px 20px 28px;
-    border-radius: 28px 28px 8px 8px;
+  .ecosystem-app {
+    gap: 15px;
   }
 
-  .apple-app-id {
-    gap: 12px;
+  .ecosystem-app figcaption {
+    font-size: 8px;
   }
 
-  .apple-app-id img {
-    width: 52px;
-    height: 52px;
+  .ecosystem-activity {
+    width: 100%;
+    gap: 28px;
   }
 
-  .apple-live-state {
-    padding: 9px 11px;
+  .ecosystem-activity > figcaption {
+    font-size: clamp(32px, 10vw, 44px);
   }
 
-  .apple-live-reading {
-    margin-top: 38px;
+  .ecosystem-activity .activity-card-body {
+    flex-direction: row;
+    gap: 18px;
+    align-items: center;
   }
 
-  .apple-live-reading strong {
-    font-size: 55px;
+  .ecosystem-activity .activity-rings {
+    width: min(48vw, 190px);
   }
 
-  .apple-live-chart {
-    min-height: 230px;
-    margin-top: 24px;
-    padding-left: 26px;
+  .ecosystem-activity .activity-details {
+    width: auto;
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
-  .apple-sync-operator {
-    min-height: 122px;
+  .ecosystem-activity .activity-details strong {
+    font-size: clamp(19px, 6.2vw, 27px);
   }
 
-  .apple-sync-line {
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 1px;
-    height: auto;
-    background: linear-gradient(180deg, rgba(124, 161, 249, 0.28), rgba(191, 209, 255, 0.76), rgba(124, 161, 249, 0.28));
+  .ecosystem-fitness {
+    width: min(42vw, 172px);
   }
 
-  .apple-sync-operator strong {
-    width: 76px;
-    height: 76px;
-    font-size: 44px;
-  }
-
-  .apple-sync-packet {
-    display: none;
-  }
-
-  .apple-fitness-panel {
-    min-height: 530px;
-    padding: 44px 28px;
-    border-radius: 8px 8px 28px 28px;
-  }
-
-  .fitness-logo-stage {
-    width: 126px;
-  }
-
-  .apple-fitness-panel h3 {
-    font-size: clamp(40px, 12vw, 56px);
+  .ecosystem-times {
+    font-size: clamp(44px, 12vw, 64px);
   }
 
   .apple-sync-note {
@@ -4873,7 +4990,7 @@ body[data-page="nutrition"] .final-cta {
 }
 
 @media (hover: none), (pointer: coarse) {
-  .hero-pointer-field {
+  .hero-warp-canvas {
     display: none;
   }
 }
@@ -4911,7 +5028,7 @@ body[data-page="nutrition"] .final-cta {
     transform: none !important;
   }
 
-  .hero-pointer-field {
+  .hero-warp-canvas {
     display: none;
   }
 

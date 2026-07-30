@@ -727,24 +727,243 @@
     });
   };
 
-  const initHeroPointerField = () => {
+  const initHeroWarp = () => {
     const hero = document.querySelector(".hero");
-    const field = hero?.querySelector("[data-hero-pointer-field]");
-    if (!hero || !field || reduceMotion || !finePointer) return;
+    const canvas = hero?.querySelector("[data-hero-warp]");
+    if (!hero || !canvas || reduceMotion || !finePointer) return;
 
-    let currentX = 0;
-    let currentY = 0;
-    let targetX = 0;
-    let targetY = 0;
+    const gl = canvas.getContext("webgl", {
+      alpha: false,
+      antialias: false,
+      depth: false,
+      powerPreference: "low-power",
+      preserveDrawingBuffer: false,
+    });
+    if (!gl) return;
+
+    const vertexSource = `
+      attribute vec2 a_position;
+      varying vec2 v_uv;
+
+      void main() {
+        v_uv = a_position * 0.5 + 0.5;
+        gl_Position = vec4(a_position, 0.0, 1.0);
+      }
+    `;
+
+    const fragmentSource = `
+      precision highp float;
+
+      uniform vec2 u_resolution;
+      uniform vec2 u_pointer;
+      uniform float u_strength;
+      varying vec2 v_uv;
+
+      vec3 heroScene(vec2 point) {
+        float aspect = u_resolution.x / max(u_resolution.y, 1.0);
+        float diagonal = clamp(point.x * 0.34 + point.y * 0.66, 0.0, 1.0);
+        vec3 colour = mix(vec3(0.0196, 0.0275, 0.0431), vec3(0.0314, 0.0431, 0.0706), diagonal);
+
+        vec2 blueDelta = (point - vec2(0.68, 0.28)) * vec2(aspect, 1.0);
+        float blueGlow = 1.0 - smoothstep(0.0, 0.42, length(blueDelta));
+        colour += vec3(0.0706, 0.1510, 0.3922) * blueGlow * 0.72;
+
+        vec2 lowDelta = (point - vec2(0.28, 0.72)) * vec2(aspect, 1.0);
+        float lowGlow = 1.0 - smoothstep(0.0, 0.46, length(lowDelta));
+        colour += vec3(0.0353, 0.0824, 0.2039) * lowGlow * 0.56;
+
+        vec2 arcDelta = (point - vec2(0.5, 0.035)) * vec2(aspect, 1.0);
+        float arcDistance = length(arcDelta);
+        float mainArc = 1.0 - smoothstep(0.0015, 0.004, abs(arcDistance - 0.735));
+        float outerBand = exp(-pow((arcDistance - 0.865) / 0.085, 2.0));
+        float farBand = exp(-pow((arcDistance - 1.005) / 0.105, 2.0));
+        colour += vec3(0.1529, 0.2510, 0.5686) * mainArc * 0.14;
+        colour += vec3(0.0745, 0.1451, 0.3529) * outerBand * 0.10;
+        colour += vec3(0.0549, 0.1059, 0.2588) * farBand * 0.07;
+
+        return colour;
+      }
+
+      void main() {
+        float aspect = u_resolution.x / max(u_resolution.y, 1.0);
+        vec2 point = vec2(v_uv.x, 1.0 - v_uv.y);
+        vec2 delta = (point - u_pointer) * vec2(aspect, 1.0);
+        float radius = length(delta);
+        float fieldRadius = 0.42;
+        float field = smoothstep(fieldRadius, 0.012, radius) * u_strength;
+        float falloff = clamp(1.0 - radius / fieldRadius, 0.0, 1.0);
+
+        float angle = atan(delta.y, delta.x);
+        float twist = 0.22 * field * falloff * falloff;
+        float sampledRadius = radius + 0.155 * field * falloff;
+        vec2 sampledDelta = vec2(cos(angle + twist), sin(angle + twist)) * sampledRadius;
+        vec2 warpedPoint = u_pointer + sampledDelta / vec2(aspect, 1.0);
+
+        vec3 colour = heroScene(warpedPoint);
+
+        float gravityShadow = exp(-radius * 19.0) * u_strength;
+        float coreShadow = 1.0 - smoothstep(0.008, 0.052, radius);
+        colour *= 1.0 - gravityShadow * 0.46;
+        colour = mix(colour, vec3(0.0196, 0.0471, 0.1294), coreShadow * u_strength * 0.72);
+
+        gl_FragColor = vec4(colour, 1.0);
+      }
+    `;
+
+    const compileShader = (type, source) => {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        gl.deleteShader(shader);
+        return null;
+      }
+      return shader;
+    };
+
+    const vertexShader = compileShader(gl.VERTEX_SHADER, vertexSource);
+    const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+    if (!vertexShader || !fragmentShader) return;
+
+    const program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+      gl.STATIC_DRAW
+    );
+
+    gl.useProgram(program);
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+    const pointerLocation = gl.getUniformLocation(program, "u_pointer");
+    const strengthLocation = gl.getUniformLocation(program, "u_strength");
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    let currentX = 0.66;
+    let currentY = 0.42;
+    let targetX = currentX;
+    let targetY = currentY;
+    let currentStrength = 0;
+    let targetStrength = 0;
     let frame = 0;
+    let heroBounds = hero.getBoundingClientRect();
+    const contentWarpTargets = [
+      ...hero.querySelectorAll(".hero-copy .word-char"),
+      hero.querySelector(".hero .eyebrow"),
+      hero.querySelector(".hero-sub"),
+      hero.querySelector(".hero-actions"),
+    ].filter(Boolean);
+    let contentMetrics = [];
+
+    const measureContent = () => {
+      heroBounds = hero.getBoundingClientRect();
+      contentMetrics = contentWarpTargets.map((element) => {
+        const bounds = element.getBoundingClientRect();
+        return {
+          element,
+          x: bounds.left - heroBounds.left + bounds.width / 2,
+          y: bounds.top - heroBounds.top + bounds.height / 2,
+          isCharacter: element.classList.contains("word-char"),
+        };
+      });
+    };
+
+    const resetContentWarp = () => {
+      contentWarpTargets.forEach((element) => {
+        element.style.transform = "";
+      });
+    };
+
+    const renderContentWarp = () => {
+      if (currentStrength < 0.002) {
+        resetContentWarp();
+        return;
+      }
+
+      const pointerX = currentX * heroBounds.width;
+      const pointerY = currentY * heroBounds.height;
+      const fieldRadius = Math.min(470, Math.max(300, heroBounds.width * 0.32));
+
+      contentMetrics.forEach(({ element, x, y, isCharacter }) => {
+        const deltaX = pointerX - x;
+        const deltaY = pointerY - y;
+        const distance = Math.hypot(deltaX, deltaY);
+        const proximity = clamp(1 - distance / fieldRadius);
+        const influence = proximity * proximity * currentStrength;
+
+        if (influence < 0.006) {
+          element.style.transform = "";
+          return;
+        }
+
+        const pull = isCharacter ? 0.19 : 0.052;
+        const tangent = (isCharacter ? 5 : 4) * influence;
+        const directionX = distance > 0 ? deltaX / distance : 0;
+        const directionY = distance > 0 ? deltaY / distance : 0;
+        const translateX = deltaX * pull * influence - directionY * tangent;
+        const translateY = deltaY * pull * influence + directionX * tangent;
+        const directionAngle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+
+        if (isCharacter) {
+          const stretch = 1 + influence * 0.58;
+          const squeeze = 1 - influence * 0.15;
+          element.style.transform =
+            `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0) ` +
+            `rotate(${directionAngle.toFixed(2)}deg) scale(${stretch.toFixed(4)}, ${squeeze.toFixed(4)}) ` +
+            `rotate(${(-directionAngle).toFixed(2)}deg)`;
+          return;
+        }
+
+        const rotation = clamp((deltaX / fieldRadius) * 1.5 * influence, -1.1, 1.1);
+        const skew = clamp((-deltaY / fieldRadius) * 1.3 * influence, -0.9, 0.9);
+        element.style.transform =
+          `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0) ` +
+          `rotate(${rotation.toFixed(2)}deg) skewX(${skew.toFixed(2)}deg)`;
+      });
+    };
+
+    const resize = () => {
+      const bounds = hero.getBoundingClientRect();
+      heroBounds = bounds;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1);
+      const width = Math.max(1, Math.round(bounds.width * pixelRatio));
+      const height = Math.max(1, Math.round(bounds.height * pixelRatio));
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+        gl.viewport(0, 0, width, height);
+      }
+    };
+
+    const draw = () => {
+      resize();
+      gl.useProgram(program);
+      gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+      gl.uniform2f(pointerLocation, currentX, currentY);
+      gl.uniform1f(strengthLocation, currentStrength);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    };
 
     const render = () => {
-      currentX += (targetX - currentX) * 0.14;
-      currentY += (targetY - currentY) * 0.14;
-      field.style.transform =
-        `translate3d(calc(-50% + ${currentX.toFixed(2)}px), calc(-50% + ${currentY.toFixed(2)}px), 0)`;
+      currentX += (targetX - currentX) * 0.13;
+      currentY += (targetY - currentY) * 0.13;
+      currentStrength += (targetStrength - currentStrength) * 0.11;
+      draw();
+      renderContentWarp();
 
-      if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+      if (
+        Math.abs(targetX - currentX) > 0.0002 ||
+        Math.abs(targetY - currentY) > 0.0002 ||
+        Math.abs(targetStrength - currentStrength) > 0.002
+      ) {
         frame = window.requestAnimationFrame(render);
       } else {
         frame = 0;
@@ -757,20 +976,36 @@
 
     const updateTarget = (event) => {
       const bounds = hero.getBoundingClientRect();
-      targetX = event.clientX - bounds.left - bounds.width / 2;
-      targetY = event.clientY - bounds.top - bounds.height / 2;
-      hero.classList.add("is-pointer-active");
+      targetX = clamp((event.clientX - bounds.left) / bounds.width);
+      targetY = clamp((event.clientY - bounds.top) / bounds.height);
+      targetStrength = 1;
       scheduleRender();
     };
 
     hero.addEventListener("pointerenter", updateTarget, { passive: true });
     hero.addEventListener("pointermove", updateTarget, { passive: true });
     hero.addEventListener("pointerleave", () => {
-      targetX = 0;
-      targetY = 0;
-      hero.classList.remove("is-pointer-active");
+      targetStrength = 0;
       scheduleRender();
     }, { passive: true });
+
+    if ("ResizeObserver" in window) {
+      const resizeObserver = new ResizeObserver(() => {
+        measureContent();
+        draw();
+      });
+      resizeObserver.observe(hero);
+    } else {
+      window.addEventListener("resize", () => {
+        measureContent();
+        draw();
+      }, { passive: true });
+    }
+
+    measureContent();
+    window.requestAnimationFrame(() => window.requestAnimationFrame(measureContent));
+    draw();
+    hero.classList.add("has-warp-canvas");
   };
 
   const initAppleSyncLive = () => {
@@ -905,7 +1140,7 @@
   initNutritionGame();
   initHealthTabs();
   initVideoControls();
-  initHeroPointerField();
+  initHeroWarp();
   initAppleSyncLive();
   setYear();
   window.addEventListener("resize", () => {

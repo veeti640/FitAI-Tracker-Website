@@ -1429,7 +1429,7 @@ h3 {
   min-height: 540px;
   align-items: center;
   justify-content: center;
-  gap: clamp(54px, 8vw, 138px);
+  gap: clamp(38px, 5vw, 72px);
   isolation: isolate;
 }
 
@@ -1502,7 +1502,7 @@ h3 {
 }
 
 .ecosystem-fitness {
-  width: clamp(190px, 21vw, 315px);
+  width: clamp(112px, 12vw, 168px);
 }
 
 .ecosystem-times {
@@ -1512,6 +1512,11 @@ h3 {
   font-weight: 250;
   line-height: 1;
   text-shadow: 0 0 42px rgba(104, 145, 244, 0.24);
+}
+
+.ecosystem-times,
+.ecosystem-fitness {
+  transform: translateY(clamp(34px, 4vw, 58px));
 }
 
 .apple-live-panel,
@@ -1965,6 +1970,207 @@ h3 {
   font-size: 14px;
   line-height: 1.55;
   text-align: right;
+}
+
+.wearable-rail {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(112px, 13vw, 190px) 0 clamp(118px, 14vw, 210px);
+  color: var(--white);
+  background:
+    radial-gradient(circle at 52% 32%, rgba(43, 83, 188, 0.13), transparent 34%),
+    #070910;
+}
+
+.wearable-rail-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.45fr);
+  gap: 26px clamp(54px, 9vw, 150px);
+  align-items: end;
+  margin-bottom: clamp(70px, 8vw, 116px);
+}
+
+.wearable-rail-heading .eyebrow {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+  color: var(--blue-bright);
+}
+
+.wearable-rail-heading .section-title {
+  max-width: 860px;
+  margin-bottom: 0;
+  font-size: clamp(56px, 6.8vw, 100px);
+}
+
+.wearable-rail-heading .lede {
+  max-width: 390px;
+  margin: 0 0 0.55em;
+  color: rgba(225, 232, 246, 0.58);
+}
+
+.brand-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.brand-marquee-track {
+  display: flex;
+  width: max-content;
+  transform: translate3d(0, 0, 0);
+}
+
+.brand-marquee.is-ready .brand-marquee-track {
+  animation: wearable-marquee 34s linear infinite;
+}
+
+.brand-marquee:hover .brand-marquee-track {
+  animation-play-state: paused;
+}
+
+.brand-marquee-set {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: clamp(78px, 8vw, 142px);
+  padding-right: clamp(78px, 8vw, 142px);
+}
+
+.wearable-brand {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 15px;
+  color: rgba(235, 239, 248, 0.82);
+  white-space: nowrap;
+}
+
+.wearable-brand svg {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  overflow: visible;
+  fill: currentColor;
+}
+
+.wearable-brand strong {
+  font-family: var(--font-ui);
+  font-size: clamp(30px, 3.2vw, 50px);
+  font-weight: 580;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.wearable-apple {
+  gap: 13px;
+}
+
+.wearable-apple svg {
+  width: 38px;
+  height: 38px;
+  transform: translateY(-1px);
+}
+
+.wearable-oura strong {
+  font-weight: 430;
+  letter-spacing: 0.035em;
+}
+
+.wearable-garmin strong {
+  position: relative;
+  font-weight: 720;
+  letter-spacing: 0.085em;
+}
+
+.wearable-garmin strong::after {
+  content: "";
+  position: absolute;
+  top: -0.3em;
+  right: 0.42em;
+  width: 0;
+  height: 0;
+  border-right: 0.17em solid transparent;
+  border-bottom: 0.3em solid #2e9de1;
+  border-left: 0.17em solid transparent;
+}
+
+.wearable-fitbit {
+  gap: 10px;
+}
+
+.wearable-fitbit .google-word {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-ui);
+  font-size: clamp(22px, 2.25vw, 34px);
+  font-weight: 570;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.wearable-fitbit .google-word i {
+  color: #4285f4;
+  font-style: normal;
+}
+
+.wearable-fitbit .google-word i:nth-child(2),
+.wearable-fitbit .google-word i:nth-child(6) {
+  color: #ea4335;
+}
+
+.wearable-fitbit .google-word i:nth-child(3) {
+  color: #fbbc05;
+}
+
+.wearable-fitbit .google-word i:nth-child(5) {
+  color: #34a853;
+}
+
+.wearable-fitbit strong {
+  font-size: clamp(25px, 2.55vw, 39px);
+  font-weight: 560;
+  letter-spacing: -0.055em;
+}
+
+.wearable-polar strong {
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.075em;
+}
+
+.wearable-polar strong span {
+  position: relative;
+  display: inline-grid;
+  width: 0.78em;
+  margin: 0 0.02em;
+  place-items: center;
+  color: transparent;
+  font-size: 1em;
+  line-height: 0;
+}
+
+.wearable-polar strong span::before {
+  content: "";
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  background:
+    linear-gradient(to bottom, transparent 42%, rgba(255, 255, 255, 0.92) 42% 54%, transparent 54%),
+    #ec2428;
+}
+
+.wearable-huawei strong {
+  font-weight: 660;
+  letter-spacing: 0.035em;
+}
+
+@keyframes wearable-marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 .decision-scene {
@@ -4426,7 +4632,19 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .ecosystem-fitness {
-    width: clamp(170px, 22vw, 250px);
+    width: clamp(112px, 13vw, 154px);
+  }
+
+  .wearable-rail-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .wearable-rail-heading .eyebrow {
+    grid-column: auto;
+  }
+
+  .wearable-rail-heading .lede {
+    max-width: 540px;
   }
 }
 
@@ -4806,16 +5024,65 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .ecosystem-fitness {
-    width: min(42vw, 172px);
+    width: min(30vw, 118px);
   }
 
   .ecosystem-times {
     font-size: clamp(44px, 12vw, 64px);
   }
 
+  .ecosystem-times,
+  .ecosystem-fitness {
+    transform: none;
+  }
+
   .apple-sync-note {
     margin-top: 34px;
     text-align: left;
+  }
+
+  .wearable-rail {
+    padding-block: 96px 112px;
+  }
+
+  .wearable-rail-heading {
+    gap: 20px;
+    margin-bottom: 62px;
+  }
+
+  .wearable-rail-heading .section-title {
+    font-size: clamp(47px, 14vw, 66px);
+  }
+
+  .wearable-rail-heading .lede {
+    font-size: 16px;
+  }
+
+  .brand-marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  }
+
+  .brand-marquee-set {
+    gap: 58px;
+    padding-right: 58px;
+  }
+
+  .wearable-brand {
+    gap: 11px;
+  }
+
+  .wearable-brand svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .wearable-brand strong {
+    font-size: 30px;
+  }
+
+  .wearable-fitbit span strong {
+    font-size: 29px;
   }
 
   .decision-scene {
@@ -4996,6 +5263,21 @@ body[data-page="nutrition"] .final-cta {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .brand-marquee.is-ready .brand-marquee-track {
+    animation: none;
+  }
+
+  .brand-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+    scrollbar-width: none;
+  }
+
+  .brand-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
   html {
     scroll-behavior: auto;
   }

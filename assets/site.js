@@ -1126,6 +1126,19 @@
     }
   };
 
+  const initBrandMarquees = () => {
+    document.querySelectorAll("[data-brand-marquee]").forEach((marquee) => {
+      const track = marquee.querySelector(".brand-marquee-track");
+      const set = track?.querySelector(".brand-marquee-set");
+      if (!track || !set || track.children.length > 1) return;
+
+      const duplicate = set.cloneNode(true);
+      duplicate.setAttribute("aria-hidden", "true");
+      track.appendChild(duplicate);
+      marquee.classList.add("is-ready");
+    });
+  };
+
   const setYear = () => {
     document.querySelectorAll("[data-year]").forEach((element) => {
       element.textContent = String(new Date().getFullYear());
@@ -1142,6 +1155,7 @@
   initVideoControls();
   initHeroWarp();
   initAppleSyncLive();
+  initBrandMarquees();
   setYear();
   window.addEventListener("resize", () => {
     scrollMotionTargets = null;

@@ -773,6 +773,124 @@
     }, { passive: true });
   };
 
+  const initAppleSyncLive = () => {
+    const section = document.querySelector("[data-apple-sync]");
+    if (!section) return;
+
+    const chartPath = section.querySelector("[data-live-chart-path]");
+    const chartArea = section.querySelector("[data-live-chart-area]");
+    const chartDot = section.querySelector("[data-live-chart-dot]");
+    const chartHalo = section.querySelector("[data-live-chart-halo]");
+    const chartStream = section.querySelector("[data-live-chart-stream]");
+    const heartRate = section.querySelector("[data-live-heart-rate]");
+    const fitnessMove = section.querySelector("[data-fitness-move]");
+    const fitnessExercise = section.querySelector("[data-fitness-exercise]");
+    const fitnessStand = section.querySelector("[data-fitness-stand]");
+    if (!chartPath || !chartArea || !chartDot || !chartHalo || !chartStream || !heartRate) return;
+
+    const pointCount = 34;
+    const chartWidth = 640;
+    const chartHeight = 250;
+    const chartTop = 24;
+    const chartBottom = 224;
+    const minimum = 50;
+    const maximum = 90;
+    const values = Array.from({ length: pointCount }, (_, index) =>
+      68 + Math.sin(index * 0.54) * 4 + Math.sin(index * 0.17) * 3
+    );
+
+    const toCoordinates = () =>
+      values.map((value, index) => ({
+        x: (index / (pointCount - 1)) * chartWidth,
+        y: chartBottom - ((value - minimum) / (maximum - minimum)) * (chartBottom - chartTop),
+      }));
+
+    const makeSmoothPath = (points) => {
+      if (!points.length) return "";
+      let path = `M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)}`;
+      for (let index = 1; index < points.length; index += 1) {
+        const previous = points[index - 1];
+        const current = points[index];
+        const midpoint = (previous.x + current.x) / 2;
+        path += ` C ${midpoint.toFixed(2)} ${previous.y.toFixed(2)}, ${midpoint.toFixed(2)} ${current.y.toFixed(2)}, ${current.x.toFixed(2)} ${current.y.toFixed(2)}`;
+      }
+      return path;
+    };
+
+    const render = (animate = false) => {
+      const points = toCoordinates();
+      const line = makeSmoothPath(points);
+      const last = points[points.length - 1];
+      if (animate) {
+        chartStream.style.transition = "none";
+        chartStream.style.transform = `translate3d(${(chartWidth / (pointCount - 1)).toFixed(2)}px, 0, 0)`;
+      }
+      chartPath.setAttribute("d", line);
+      chartArea.setAttribute("d", `${line} L ${chartWidth} ${chartHeight} L 0 ${chartHeight} Z`);
+      chartDot.setAttribute("cx", last.x.toFixed(2));
+      chartDot.setAttribute("cy", last.y.toFixed(2));
+      chartHalo.setAttribute("cx", last.x.toFixed(2));
+      chartHalo.setAttribute("cy", last.y.toFixed(2));
+      heartRate.textContent = String(Math.round(values[values.length - 1]));
+
+      if (animate) {
+        window.requestAnimationFrame(() => {
+          chartStream.style.transition = "transform 780ms cubic-bezier(0.22, 1, 0.36, 1)";
+          chartStream.style.transform = "translate3d(0, 0, 0)";
+        });
+      }
+    };
+
+    render();
+    if (reduceMotion) return;
+
+    let sample = 0;
+    let timer = 0;
+    const addSample = () => {
+      sample += 1;
+      const previous = values[values.length - 1];
+      const drift = Math.sin(sample * 0.72) * 2.8 + Math.sin(sample * 0.21) * 1.7;
+      const next = clamp(previous * 0.54 + (71 + drift) * 0.46, 56, 86);
+      values.push(next);
+      values.shift();
+      render(true);
+
+      section.classList.remove("is-syncing");
+      window.requestAnimationFrame(() => section.classList.add("is-syncing"));
+
+      if (sample % 4 === 0 && fitnessMove) {
+        fitnessMove.textContent = String(479 + Math.floor(sample / 4));
+      }
+      if (sample % 11 === 0 && fitnessExercise) {
+        fitnessExercise.textContent = String(Math.min(30, 24 + Math.floor(sample / 11)));
+      }
+      if (sample % 17 === 0 && fitnessStand) {
+        fitnessStand.textContent = String(Math.min(12, 6 + Math.floor(sample / 17)));
+      }
+    };
+
+    const start = () => {
+      if (!timer) timer = window.setInterval(addSample, 1100);
+    };
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = 0;
+    };
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          start();
+        } else {
+          stop();
+        }
+      }, { rootMargin: "180px 0px" });
+      observer.observe(section);
+    } else {
+      start();
+    }
+  };
+
   const setYear = () => {
     document.querySelectorAll("[data-year]").forEach((element) => {
       element.textContent = String(new Date().getFullYear());
@@ -788,6 +906,7 @@
   initHealthTabs();
   initVideoControls();
   initHeroPointerField();
+  initAppleSyncLive();
   setYear();
   window.addEventListener("resize", () => {
     scrollMotionTargets = null;

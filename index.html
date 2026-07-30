@@ -218,6 +218,109 @@
       </div>
     </section>
 
+    <section class="apple-sync" data-apple-sync aria-labelledby="apple-sync-title">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="page-shell apple-sync-shell">
+        <header class="apple-sync-intro">
+          <p class="eyebrow slow-reveal">Apple ecosystem / connected</p>
+          <h2 id="apple-sync-title" class="section-title" data-word-reveal>Health and activity, in sync.</h2>
+          <p class="lede slow-reveal">
+            Lihas reads the signals you choose to share and brings them into one daily analysis.
+          </p>
+        </header>
+
+        <div class="apple-sync-stage slow-reveal">
+          <article class="apple-live-panel">
+            <div class="apple-panel-head">
+              <div class="apple-app-id">
+                <img src="/assets/apple-health.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                <div>
+                  <span>Apple Health</span>
+                  <strong>Live signal</strong>
+                </div>
+              </div>
+              <span class="apple-live-state"><i aria-hidden="true"></i> Live</span>
+            </div>
+
+            <div class="apple-live-reading">
+              <span>Heart rate</span>
+              <strong><span data-live-heart-rate>72</span> <small>BPM</small></strong>
+            </div>
+
+            <div class="apple-live-chart" role="img" aria-label="Demonstration of a live heart-rate signal moving over thirty seconds">
+              <span class="apple-chart-label apple-chart-high">90</span>
+              <span class="apple-chart-label apple-chart-mid">70</span>
+              <span class="apple-chart-label apple-chart-low">50</span>
+              <svg viewBox="0 0 640 250" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="apple-health-line" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#568cff" stop-opacity="0.22"></stop>
+                    <stop offset="72%" stop-color="#75a3ff"></stop>
+                    <stop offset="100%" stop-color="#d0ddff"></stop>
+                  </linearGradient>
+                  <linearGradient id="apple-health-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#6f9dff" stop-opacity="0.24"></stop>
+                    <stop offset="100%" stop-color="#6f9dff" stop-opacity="0"></stop>
+                  </linearGradient>
+                  <filter id="apple-health-glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="5" result="blur"></feGaussianBlur>
+                    <feMerge>
+                      <feMergeNode in="blur"></feMergeNode>
+                      <feMergeNode in="SourceGraphic"></feMergeNode>
+                    </feMerge>
+                  </filter>
+                </defs>
+                <g class="apple-chart-grid">
+                  <line x1="0" y1="38" x2="640" y2="38"></line>
+                  <line x1="0" y1="125" x2="640" y2="125"></line>
+                  <line x1="0" y1="212" x2="640" y2="212"></line>
+                  <line x1="128" y1="0" x2="128" y2="250"></line>
+                  <line x1="256" y1="0" x2="256" y2="250"></line>
+                  <line x1="384" y1="0" x2="384" y2="250"></line>
+                  <line x1="512" y1="0" x2="512" y2="250"></line>
+                </g>
+                <g class="apple-chart-stream" data-live-chart-stream>
+                  <path class="apple-chart-area" data-live-chart-area d=""></path>
+                  <path class="apple-chart-path" data-live-chart-path d=""></path>
+                  <circle class="apple-chart-dot-halo" data-live-chart-halo cx="0" cy="0" r="12"></circle>
+                  <circle class="apple-chart-dot" data-live-chart-dot cx="0" cy="0" r="5"></circle>
+                </g>
+              </svg>
+              <div class="apple-chart-time">
+                <span>−30s</span>
+                <span>now</span>
+              </div>
+            </div>
+          </article>
+
+          <div class="apple-sync-operator" aria-hidden="true">
+            <span class="apple-sync-line"></span>
+            <strong>×</strong>
+            <span class="apple-sync-packet"></span>
+          </div>
+
+          <article class="apple-fitness-panel">
+            <div class="fitness-logo-stage">
+              <span class="fitness-orbit" aria-hidden="true"></span>
+              <img src="/assets/apple-fitness.png" alt="Apple Fitness" loading="lazy" decoding="async">
+            </div>
+            <p class="fitness-kicker">Apple Fitness</p>
+            <h3>Activity stays connected.</h3>
+            <p class="fitness-copy">Movement and workout context arrive beside your recovery signals—not in another isolated dashboard.</p>
+            <div class="fitness-metrics" aria-label="Example Apple Fitness activity values">
+              <span><i class="metric-move"></i>Move <strong><span data-fitness-move>479</span>/800</strong></span>
+              <span><i class="metric-exercise"></i>Exercise <strong><span data-fitness-exercise>24</span>/30</strong></span>
+              <span><i class="metric-stand"></i>Stand <strong><span data-fitness-stand>6</span>/12</strong></span>
+            </div>
+          </article>
+        </div>
+
+        <p class="apple-sync-note slow-reveal">
+          One permission. The health and activity context you approve. One clearer next move in Lihas.
+        </p>
+      </div>
+    </section>
+
     <section class="decision-scene" data-decision-scene>
       <div class="decision-sticky">
         <div class="decision-stream" aria-hidden="true">

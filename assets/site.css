@@ -322,6 +322,15 @@ main {
   display: block;
 }
 
+.hero,
+.signal-atlas,
+.health-bridge,
+.privacy-vault,
+.apple-sync,
+.wearable-rail {
+  margin-bottom: -1px;
+}
+
 .page-shell {
   width: var(--page);
   margin-inline: auto;
@@ -603,6 +612,17 @@ h3 {
 
 .hero > .grain {
   z-index: 1;
+}
+
+.hero-exit-blend {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: clamp(180px, 24vh, 300px);
+  background: linear-gradient(180deg, transparent 0%, rgba(5, 6, 10, 0.74) 55%, #05060a 100%);
+  pointer-events: none;
 }
 
 .hero-inner {
@@ -1267,6 +1287,7 @@ h3 {
   overflow: hidden;
   color: #0a1226;
   background:
+    linear-gradient(180deg, #070910 0%, transparent 18%, transparent 76%, #05070d 100%),
     radial-gradient(ellipse at 50% -15%, rgba(71, 109, 228, 0.16), transparent 50%),
     #070910;
 }
@@ -1279,6 +1300,7 @@ h3 {
   padding: 72px 36px 0;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.38);
+  border-bottom: 0;
   border-radius: 32px;
   background:
     radial-gradient(ellipse at 50% 108%, rgba(30, 79, 232, 0.98) 0%, rgba(77, 113, 225, 0.72) 28%, transparent 59%),
@@ -1378,7 +1400,7 @@ h3 {
   background:
     radial-gradient(circle at 78% 32%, rgba(44, 91, 220, 0.18), transparent 31%),
     radial-gradient(circle at 12% 74%, rgba(94, 130, 224, 0.1), transparent 30%),
-    #05070d;
+    linear-gradient(180deg, #05070d 0%, #05070d 74%, #070910 100%);
 }
 
 .apple-sync::before {
@@ -1979,7 +2001,7 @@ h3 {
   color: var(--white);
   background:
     radial-gradient(circle at 52% 32%, rgba(43, 83, 188, 0.13), transparent 34%),
-    #070910;
+    linear-gradient(180deg, #070910 0%, #070910 68%, var(--night) 100%);
 }
 
 .wearable-rail-heading {

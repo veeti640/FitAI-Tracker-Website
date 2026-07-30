@@ -19,9 +19,10 @@
       --green: #69F0AE;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { overflow-x: hidden; scroll-behavior: smooth; }
     body {
       font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
       background: var(--bg);
       color: var(--text);
       line-height: 1.75;

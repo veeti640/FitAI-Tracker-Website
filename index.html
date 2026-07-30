@@ -35,11 +35,34 @@
 
   <main id="main">
     <section class="hero">
-      <canvas class="hero-warp-canvas" data-hero-warp aria-hidden="true"></canvas>
-      <div class="hero-signal-readout" data-hero-signal-readout aria-hidden="true">
-        <span><small>Sleep</small><strong>85</strong></span>
-        <span><small>HRV</small><strong>54 ms</strong></span>
-        <span><small>Load</small><strong>7.4</strong></span>
+      <div class="living-metrics" data-living-metrics aria-hidden="true">
+        <svg class="living-metrics-map" viewBox="0 0 620 540" role="presentation">
+          <circle class="metric-orbit metric-orbit--outer" cx="310" cy="270" r="162"></circle>
+          <circle class="metric-orbit metric-orbit--inner" cx="310" cy="270" r="92"></circle>
+          <path class="metric-connection metric-connection--hrv" d="M92 108 C178 132 214 184 310 270"></path>
+          <path class="metric-connection metric-connection--sleep" d="M528 108 C443 132 404 184 310 270"></path>
+          <path class="metric-connection metric-connection--activity" d="M528 430 C442 404 404 352 310 270"></path>
+          <path class="metric-connection metric-connection--recovery" d="M92 430 C177 404 215 352 310 270"></path>
+        </svg>
+
+        <div class="living-metric living-metric--hrv">
+          <i></i><span>HRV</span><strong>54 ms</strong>
+        </div>
+        <div class="living-metric living-metric--sleep">
+          <i></i><span>Sleep</span><strong>85</strong>
+        </div>
+        <div class="living-metric living-metric--activity">
+          <i></i><span>Activity</span><strong>100</strong>
+        </div>
+        <div class="living-metric living-metric--recovery">
+          <i></i><span>Recovery</span><strong>55</strong>
+        </div>
+
+        <div class="living-score">
+          <span>Daily score</span>
+          <strong>82</strong>
+          <small>Signals aligned</small>
+        </div>
       </div>
       <div class="grain" aria-hidden="true"></div>
       <div class="hero-inner">

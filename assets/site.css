@@ -581,75 +581,264 @@ h3 {
   transition: opacity 240ms ease;
 }
 
-.hero-warp-canvas {
+.living-metrics {
   position: absolute;
   z-index: 0;
+  top: clamp(160px, 17vh, 210px);
+  right: 0;
+  width: min(45vw, 600px);
+  aspect-ratio: 620 / 540;
+  color: rgba(221, 230, 248, 0.82);
+  opacity: 0.74;
+  pointer-events: none;
+  transform: translate3d(var(--metrics-x, 0), var(--metrics-y, 0), 0);
+  transition:
+    opacity 450ms ease,
+    transform 900ms var(--ease-out);
+}
+
+.living-metrics::before {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(54, 91, 180, 0.14), rgba(24, 48, 105, 0.035) 48%, transparent 72%);
+  filter: blur(26px);
+  opacity: 0.48;
+  transform: scale(0.88);
+  transition:
+    opacity 900ms ease,
+    transform 1.2s var(--ease-out);
+}
+
+.living-metrics.is-synced::before {
+  opacity: 0.78;
+  transform: scale(1);
+}
+
+.living-metrics-map {
+  position: absolute;
   inset: 0;
-  display: block;
   width: 100%;
   height: 100%;
+  overflow: visible;
+}
+
+.metric-orbit,
+.metric-connection {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.metric-orbit {
+  stroke: rgba(118, 149, 218, 0.13);
+  stroke-width: 1;
+  stroke-dasharray: 2 9;
+  transform-origin: 310px 270px;
+  transition:
+    opacity 800ms ease,
+    transform 1.3s var(--ease-out),
+    stroke 800ms ease;
+}
+
+.metric-orbit--outer {
+  opacity: 0.42;
+  animation: metric-orbit-drift 26s linear infinite;
+}
+
+.metric-orbit--inner {
+  opacity: 0.2;
+  animation: metric-orbit-drift 18s linear infinite reverse;
+}
+
+.metric-connection {
+  stroke: rgba(121, 157, 235, 0.28);
+  stroke-width: 1;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 240ms ease;
+  transition:
+    stroke-dashoffset 1.3s var(--ease-out),
+    opacity 600ms ease;
 }
 
-.hero.has-warp-canvas .hero-warp-canvas {
-  opacity: 1;
+.living-metrics.is-synced .metric-connection {
+  stroke-dashoffset: 0;
+  opacity: 0.62;
 }
 
-.hero.has-warp-canvas::before,
-.hero.has-warp-canvas::after {
-  opacity: 0;
+.living-metrics.is-synced .metric-orbit {
+  stroke: rgba(128, 163, 239, 0.24);
+  transform: scale(0.97);
 }
 
-.hero-signal-readout {
+.living-metric {
   position: absolute;
-  z-index: 3;
-  top: 0;
-  left: 0;
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 18px;
-  min-width: 250px;
-  padding-top: 9px;
-  border-top: 1px solid rgba(121, 164, 255, 0.46);
-  color: rgba(245, 248, 255, 0.88);
+  grid-template-columns: 12px auto;
+  align-items: center;
+  column-gap: 9px;
+  color: rgba(207, 216, 235, 0.6);
   font-family: var(--font-mono);
-  opacity: 0;
-  pointer-events: none;
-  transform: translate3d(-400px, -200px, 0);
-  transition: opacity 180ms ease;
-  will-change: transform, opacity;
+  transition:
+    color 800ms ease,
+    opacity 800ms ease,
+    transform 1.25s var(--ease-out);
 }
 
-.hero-signal-readout::before {
-  content: "SIGNAL FOCUS";
-  position: absolute;
-  top: -18px;
-  left: 0;
-  color: rgba(121, 164, 255, 0.72);
+.living-metric i {
+  grid-row: 1 / span 2;
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 currentColor;
+  animation: metric-breathe var(--metric-tempo, 3.2s) ease-in-out infinite;
+  animation-delay: var(--metric-delay, 0s);
+}
+
+.living-metric span {
   font-size: 8px;
-  letter-spacing: 0.18em;
-}
-
-.hero-signal-readout span {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.hero-signal-readout small {
-  color: rgba(199, 208, 228, 0.52);
-  font-size: 8px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
+  line-height: 1;
   text-transform: uppercase;
 }
 
-.hero-signal-readout strong {
-  font-size: 11px;
+.living-metric strong {
+  margin-top: 5px;
+  color: rgba(242, 245, 252, 0.78);
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.living-metric--hrv {
+  top: 17%;
+  left: 8%;
+  --metric-tempo: 3.8s;
+  --metric-delay: -0.8s;
+  --sync-x: 52px;
+  --sync-y: 38px;
+}
+
+.living-metric--sleep {
+  top: 17%;
+  right: 4%;
+  --metric-tempo: 4.6s;
+  --metric-delay: -2.1s;
+  --sync-x: -58px;
+  --sync-y: 38px;
+}
+
+.living-metric--activity {
+  right: 2%;
+  bottom: 16%;
+  --metric-tempo: 2.7s;
+  --metric-delay: -1.4s;
+  --sync-x: -58px;
+  --sync-y: -42px;
+}
+
+.living-metric--recovery {
+  bottom: 16%;
+  left: 8%;
+  --metric-tempo: 3.3s;
+  --metric-delay: -0.2s;
+  --sync-x: 52px;
+  --sync-y: -42px;
+}
+
+.living-metrics.is-synced .living-metric {
+  color: rgba(125, 164, 244, 0.82);
+  opacity: 1;
+  transform: translate3d(var(--sync-x), var(--sync-y), 0);
+}
+
+.living-metrics.is-synced .living-metric i {
+  animation-duration: 2.2s;
+  animation-delay: 0s;
+}
+
+.living-score {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 130px;
+  aspect-ratio: 1;
+  place-content: center;
+  border: 1px solid rgba(126, 162, 239, 0.22);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30, 56, 119, 0.32), rgba(7, 10, 17, 0.18) 68%, transparent 70%);
+  color: rgba(236, 241, 251, 0.9);
+  font-family: var(--font-mono);
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.78);
+  transition:
+    opacity 700ms ease 220ms,
+    transform 1.15s var(--ease-out) 120ms;
+}
+
+.living-score::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(118, 156, 237, 0.18);
+  border-radius: inherit;
+}
+
+.living-score span,
+.living-score small {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.living-score span {
+  color: rgba(171, 188, 222, 0.62);
+  font-size: 7px;
+}
+
+.living-score strong {
+  position: relative;
+  z-index: 1;
+  margin: 5px 0 3px;
+  font-family: var(--font-ui);
+  font-size: 35px;
+  font-weight: 450;
+  line-height: 1;
+}
+
+.living-score small {
+  color: rgba(126, 181, 143, 0.72);
+  font-size: 6px;
+}
+
+.living-metrics.is-synced .living-score {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@keyframes metric-breathe {
+  0%,
+  100% {
+    background: transparent;
+    box-shadow: 0 0 0 0 rgba(120, 159, 240, 0);
+    transform: scale(0.92);
+  }
+  45% {
+    background: currentColor;
+    box-shadow: 0 0 0 8px rgba(120, 159, 240, 0.04);
+    transform: scale(1.12);
+  }
+}
+
+@keyframes metric-orbit-drift {
+  to {
+    stroke-dashoffset: -88;
+  }
 }
 
 .hero > .grain {
@@ -4552,6 +4741,10 @@ body[data-page="nutrition"] .final-cta {
     --page: min(100% - 34px, 760px);
   }
 
+  .living-metrics {
+    display: none;
+  }
+
   .site-nav {
     padding-inline: 14px;
   }
@@ -5374,12 +5567,9 @@ body[data-page="nutrition"] .final-cta {
     transform: none !important;
   }
 
-  .hero-warp-canvas {
-    display: none;
-  }
-
-  .hero-signal-readout {
-    display: none;
+  .living-metrics {
+    opacity: 0.42;
+    transform: none;
   }
 
   .health-bridge-image-blur {

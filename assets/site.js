@@ -1014,6 +1014,30 @@
     hero.classList.add("has-warp-canvas");
   };
 
+  const initLivingMetrics = () => {
+    const hero = document.querySelector(".hero");
+    const metrics = hero?.querySelector("[data-living-metrics]");
+    if (!hero || !metrics || reduceMotion) return;
+
+    const sync = () => metrics.classList.add("is-synced");
+    const release = () => {
+      metrics.classList.remove("is-synced");
+      metrics.style.setProperty("--metrics-x", "0px");
+      metrics.style.setProperty("--metrics-y", "0px");
+    };
+
+    hero.addEventListener("pointerenter", sync, { passive: true });
+    hero.addEventListener("pointermove", (event) => {
+      sync();
+      const bounds = hero.getBoundingClientRect();
+      const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 7;
+      const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 5;
+      metrics.style.setProperty("--metrics-x", `${x.toFixed(2)}px`);
+      metrics.style.setProperty("--metrics-y", `${y.toFixed(2)}px`);
+    }, { passive: true });
+    hero.addEventListener("pointerleave", release, { passive: true });
+  };
+
   const initAppleSyncLive = () => {
     const section = document.querySelector("[data-apple-sync]");
     if (!section) return;
@@ -1159,7 +1183,7 @@
   initNutritionGame();
   initHealthTabs();
   initVideoControls();
-  initHeroWarp();
+  initLivingMetrics();
   initAppleSyncLive();
   initBrandMarquees();
   setYear();

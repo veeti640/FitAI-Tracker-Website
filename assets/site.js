@@ -727,6 +727,52 @@
     });
   };
 
+  const initHeroPointerField = () => {
+    const hero = document.querySelector(".hero");
+    const field = hero?.querySelector("[data-hero-pointer-field]");
+    if (!hero || !field || reduceMotion || !finePointer) return;
+
+    let currentX = 0;
+    let currentY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let frame = 0;
+
+    const render = () => {
+      currentX += (targetX - currentX) * 0.14;
+      currentY += (targetY - currentY) * 0.14;
+      field.style.transform =
+        `translate3d(calc(-50% + ${currentX.toFixed(2)}px), calc(-50% + ${currentY.toFixed(2)}px), 0)`;
+
+      if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+        frame = window.requestAnimationFrame(render);
+      } else {
+        frame = 0;
+      }
+    };
+
+    const scheduleRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    const updateTarget = (event) => {
+      const bounds = hero.getBoundingClientRect();
+      targetX = event.clientX - bounds.left - bounds.width / 2;
+      targetY = event.clientY - bounds.top - bounds.height / 2;
+      hero.classList.add("is-pointer-active");
+      scheduleRender();
+    };
+
+    hero.addEventListener("pointerenter", updateTarget, { passive: true });
+    hero.addEventListener("pointermove", updateTarget, { passive: true });
+    hero.addEventListener("pointerleave", () => {
+      targetX = 0;
+      targetY = 0;
+      hero.classList.remove("is-pointer-active");
+      scheduleRender();
+    }, { passive: true });
+  };
+
   const setYear = () => {
     document.querySelectorAll("[data-year]").forEach((element) => {
       element.textContent = String(new Date().getFullYear());
@@ -741,6 +787,7 @@
   initNutritionGame();
   initHealthTabs();
   initVideoControls();
+  initHeroPointerField();
   setYear();
   window.addEventListener("resize", () => {
     scrollMotionTargets = null;

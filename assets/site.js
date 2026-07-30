@@ -425,7 +425,6 @@
     const page = body.dataset.page || "home";
     if (page === "home") {
       enter(".hero-index a", null, "translate3d(0, 18px, 0)", 0.075);
-      enter(".trace-node", ".theatre-stage", "translate3d(0, 16px, 0)", 0.12);
     }
 
     if (page === "health") {

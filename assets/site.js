@@ -730,6 +730,7 @@
   const initHeroWarp = () => {
     const hero = document.querySelector(".hero");
     const canvas = hero?.querySelector("[data-hero-warp]");
+    const readout = hero?.querySelector("[data-hero-signal-readout]");
     if (!hero || !canvas || reduceMotion || !finePointer) return;
 
     const gl = canvas.getContext("webgl", {
@@ -759,6 +760,15 @@
       uniform float u_strength;
       varying vec2 v_uv;
 
+      float lineMask(float value, float target, float width) {
+        return 1.0 - smoothstep(width, width * 2.5, abs(value - target));
+      }
+
+      float softGrid(float value, float density) {
+        float cell = abs(fract(value * density) - 0.5);
+        return 1.0 - smoothstep(0.485, 0.5, cell);
+      }
+
       vec3 heroScene(vec2 point) {
         float aspect = u_resolution.x / max(u_resolution.y, 1.0);
         float diagonal = clamp(point.x * 0.34 + point.y * 0.66, 0.0, 1.0);
@@ -787,24 +797,80 @@
       void main() {
         float aspect = u_resolution.x / max(u_resolution.y, 1.0);
         vec2 point = vec2(v_uv.x, 1.0 - v_uv.y);
+        vec2 lensSize = vec2(0.255, 0.205);
         vec2 delta = (point - u_pointer) * vec2(aspect, 1.0);
-        float radius = length(delta);
-        float fieldRadius = 0.42;
-        float field = smoothstep(fieldRadius, 0.012, radius) * u_strength;
-        float falloff = clamp(1.0 - radius / fieldRadius, 0.0, 1.0);
+        vec2 local = delta / lensSize;
 
-        float angle = atan(delta.y, delta.x);
-        float twist = 0.22 * field * falloff * falloff;
-        float sampledRadius = radius + 0.155 * field * falloff;
-        vec2 sampledDelta = vec2(cos(angle + twist), sin(angle + twist)) * sampledRadius;
-        vec2 warpedPoint = u_pointer + sampledDelta / vec2(aspect, 1.0);
+        // A softly squared optical aperture feels like an instrument, not a cursor halo.
+        float apertureDistance = pow(
+          pow(abs(local.x), 4.0) + pow(abs(local.y), 4.0),
+          0.25
+        );
+        float aperture = (1.0 - smoothstep(0.92, 1.0, apertureDistance)) * u_strength;
+        float apertureSoft = (1.0 - smoothstep(0.78, 1.08, apertureDistance)) * u_strength;
+        float rim = (
+          smoothstep(0.82, 0.94, apertureDistance) -
+          smoothstep(0.94, 1.025, apertureDistance)
+        ) * u_strength;
+        float outerRim = (
+          smoothstep(0.98, 1.025, apertureDistance) -
+          smoothstep(1.025, 1.07, apertureDistance)
+        ) * u_strength;
 
-        vec3 colour = heroScene(warpedPoint);
+        // A small refraction at the aperture edge suggests a real optical layer.
+        vec2 normal = normalize(local + vec2(0.0001));
+        vec2 refractedPoint = point - normal * rim * 0.012 / vec2(aspect, 1.0);
+        vec3 colour = heroScene(mix(point, refractedPoint, apertureSoft));
 
-        float gravityShadow = exp(-radius * 19.0) * u_strength;
-        float coreShadow = 1.0 - smoothstep(0.008, 0.052, radius);
-        colour *= 1.0 - gravityShadow * 0.46;
-        colour = mix(colour, vec3(0.0196, 0.0471, 0.1294), coreShadow * u_strength * 0.72);
+        // Raw signals exist outside the lens as a quiet, unresolved field.
+        float rawA = lineMask(point.y, 0.31 + sin(point.x * 18.0) * 0.018, 0.018);
+        float rawB = lineMask(point.y, 0.52 + sin(point.x * 12.0 + 1.4) * 0.024, 0.022);
+        float rawC = lineMask(point.y, 0.71 + sin(point.x * 22.0 + 3.0) * 0.012, 0.016);
+        colour += vec3(0.094, 0.157, 0.31) * (rawA + rawB + rawC) * 0.035;
+
+        // Inside the lens, three health signals become calibrated and distinct.
+        float lensGrid = (
+          softGrid(local.x + 1.0, 4.0) +
+          softGrid(local.y + 1.0, 3.0)
+        ) * aperture;
+        vec3 lensBase = mix(
+          colour * 0.76,
+          vec3(0.025, 0.047, 0.098),
+          0.46
+        );
+        lensBase += vec3(0.075, 0.12, 0.24) * lensGrid * 0.26;
+
+        float traceX = local.x;
+        float sleepWave = -0.46 + sin(traceX * 4.5 + 0.8) * 0.075;
+        float hrvWave = -0.02 + sin(traceX * 8.0) * 0.06 + sin(traceX * 2.5) * 0.035;
+        float loadWave = 0.43 + sin(traceX * 5.2 + 2.1) * 0.052;
+        float sleepTrace = lineMask(local.y, sleepWave, 0.012) * aperture;
+        float hrvTrace = lineMask(local.y, hrvWave, 0.011) * aperture;
+        float loadTrace = lineMask(local.y, loadWave, 0.012) * aperture;
+
+        lensBase += vec3(0.38, 0.62, 1.0) * sleepTrace * 0.92;
+        lensBase += vec3(0.43, 0.87, 0.58) * hrvTrace * 0.92;
+        lensBase += vec3(0.94, 0.65, 0.28) * loadTrace * 0.88;
+
+        // Sampling nodes turn decorative lines into a measured signal system.
+        float samples = 0.0;
+        for (int i = 0; i < 7; i++) {
+          float sampleX = -0.78 + float(i) * 0.26;
+          float sampleY = -0.02 + sin(sampleX * 8.0) * 0.06 + sin(sampleX * 2.5) * 0.035;
+          float node = 1.0 - smoothstep(0.025, 0.047, length(local - vec2(sampleX, sampleY)));
+          samples += node;
+        }
+        lensBase += vec3(0.72, 0.93, 0.78) * samples * aperture;
+
+        colour = mix(colour, lensBase, apertureSoft * 0.96);
+        colour += vec3(0.31, 0.51, 0.96) * rim * 0.42;
+        colour += vec3(0.68, 0.78, 1.0) * outerRim * 0.22;
+
+        // Four calibration corners keep the silhouette specific to Lihas analysis.
+        float cornerX = smoothstep(0.72, 0.8, abs(local.x));
+        float cornerY = smoothstep(0.72, 0.8, abs(local.y));
+        float cornerMarks = cornerX * cornerY * (1.0 - smoothstep(0.96, 1.02, apertureDistance));
+        colour += vec3(0.49, 0.68, 1.0) * cornerMarks * u_strength * 0.28;
 
         gl_FragColor = vec4(colour, 1.0);
       }
@@ -855,80 +921,6 @@
     let targetStrength = 0;
     let frame = 0;
     let heroBounds = hero.getBoundingClientRect();
-    const contentWarpTargets = [
-      ...hero.querySelectorAll(".hero-copy .word-char"),
-      hero.querySelector(".hero .eyebrow"),
-      hero.querySelector(".hero-sub"),
-      hero.querySelector(".hero-actions"),
-    ].filter(Boolean);
-    let contentMetrics = [];
-
-    const measureContent = () => {
-      heroBounds = hero.getBoundingClientRect();
-      contentMetrics = contentWarpTargets.map((element) => {
-        const bounds = element.getBoundingClientRect();
-        return {
-          element,
-          x: bounds.left - heroBounds.left + bounds.width / 2,
-          y: bounds.top - heroBounds.top + bounds.height / 2,
-          isCharacter: element.classList.contains("word-char"),
-        };
-      });
-    };
-
-    const resetContentWarp = () => {
-      contentWarpTargets.forEach((element) => {
-        element.style.transform = "";
-      });
-    };
-
-    const renderContentWarp = () => {
-      if (currentStrength < 0.002) {
-        resetContentWarp();
-        return;
-      }
-
-      const pointerX = currentX * heroBounds.width;
-      const pointerY = currentY * heroBounds.height;
-      const fieldRadius = Math.min(470, Math.max(300, heroBounds.width * 0.32));
-
-      contentMetrics.forEach(({ element, x, y, isCharacter }) => {
-        const deltaX = pointerX - x;
-        const deltaY = pointerY - y;
-        const distance = Math.hypot(deltaX, deltaY);
-        const proximity = clamp(1 - distance / fieldRadius);
-        const influence = proximity * proximity * currentStrength;
-
-        if (influence < 0.006) {
-          element.style.transform = "";
-          return;
-        }
-
-        const pull = isCharacter ? 0.19 : 0.052;
-        const tangent = (isCharacter ? 5 : 4) * influence;
-        const directionX = distance > 0 ? deltaX / distance : 0;
-        const directionY = distance > 0 ? deltaY / distance : 0;
-        const translateX = deltaX * pull * influence - directionY * tangent;
-        const translateY = deltaY * pull * influence + directionX * tangent;
-        const directionAngle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
-
-        if (isCharacter) {
-          const stretch = 1 + influence * 0.58;
-          const squeeze = 1 - influence * 0.15;
-          element.style.transform =
-            `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0) ` +
-            `rotate(${directionAngle.toFixed(2)}deg) scale(${stretch.toFixed(4)}, ${squeeze.toFixed(4)}) ` +
-            `rotate(${(-directionAngle).toFixed(2)}deg)`;
-          return;
-        }
-
-        const rotation = clamp((deltaX / fieldRadius) * 1.5 * influence, -1.1, 1.1);
-        const skew = clamp((-deltaY / fieldRadius) * 1.3 * influence, -0.9, 0.9);
-        element.style.transform =
-          `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0) ` +
-          `rotate(${rotation.toFixed(2)}deg) skewX(${skew.toFixed(2)}deg)`;
-      });
-    };
 
     const resize = () => {
       const bounds = hero.getBoundingClientRect();
@@ -952,12 +944,28 @@
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     };
 
+    const renderReadout = () => {
+      if (!readout) return;
+
+      const pointerX = currentX * heroBounds.width;
+      const pointerY = currentY * heroBounds.height;
+      const lensHeight = heroBounds.height * 0.205;
+      const readoutWidth = 270;
+      const left = clamp(pointerX - readoutWidth / 2, 24, heroBounds.width - readoutWidth - 24);
+      const below = pointerY + lensHeight + 34;
+      const above = pointerY - lensHeight - 60;
+      const top = below > heroBounds.height - 70 ? above : below;
+
+      readout.style.transform = `translate3d(${left.toFixed(1)}px, ${top.toFixed(1)}px, 0)`;
+      readout.style.opacity = String(clamp((currentStrength - 0.12) / 0.72));
+    };
+
     const render = () => {
       currentX += (targetX - currentX) * 0.13;
       currentY += (targetY - currentY) * 0.13;
       currentStrength += (targetStrength - currentStrength) * 0.11;
       draw();
-      renderContentWarp();
+      renderReadout();
 
       if (
         Math.abs(targetX - currentX) > 0.0002 ||
@@ -991,19 +999,17 @@
 
     if ("ResizeObserver" in window) {
       const resizeObserver = new ResizeObserver(() => {
-        measureContent();
+        heroBounds = hero.getBoundingClientRect();
         draw();
       });
       resizeObserver.observe(hero);
     } else {
       window.addEventListener("resize", () => {
-        measureContent();
+        heroBounds = hero.getBoundingClientRect();
         draw();
       }, { passive: true });
     }
 
-    measureContent();
-    window.requestAnimationFrame(() => window.requestAnimationFrame(measureContent));
     draw();
     hero.classList.add("has-warp-canvas");
   };

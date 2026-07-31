@@ -1732,6 +1732,7 @@ h3 {
   justify-items: center;
   gap: clamp(34px, 4vw, 58px);
   margin: 0;
+  transform: translateX(calc(-1 * clamp(150px, 12vw, 220px)));
 }
 
 .ecosystem-activity > figcaption {
@@ -1765,15 +1766,19 @@ h3 {
 }
 
 .ecosystem-times {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
   color: rgba(218, 227, 248, 0.78);
   font-family: var(--font-ui);
   font-size: clamp(70px, 8vw, 128px);
   font-weight: 250;
   line-height: 1;
   text-shadow: 0 0 42px rgba(104, 145, 244, 0.24);
+  transform: translate(-50%, -50%) translateY(clamp(34px, 4vw, 58px));
 }
 
-.ecosystem-times,
 .ecosystem-fitness {
   transform: translateY(clamp(34px, 4vw, 58px));
 }
@@ -5367,6 +5372,7 @@ body[data-page="nutrition"] .final-cta {
   .ecosystem-activity {
     width: 100%;
     gap: 28px;
+    transform: none;
   }
 
   .ecosystem-activity > figcaption {
@@ -5398,6 +5404,7 @@ body[data-page="nutrition"] .final-cta {
   }
 
   .ecosystem-times {
+    position: static;
     font-size: clamp(44px, 12vw, 64px);
   }
 

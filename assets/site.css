@@ -2521,6 +2521,12 @@ h3 {
   letter-spacing: 0.035em;
 }
 
+.wearable-samsung strong {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.045em;
+}
+
 @keyframes wearable-marquee {
   to {
     transform: translate3d(-50%, 0, 0);
@@ -5454,13 +5460,13 @@ body[data-page="nutrition"] .final-cta {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 54px 32px 0;
+    padding: 54px 18px 0;
   }
 
   .watch-feature-copy > p {
-    max-width: 330px;
+    max-width: 302px;
     margin-inline: auto;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.38;
     text-align: left;
   }

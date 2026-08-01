@@ -128,10 +128,12 @@
 
   const initReveals = () => {
     document.querySelectorAll("[data-word-reveal]").forEach((element) => {
-      splitRevealCharacters(element);
       if (element.closest(".hero, .page-hero")) {
+        element.dataset.revealMode = "characters";
+        splitRevealCharacters(element);
         element.classList.add("is-load-reveal");
       } else {
+        element.dataset.revealMode = "soft";
         element.classList.add("is-scroll-reveal");
       }
     });
@@ -146,7 +148,13 @@
       revealElements.forEach((element) => element.classList.add("is-visible"));
       document
         .querySelectorAll("[data-word-reveal]")
-        .forEach((element) => revealCharacters(element));
+        .forEach((element) => {
+          if (element.dataset.revealMode === "characters") {
+            revealCharacters(element);
+          } else {
+            element.classList.add("is-visible");
+          }
+        });
       return;
     }
 
@@ -162,7 +170,7 @@
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          if (entry.target.matches("[data-word-reveal]")) {
+          if (entry.target.dataset.revealMode === "characters") {
             revealCharacters(entry.target);
           } else {
             entry.target.classList.add("is-visible");

@@ -992,6 +992,40 @@ h3 {
   clip-path: inset(0 round 28px);
 }
 
+/* Reserve the springier arrival for a few physical product objects. The rest
+   of the interface resolves calmly, without a universal typewriter effect. */
+.slow-reveal[data-reveal-kind="pop"] {
+  filter: blur(4px);
+  transform: translate3d(0, 14px, 0) scale(.952);
+  transition:
+    opacity 300ms ease-out,
+    filter 480ms cubic-bezier(.2, .9, .2, 1),
+    transform 660ms cubic-bezier(.16, 1.2, .3, 1);
+}
+
+.slow-reveal[data-reveal-kind="pop"].is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+[data-word-reveal][data-reveal-mode="soft"] {
+  opacity: 0;
+  filter: blur(12px);
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity 640ms ease-out,
+    filter 760ms cubic-bezier(.2, .8, .2, 1),
+    transform 820ms cubic-bezier(.2, .8, .2, 1);
+  will-change: opacity, filter, transform;
+}
+
+[data-word-reveal][data-reveal-mode="soft"].is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0);
+}
+
 [data-parallax] {
   --parallax-y: 0px;
 }
@@ -6123,6 +6157,11 @@ body[data-page="nutrition"] .final-cta {
   grid-template-columns: minmax(0, 1fr) minmax(220px, 0.6fr);
 }
 
+.app-preview-grid-phone {
+  grid-template-columns: minmax(0, 1fr) minmax(246px, 0.54fr);
+  gap: clamp(52px, 8vw, 132px);
+}
+
 .app-preview-copy {
   max-width: 660px;
 }
@@ -6149,6 +6188,57 @@ body[data-page="nutrition"] .final-cta {
   object-fit: cover;
   border-radius: calc(clamp(26px, 3vw, 42px) - 7px);
   background: #0b0f1e;
+}
+
+/* The health film sits inside a real device asset instead of a second loose
+   screenshot. Screen black is composited away, retaining the metal edges. */
+.app-preview-iphone {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 330px);
+  aspect-ratio: 1293 / 2656;
+  margin: 0 auto;
+  filter: drop-shadow(0 34px 46px rgba(0, 0, 0, 0.48));
+}
+
+.app-preview-iphone-screen {
+  position: absolute;
+  z-index: 1;
+  inset: 1.5%;
+  display: block;
+  width: 97%;
+  height: 97%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: clamp(34px, 4.6vw, 60px);
+  background: #090c14;
+}
+
+.app-preview-iphone-frame {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: screen;
+}
+
+.app-preview-iphone::after {
+  position: absolute;
+  z-index: 3;
+  top: 3.8%;
+  left: 50%;
+  width: 27%;
+  height: 3.7%;
+  content: "";
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: radial-gradient(circle at 75% 50%, rgba(28, 45, 100, 0.56) 0 7%, transparent 8%), #020203;
+  box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.045);
+  pointer-events: none;
 }
 
 .app-preview-design {
@@ -6179,11 +6269,17 @@ body[data-page="nutrition"] .final-cta {
   .app-preview-design {
     display: none;
   }
+
+  .app-preview-grid-phone {
+    grid-template-columns: minmax(0, 1fr) minmax(216px, 0.5fr);
+    gap: clamp(34px, 6vw, 72px);
+  }
 }
 
 @media (max-width: 720px) {
   .app-preview-grid,
-  .app-preview-grid-simple {
+  .app-preview-grid-simple,
+  .app-preview-grid-phone {
     grid-template-columns: 1fr;
     gap: 30px;
   }
@@ -6199,6 +6295,10 @@ body[data-page="nutrition"] .final-cta {
 
   .app-preview-device {
     width: min(72vw, 268px);
+  }
+
+  .app-preview-iphone {
+    width: min(76vw, 286px);
   }
 }
 

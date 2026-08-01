@@ -89,6 +89,7 @@
     if (reduceMotion) {
       characters.forEach((character) => {
         character.style.opacity = "1";
+        character.style.filter = "none";
         character.style.transform = "none";
       });
       return;
@@ -99,13 +100,17 @@
     characters.forEach((character, index) => {
       const animation = character.animate(
         [
-          { opacity: 0, transform: "translate3d(0, 0.18em, 0)" },
-          { opacity: 1, transform: "translate3d(0, 0, 0)" },
+          {
+            opacity: 0,
+            filter: "blur(9px)",
+            transform: "translate3d(0, 0.07em, 0) scale(0.992)",
+          },
+          { opacity: 1, filter: "blur(0px)", transform: "translate3d(0, 0, 0) scale(1)" },
         ],
         {
-          duration: index % 2 === 0 ? 620 : 560,
-          delay: baseDelay + Math.min(index * stagger, 1700),
-          easing: "cubic-bezier(.16,1,.3,1)",
+          duration: index % 2 === 0 ? 640 : 600,
+          delay: baseDelay + Math.min(index * stagger, 1540),
+          easing: "cubic-bezier(.2,.8,.2,1)",
           fill: "both",
         },
       );
@@ -113,6 +118,7 @@
       animation.finished
         .then(() => {
           character.style.opacity = "1";
+          character.style.filter = "none";
           character.style.transform = "none";
           animation.cancel();
         })
@@ -407,7 +413,7 @@
     const enter = (
       selector,
       triggerSelector,
-      fromTransform = "translate3d(0, 22px, 0)",
+      fromTransform = "translate3d(0, 10px, 0)",
       stagger = 0.065,
     ) => {
       const targets = [...document.querySelectorAll(selector)];
@@ -425,25 +431,25 @@
 
     const page = body.dataset.page || "home";
     if (page === "home") {
-      enter(".hero-index a", null, "translate3d(0, 18px, 0)", 0.075);
+      enter(".hero-index a", null, "translate3d(0, 10px, 0)", 0.075);
     }
 
     if (page === "health") {
-      enter(".health-tab", ".analysis-frame", "translate3d(-18px, 0, 0)", 0.07);
+      enter(".health-tab", ".analysis-frame", "translate3d(-10px, 0, 0)", 0.07);
       enter(
         ".analysis-panel.is-active .signal-row",
         ".analysis-frame",
-        "translate3d(16px, 0, 0)",
+        "translate3d(10px, 0, 0)",
         0.045,
       );
     }
 
     if (page === "nutrition") {
-      enter(".food-item", ".nutrition-game", "translate3d(0, 18px, 0)", 0.055);
+      enter(".food-item", ".nutrition-game", "translate3d(0, 10px, 0)", 0.055);
       enter(
         ".nutrition-table tr",
         ".nutrition-ledger",
-        "translate3d(14px, 0, 0)",
+        "translate3d(9px, 0, 0)",
         0.045,
       );
     }
@@ -452,18 +458,18 @@
       enter(
         ".constraint-ribbon span",
         ".training-tailor",
-        "translate3d(0, 16px, 0)",
+        "translate3d(0, 9px, 0)",
         0.06,
       );
-      enter(".plan-steps li", ".plan-steps", "translate3d(18px, 0, 0)", 0.07);
+      enter(".plan-steps li", ".plan-steps", "translate3d(10px, 0, 0)", 0.07);
     }
 
     if (page === "coach") {
-      enter(".message", ".conversation", "translate3d(0, 18px, 0)", 0.085);
+      enter(".message", ".conversation", "translate3d(0, 10px, 0)", 0.085);
       enter(
         ".evidence-item",
         ".evidence-list",
-        "translate3d(18px, 0, 0)",
+        "translate3d(10px, 0, 0)",
         0.07,
       );
     }
@@ -472,13 +478,13 @@
       targets.forEach((target, index) => {
         const animation = target.animate(
           [
-            { opacity: 0.28, transform: fromTransform },
-            { opacity: 1, transform: "translate3d(0, 0, 0)" },
+            { opacity: 0, filter: "blur(8px)", transform: fromTransform },
+            { opacity: 1, filter: "blur(0px)", transform: "translate3d(0, 0, 0)" },
           ],
           {
-            duration: 760,
+            duration: 640,
             delay: Math.min(index * stagger * 1000, 420),
-            easing: "cubic-bezier(.16,1,.3,1)",
+            easing: "cubic-bezier(.2,.8,.2,1)",
             fill: "both",
           },
         );
@@ -486,6 +492,7 @@
         animation.finished
           .then(() => {
             target.style.opacity = "1";
+            target.style.filter = "none";
             target.style.transform = "none";
             animation.cancel();
           })

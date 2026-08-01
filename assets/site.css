@@ -282,6 +282,20 @@ body.has-floating-nav .site-nav {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
+.nav-cta-soon,
+.button-soon {
+  gap: 9px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 0 4px rgba(30, 79, 232, 0.1);
+}
+
 .nav-cta:hover,
 .button:hover {
   transform: translateY(-2px);
@@ -1003,7 +1017,7 @@ h3 {
   position: absolute;
   inset: 0;
   color: currentColor;
-  opacity: 0.21;
+  opacity: 0.1;
 }
 
 .scrub-word-live {
@@ -2690,31 +2704,23 @@ h3 {
 
 .founder-grid {
   display: grid;
-  grid-template-columns: 0.68fr 1.32fr;
-  gap: clamp(40px, 10vw, 150px);
-  align-items: start;
+  grid-template-columns: minmax(280px, 0.7fr) minmax(0, 1.3fr);
+  gap: clamp(56px, 9vw, 142px);
+  align-items: stretch;
 }
 
 .founder-mark {
   position: sticky;
-  top: 150px;
+  top: calc(50vh - 190px);
   display: grid;
-  width: min(240px, 70%);
-  aspect-ratio: 1;
+  width: 100%;
+  min-height: 380px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 42% 35%, rgba(105, 147, 255, 0.24), transparent 34%),
-    rgba(255, 255, 255, 0.035);
-  box-shadow:
-    0 0 0 34px rgba(255, 255, 255, 0.018),
-    0 0 0 68px rgba(255, 255, 255, 0.012);
 }
 
 .founder-mark img {
-  width: 44%;
-  filter: drop-shadow(0 0 25px rgba(120, 157, 255, 0.54));
+  width: clamp(300px, 30vw, 480px);
+  filter: drop-shadow(0 22px 52px rgba(53, 94, 223, 0.28));
 }
 
 .editorial-quote {
@@ -4206,6 +4212,161 @@ body[data-page="nutrition"] .final-cta {
     #070910;
 }
 
+/* Honest pre-launch state: a product announcement, not a dead download CTA. */
+.prelaunch {
+  padding: clamp(16px, 2vw, 28px);
+  color: #071126;
+  background: var(--night);
+}
+
+.prelaunch-inner {
+  position: relative;
+  min-height: clamp(760px, 84vw, 1120px);
+  padding: clamp(88px, 10vw, 148px) 24px clamp(80px, 9vw, 130px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: clamp(34px, 4vw, 58px);
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 90%, rgba(30, 79, 232, 0.58), transparent 33%),
+    radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.84), transparent 31%),
+    linear-gradient(152deg, #f6f8ff 0%, #e9eeff 47%, #b9cafa 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 34px 90px rgba(0, 7, 29, 0.2);
+}
+
+.prelaunch-inner::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -38%;
+  width: min(920px, 82vw);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.27);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 90px rgba(255, 255, 255, 0.055),
+    0 0 0 180px rgba(255, 255, 255, 0.035);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.prelaunch-inner > * {
+  position: relative;
+  z-index: 1;
+}
+
+.prelaunch-mark {
+  width: clamp(92px, 9vw, 132px);
+  aspect-ratio: 1;
+  margin-bottom: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 28%;
+  background: linear-gradient(145deg, #132344, #050914);
+  box-shadow:
+    0 20px 46px rgba(6, 19, 50, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.prelaunch-mark img {
+  width: 62%;
+  filter: drop-shadow(0 0 18px rgba(114, 169, 255, 0.28));
+}
+
+.prelaunch-kicker {
+  margin: 0 0 22px;
+  color: rgba(7, 17, 38, 0.58);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.prelaunch h2 {
+  max-width: 1050px;
+  margin: 0;
+  color: #071126;
+  font-family: var(--font-ui);
+  font-size: clamp(58px, 8vw, 116px);
+  font-weight: 650;
+  letter-spacing: -0.065em;
+  line-height: 0.94;
+}
+
+.prelaunch-copy {
+  max-width: 720px;
+  margin: 34px auto 0;
+  color: rgba(7, 17, 38, 0.67);
+  font-size: clamp(17px, 1.7vw, 23px);
+  line-height: 1.48;
+}
+
+.app-store-soon {
+  margin-top: 46px;
+  min-width: 248px;
+  min-height: 78px;
+  padding: 12px 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  color: var(--white);
+  background: #05060a;
+  box-shadow: 0 18px 38px rgba(7, 17, 38, 0.2);
+}
+
+.app-store-soon svg {
+  width: 36px;
+  height: 36px;
+  fill: currentColor;
+}
+
+.app-store-soon > span {
+  display: grid;
+  text-align: left;
+  line-height: 1;
+}
+
+.app-store-soon small {
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.app-store-soon strong {
+  font-family: var(--font-ui);
+  font-size: 25px;
+  font-weight: 520;
+  letter-spacing: -0.035em;
+}
+
+.prelaunch-note {
+  margin: 24px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(7, 17, 38, 0.52);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prelaunch-note span {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 /* Product depth — app capabilities translated into focused web narratives. */
 .depth-header {
   max-width: 1050px;
@@ -4876,7 +5037,12 @@ body[data-page="nutrition"] .final-cta {
   .founder-mark {
     position: relative;
     top: auto;
-    width: 180px;
+    width: 100%;
+    min-height: 260px;
+  }
+
+  .founder-mark img {
+    width: clamp(240px, 52vw, 360px);
   }
 
   .health-tabs {
@@ -5090,6 +5256,63 @@ body[data-page="nutrition"] .final-cta {
 
   .hero-index .index-label {
     font-size: 15px;
+  }
+
+  .founder-grid {
+    gap: 34px;
+  }
+
+  .founder-mark {
+    min-height: 220px;
+  }
+
+  .founder-mark img {
+    width: min(300px, 72vw);
+  }
+
+  .prelaunch {
+    padding: 10px;
+  }
+
+  .prelaunch-inner {
+    min-height: 760px;
+    padding: 76px 18px 72px;
+    border-radius: 32px;
+  }
+
+  .prelaunch-inner::after {
+    bottom: -16%;
+    width: 118vw;
+  }
+
+  .prelaunch-mark {
+    width: 90px;
+    margin-bottom: 24px;
+    border-radius: 24px;
+  }
+
+  .prelaunch h2 {
+    max-width: 520px;
+    font-size: clamp(47px, 13.7vw, 68px);
+    line-height: 0.96;
+  }
+
+  .prelaunch-copy {
+    max-width: 520px;
+    margin-top: 26px;
+    font-size: 16px;
+  }
+
+  .app-store-soon {
+    min-width: 226px;
+    min-height: 72px;
+    margin-top: 38px;
+  }
+
+  .prelaunch-note {
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: 1.5;
   }
 
   .section {

@@ -244,16 +244,17 @@
         return;
       }
 
-      const start = viewportHeight * 0.84;
-      const end = viewportHeight * 0.22;
-      const progress = clamp((start - rect.top) / (start - end));
-      const spread = Math.max(words.length - 1, 1);
+      // Tie the reveal to the whole paragraph's journey through the viewport.
+      // This creates a readable text scrub: upcoming words stay muted while
+      // each word reaches full contrast only as the reader scrolls through it.
+      const start = viewportHeight * 0.78;
+      const travel = Math.max(rect.height + viewportHeight * 0.54, 1);
+      const progress = clamp((start - rect.top) / travel);
 
       words.forEach((word, index) => {
-        const wordProgress = clamp(
-          progress * 1.46 - (index / spread) * 0.46,
-        );
-        word.style.opacity = String(1 - Math.pow(1 - wordProgress, 3));
+        const wordProgress = clamp(progress * (words.length + 1.5) - index);
+        const eased = wordProgress * wordProgress * (3 - 2 * wordProgress);
+        word.style.opacity = String(eased);
       });
     });
 

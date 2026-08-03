@@ -3795,56 +3795,6 @@ body[data-page="health"] .analysis-frame::before {
   align-items: center;
 }
 
-.video-shell {
-  position: relative;
-  width: min(292px, 100%);
-  margin-inline: auto;
-  padding: 8px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 51px;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.025) 42%),
-    #090b10;
-  box-shadow:
-    -4px 0 0 -2px #161922,
-    4px 0 0 -2px #161922,
-    0 48px 110px rgba(0, 0, 0, 0.52),
-    0 0 68px rgba(30, 79, 232, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.34);
-}
-
-.video-shell video {
-  width: 100%;
-  aspect-ratio: 554 / 1200;
-  border-radius: 43px;
-  object-fit: cover;
-  background: var(--night-soft);
-}
-
-.video-shell::after {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border-radius: 43px;
-  background: linear-gradient(180deg, rgba(4, 6, 10, 0.13), transparent 22%, transparent 74%, rgba(4, 6, 10, 0.35));
-  pointer-events: none;
-}
-
-.dynamic-island {
-  position: absolute;
-  z-index: 4;
-  top: 17px;
-  left: 50%;
-  width: 86px;
-  height: 24px;
-  border-radius: 999px;
-  background: #020204;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
 .video-control {
   position: absolute;
   z-index: 3;
@@ -4126,7 +4076,6 @@ body:not([data-page="home"]) .health-tab[aria-selected="true"] {
 body:not([data-page="home"]) .score-card,
 body:not([data-page="home"]) .signal-card,
 .conversation,
-.video-shell,
 .logic-step {
   border-color: rgba(255, 255, 255, 0.2);
   background:
@@ -5134,10 +5083,6 @@ body[data-page="nutrition"] .final-cta {
     gap: 72px;
   }
 
-  .video-shell {
-    width: min(292px, 100%);
-  }
-
   .nutrition-game,
   .nutrition-game-intro,
   .nutrition-method-layout {
@@ -6141,7 +6086,7 @@ body[data-page="nutrition"] .final-cta {
   }
 }
 
-/* Native app previews used by the Health and Coach product pages. */
+/* Native app previews shared by the Health, Training and Coach product pages. */
 .app-preview-section {
   overflow: hidden;
 }
@@ -6170,29 +6115,9 @@ body[data-page="nutrition"] .final-cta {
   max-width: 52ch;
 }
 
-.app-preview-device {
-  width: min(100%, 294px);
-  margin: 0 auto;
-  padding: 7px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.17);
-  border-radius: clamp(26px, 3vw, 42px);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.03));
-  box-shadow: 0 32px 72px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-}
-
-.app-preview-video {
-  display: block;
-  width: 100%;
-  aspect-ratio: 886 / 1920;
-  object-fit: cover;
-  border-radius: calc(clamp(26px, 3vw, 42px) - 7px);
-  background: #0b0f1e;
-}
-
-/* The health film sits inside a real device asset instead of a second loose
-   screenshot. Screen black is composited away, retaining the metal edges. */
-.app-preview-iphone {
+/* Product films share one upright device geometry. The real frame asset
+   supplies the metal edge, camera and island treatment on every page. */
+.product-phone-preview {
   position: relative;
   isolation: isolate;
   width: min(100%, 330px);
@@ -6201,12 +6126,12 @@ body[data-page="nutrition"] .final-cta {
   filter: drop-shadow(0 34px 46px rgba(0, 0, 0, 0.48));
 }
 
-.app-preview-iphone-screen {
+.product-phone-preview-media {
   position: absolute;
   z-index: 1;
-  inset: 1.5%;
+  inset: 1.5% 4.1%;
   display: block;
-  width: 97%;
+  width: 91.8%;
   height: 97%;
   object-fit: cover;
   object-position: center top;
@@ -6214,7 +6139,7 @@ body[data-page="nutrition"] .final-cta {
   background: #090c14;
 }
 
-.app-preview-iphone-frame {
+.product-phone-preview-frame {
   position: absolute;
   z-index: 2;
   inset: 0;
@@ -6224,21 +6149,6 @@ body[data-page="nutrition"] .final-cta {
   pointer-events: none;
   user-select: none;
   mix-blend-mode: screen;
-}
-
-.app-preview-iphone::after {
-  position: absolute;
-  z-index: 3;
-  top: 3.8%;
-  left: 50%;
-  width: 27%;
-  height: 3.7%;
-  content: "";
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: radial-gradient(circle at 75% 50%, rgba(28, 45, 100, 0.56) 0 7%, transparent 8%), #020203;
-  box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.045);
-  pointer-events: none;
 }
 
 .app-preview-design {
@@ -6254,11 +6164,6 @@ body[data-page="nutrition"] .final-cta {
   width: 100%;
   border-radius: 24px;
   box-shadow: 0 24px 54px rgba(0, 0, 0, 0.26);
-}
-
-.section-paper .app-preview-device {
-  border-color: rgba(11, 16, 24, 0.16);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(206, 217, 241, 0.56));
 }
 
 @media (max-width: 980px) {
@@ -6293,11 +6198,7 @@ body[data-page="nutrition"] .final-cta {
     margin-inline: auto;
   }
 
-  .app-preview-device {
-    width: min(72vw, 268px);
-  }
-
-  .app-preview-iphone {
+  .product-phone-preview {
     width: min(76vw, 286px);
   }
 }
@@ -6309,8 +6210,7 @@ body[data-page="nutrition"] .final-cta {
   body:not([data-page="home"]) .signal-card,
   .conversation,
   .nutrition-game,
-  .nutrition-ledger,
-  .video-shell {
+  .nutrition-ledger {
     background: rgba(8, 11, 18, 0.94);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;

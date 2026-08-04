@@ -6025,13 +6025,15 @@ body[data-page="nutrition"] .final-cta {
 
   .site-nav,
   body.has-floating-nav .site-nav {
+    position: fixed;
     top: max(8px, calc(env(safe-area-inset-top) + 8px));
-    left: 50%;
-    width: calc(100% - 16px);
+    right: 8px;
+    left: 8px;
+    width: auto;
     height: 58px;
     min-height: 58px;
     padding: 6px;
-    transform: translate3d(-50%, 0, 0);
+    transform: none;
     justify-content: space-between;
     border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 999px;
@@ -6425,6 +6427,7 @@ body[data-page="nutrition"] .final-cta {
 @media (max-width: 720px) {
   .legal-page .site-nav {
     top: max(8px, env(safe-area-inset-top));
+    right: auto;
     width: calc(100% - 24px);
     min-height: 56px;
     margin-top: 8px;
